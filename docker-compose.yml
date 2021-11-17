@@ -49,7 +49,7 @@ services:
       - 8001:3000
     command: npm run start:built
     volumes: &override-sa
-      - "${CARTO3_ONPREM_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
+      - "${CARTO3_ONPREM_VOLUMES_BASE_PATH}key/:/usr/src/certs/:ro"
     restart: unless-stopped
     logging:
       driver: "local"
