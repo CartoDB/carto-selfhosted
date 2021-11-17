@@ -1,0 +1,170 @@
+version: '2.4'
+services:
+
+  router:
+    image: "${ROUTER_DOCKER_IMAGE}"
+    ports:
+      - 80:80
+      - 443:443
+    restart: unless-stopped
+    env_file:
+      - .env
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
+  accounts-www:
+    image: "${ACCOUNTS_WWW_DOCKER_IMAGE}"
+    env_file:
+      - .env
+    restart: unless-stopped
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
+  workspace-www:
+    image: "${WORKSPACE_WWW_DOCKER_IMAGE}"
+    env_file:
+      - .env
+    restart: unless-stopped
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
+  workspace-api:
+    image: "${WORKSPACE_API_DOCKER_IMAGE}"
+    env_file:
+      - .env
+    depends_on:
+      - workspace-postgres
+      - workspace-migrations
+      - redis
+    ports:
+      - 8001:3000
+    command: npm run start:built
+    volumes: &override-sa
+      - "${CARTO3_ONPREM_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
+    restart: unless-stopped
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
+  workspace-subscriber:
+    image: "${WORKSPACE_API_DOCKER_IMAGE}"
+    command: npm run start:built:subscriber
+    volumes: *override-sa
+    env_file:
+      - .env
+    depends_on:
+      - workspace-postgres
+    restart: unless-stopped
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
+  workspace-migrations:
+    image: "${WORKSPACE_MIGRATIONS_DOCKER_IMAGE}"
+    entrypoint: [ "/bin/bash", "-xc", "/usr/local/src/dockerize -wait tcp://$$WORKSPACE_POSTGRES_HOST:$$WORKSPACE_POSTGRES_PORT && exec $$0 $$@"]
+    command: [ "npx", "db-migrate", "up" ]
+    env_file:
+      - .env
+    depends_on:
+      - workspace-postgres
+    restart: on-failure
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
+  maps-api:
+    image: "${MAPS_API_DOCKER_IMAGE}"
+    env_file:
+      - .env
+    depends_on:
+      - workspace-postgres
+      - redis
+    ports:
+      - 8002:3000
+    command: npm run start:built
+    volumes: *override-sa
+    environment:
+      - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
+    restart: unless-stopped
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
+  import-api:
+    image: "${IMPORT_API_DOCKER_IMAGE}"
+    env_file:
+      - .env
+    depends_on:
+      - workspace-postgres
+    ports:
+      - 8003:3000
+    command: npm run start:built
+    volumes: *override-sa
+    restart: unless-stopped
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
+  import-worker:
+    image: "${IMPORT_API_DOCKER_IMAGE}"
+    volumes: *override-sa
+    env_file:
+      - .env
+    depends_on:
+      - workspace-postgres
+    command: npm run start:built:subscriber
+    restart: unless-stopped
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
+  workspace-postgres:
+    image: "postgres:13.2-alpine"
+    env_file:
+      - .env
+    volumes:
+      - workspace-pgdata:/var/lib/postgresql/data
+      - ${CARTO3_ONPREM_VOLUMES_BASE_PATH}workspace-db/init/:/docker-entrypoint-initdb.d/:ro
+    restart: on-failure
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
+  redis:
+    image: "redis:5.0-alpine"
+    env_file:
+      - .env
+    restart: unless-stopped
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+networks:
+  default:
+
+volumes:
+  workspace-pgdata:
