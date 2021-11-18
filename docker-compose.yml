@@ -49,7 +49,7 @@ services:
       - 8001:3000
     command: npm run start:built
     volumes: &override-sa
-      - "${CARTO3_ONPREM_VOLUMES_BASE_PATH}key/:/usr/src/certs/:ro"
+      - "${CARTO3_ONPREM_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
     restart: unless-stopped
     logging:
       driver: "local"
@@ -75,7 +75,7 @@ services:
   workspace-migrations:
     image: "${WORKSPACE_MIGRATIONS_DOCKER_IMAGE}"
     entrypoint: [ "/bin/bash", "-xc", "/usr/local/src/dockerize -wait tcp://$$WORKSPACE_POSTGRES_HOST:$$WORKSPACE_POSTGRES_PORT && exec $$0 $$@"]
-    command: [ "npx", "db-migrate", "up" ]
+    command: [ "/usr/src/app/onprem-init-db.sh"]
     env_file:
       - .env
     depends_on:
@@ -145,8 +145,7 @@ services:
       - .env
     volumes:
       - workspace-pgdata:/var/lib/postgresql/data
-      - ${CARTO3_ONPREM_VOLUMES_BASE_PATH}workspace-db/init/:/docker-entrypoint-initdb.d/:ro
-    restart: on-failure
+    restart: unless-stopped
     logging:
       driver: "local"
       options:

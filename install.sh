@@ -15,4 +15,5 @@ fi
 cat customer.env > .env
 cat env.tpl > .env
 
-cp key.json key/key.json
+mkdir -p certs
+cp key.json certs/key.json
