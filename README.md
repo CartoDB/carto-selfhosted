@@ -12,7 +12,7 @@ You need a TODO define reqs
 2. Check out this repo `git clone https://github.com/CartoDB/carto-selfhosted.git`
 3. Change to the repo directory `cd carto-selfhosted`
 4. You should have received two files from CARTO, please place them inside this directory
-5. Open with an editor the `.env` file and:
+5. Open with an editor the `customer.env` file and:
     - Update the version `CARTO_ONPREMISE_VERSION` to the latest version TODO this should be automatic
     - Update the `ONPREM_DOMAIN` with the domain where this installation will run
     - TODO add the TLS cert
