@@ -13,7 +13,7 @@ if [ ! -f key.json ]; then
 fi
 
 cat customer.env > .env
-cat env.tpl > .env
+cat env.tpl >> .env
 
 mkdir -p certs
 cp key.json certs/key.json
