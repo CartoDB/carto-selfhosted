@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 ./scripts/install_docker.sh
 
 if [ ! -f customer.env ]; then

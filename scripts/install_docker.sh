@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 COMPOSE_VERSION=2.1.1
 
