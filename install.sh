@@ -19,3 +19,5 @@ cat env.tpl >> .env
 
 mkdir -p certs
 cp key.json certs/key.json
+
+echo "Ready, run docker-compose up -d"
