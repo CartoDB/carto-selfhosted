@@ -1,6 +1,6 @@
 #!/bin/sh
 
-./scripts/docker.sh
+./scripts/install_docker.sh
 
 if [ ! -f customer.env ]; then
     echo "Missing customer.env file"
