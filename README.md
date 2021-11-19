@@ -19,4 +19,6 @@ You need a TODO define reqs
     - If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_API_KEY`
 6. Run the installation script `./install.sh`
 7. Bring up the environment `docker-compose up -d`
+    ⚠️ Until the registry is public you need to authenticate to pull images. You need to have the `gcloud` cli installed and run:
+    `gcloud auth activate-service-account --key-file=key.json` and then `gcloud auth configure-docker` ⚠️
 8. Use your browser and go to the domain you configured. Follow the registration process
