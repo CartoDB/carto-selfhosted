@@ -2,7 +2,12 @@
 
 set -e
 
-./scripts/install_docker.sh
+# ./scripts/install_docker.sh
+
+if [ ! -f VERSION ]; then
+    echo "Missing VERSION file"
+    exit 1
+fi
 
 if [ ! -f customer.env ]; then
     echo "Missing customer.env file"
@@ -14,7 +19,10 @@ if [ ! -f key.json ]; then
     exit 1
 fi
 
+version==`cat VERSION`
+
 cat customer.env > .env
+echo "CARTO_ONPREMISE_VERSION=$version" >> .env
 cat env.tpl >> .env
 
 mkdir -p certs
