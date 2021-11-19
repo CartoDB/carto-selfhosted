@@ -18,7 +18,7 @@ fi
 
 if ! command_available docker-compose
 then
-    sudo -E curl -L "https://github.com/docker/compose/releases/download/$COMPOSE_VERSION/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
+    sudo -E curl -L "https://github.com/docker/compose/releases/download/v$COMPOSE_VERSION/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
 fi
 
