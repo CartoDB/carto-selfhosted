@@ -22,11 +22,12 @@ Deploy CARTO in a self hosted environment.
 4. You should have received two files from CARTO, please copy them inside this directory
 5. Open with an editor the `customer.env` file and:
     - Configure the domain used. The value `ONPREM_DOMAIN` should be the domain that will point to this installation (by default the domain will be `carto3-onprem.lan` with a self signed certificate)
-    - Copy your `.crt` and `.key` files from the TLS certificate in the `certs` folder. In the `customer.env` you should add two new values (changing `<cert>` for the file names you just copied):
+    - Copy your `.crt` and `.key` files from the TLS certificate in the `certs` folder. In the `customer.env` you should add three new values (changing `<cert>` for the file names you just copied):
 
     ```bash
       ROUTER_SSL_CERTIFICATE_PATH=/etc/nginx/ssl/<cert>.crt
       ROUTER_SSL_CERTIFICATE_KEY_PATH=/etc/nginx/ssl/<cert>.key
+      ROUTER_SSL_AUTOGENERATE=0
     ```
 
     - If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_API_KEY` (OPTIONAL step)
