@@ -19,7 +19,7 @@ if [ ! -f key.json ]; then
     exit 1
 fi
 
-version==`cat VERSION`
+version=`cat VERSION`
 
 cat customer.env > .env
 echo "CARTO_ONPREMISE_VERSION=$version" >> .env
