@@ -140,6 +140,23 @@ services:
         max-size: "5M"
         max-file: "20"
 
+  lds-api:
+    image: "${LDS_API_DOCKER_IMAGE}"
+    env_file:
+      - .env
+    depends_on:
+      - workspace-postgres
+    ports:
+      - 8004:3000
+    command: npm run start:built
+    volumes: *override-sa
+    restart: unless-stopped
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
   workspace-postgres:
     image: "postgres:13.2-alpine"
     env_file:
