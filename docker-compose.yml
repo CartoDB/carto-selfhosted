@@ -47,8 +47,6 @@ services:
       - workspace-postgres
       - workspace-migrations
       - redis
-    ports:
-      - 8001:3000
     command: npm run start:built
     volumes: &override-sa
       - "${CARTO3_ONPREM_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
@@ -95,8 +93,6 @@ services:
     depends_on:
       - workspace-postgres
       - redis
-    ports:
-      - 8002:3000
     command: npm run start:built
     volumes: *override-sa
     environment:
@@ -114,8 +110,6 @@ services:
       - .env
     depends_on:
       - workspace-postgres
-    ports:
-      - 8003:3000
     command: npm run start:built
     volumes: *override-sa
     restart: unless-stopped
@@ -133,6 +127,21 @@ services:
     depends_on:
       - workspace-postgres
     command: npm run start:built:subscriber
+    restart: unless-stopped
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
+  lds-api:
+    image: "${LDS_API_DOCKER_IMAGE}"
+    env_file:
+      - .env
+    depends_on:
+      - workspace-postgres
+    command: npm run start:built
+    volumes: *override-sa
     restart: unless-stopped
     logging:
       driver: "local"
