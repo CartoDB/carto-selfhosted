@@ -21,6 +21,31 @@ Deploy CARTO in a self hosted environment.
 3. Change to the directory where you cloned the repository `cd carto-selfhosted`
 4. You should have received two files from CARTO, please copy them inside this directory
 5. Open with an editor the `customer.env` file and:
+    - For managed/external database: Configure the managed postgres database to use for workspace by filling these variables:
+
+    ```bash
+      # Your custom configuration for a external postgres database (comment when local db)
+      LOCAL_POSTGRES_SCALE=0
+      WORKSPACE_POSTGRES_HOST=<FILL_ME>
+      WORKSPACE_POSTGRES_PORT=<FILL_ME>
+      POSTGRES_PASSWORD=<FILL_ME>
+    ```
+    - Only for local database container: Follow the instructions in the .env file (comment and uncomment the vars as in the example below):
+
+    ```bash
+      # Your custom configuration for a external postgres database (comment when local db)
+      # LOCAL_POSTGRES_SCALE=0
+      # WORKSPACE_POSTGRES_HOST=<FILL_ME>
+      # WORKSPACE_POSTGRES_PORT=<FILL_ME>
+      # POSTGRES_PASSWORD=<FILL_ME>
+
+      # Configuration for using a local postgres, instead of a external one (comment when external db)
+      # You also have to uncomment the POSTGRES_PASSWORD variable generated in the customer package
+      LOCAL_POSTGRES_SCALE=1
+      WORKSPACE_POSTGRES_HOST=workspace-postgres
+      WORKSPACE_POSTGRES_PORT=5432
+    ```
+
     - Configure the domain used. The value `ONPREM_DOMAIN` should be the domain that will point to this installation (by default the domain will be `carto3-onprem.lan` with a self signed certificate)
     - Copy your `.crt` and `.key` files from the TLS certificate in the `certs` folder. In the `customer.env` you should add three new values (changing `<cert>` for the file names you just copied):
 
@@ -31,6 +56,8 @@ Deploy CARTO in a self hosted environment.
     ```
 
     - If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_API_KEY` (OPTIONAL step)
+
+    
 6. Run the installation script `./install.sh`
 7. Bring up the environment `docker-compose up -d`
     ⚠️ Until the registry is public you need to authenticate to pull images. You need to have the `gcloud` cli installed and run:

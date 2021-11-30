@@ -150,6 +150,7 @@ services:
         max-file: "20"
 
   workspace-postgres:
+    scale: "${LOCAL_POSTGRES_SCALE}"
     image: "postgres:13.2-alpine"
     env_file:
       - .env
