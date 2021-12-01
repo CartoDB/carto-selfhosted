@@ -28,4 +28,4 @@ cat env.tpl >> .env
 mkdir -p certs
 cp key.json certs/key.json
 
-echo "Ready, go to /carto-selfhosted and run docker-compose up -d"
+echo "Ready, browse to /carto-selfhosted and run docker-compose up -d"

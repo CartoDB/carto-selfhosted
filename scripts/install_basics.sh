@@ -29,3 +29,4 @@ then
     pm=$(package_manager)
     sudo $pm update && sudo $pm -y install curl
 fi
+

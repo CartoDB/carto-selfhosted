@@ -37,3 +37,4 @@ git clone https://github.com/CartoDB/carto-selfhosted.git /carto-selfhosted
 sleep 30
 
 mv key.json customer.env /carto-selfhosted && cd /carto-selfhosted && ./install.sh
+
