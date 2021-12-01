@@ -1,7 +1,8 @@
 #!/bin/sh
 set -e
 
-COMPOSE_VERSION=2.1.1
+COMPOSE_RELEASE=v2.1.1
+# Check https://github.com/docker/compose/releases for releases
 
 command_available() {
   type "$1" >/dev/null 2>&1
@@ -9,17 +10,12 @@ command_available() {
 
 if ! command_available docker
 then
-    if ! command_available wget && command_available yum; then
-    sudo yum install wget
-    fi
-    wget -qO- https://get.docker.com/ | sh
-    sudo usermod -aG docker $USER
-    newgrp docker
+    curl -fsSL https://get.docker.com -o get-docker.sh && sh get-docker.sh
 fi
 
 if ! command_available docker-compose
 then
-    sudo -E curl -L "https://github.com/docker/compose/releases/download/v$COMPOSE_VERSION/docker-compose-linux-x86_64" -o /usr/local/bin/docker-compose
+    sudo -E curl -L "https://github.com/docker/compose/releases/download/$COMPOSE_RELEASE/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
 fi
 

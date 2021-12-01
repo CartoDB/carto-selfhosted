@@ -2,7 +2,7 @@
 
 set -e
 
-# ./scripts/install_docker.sh
+./scripts/install_basics.sh && ./scripts/install_docker.sh
 
 if [ ! -f VERSION ]; then
     echo "Missing VERSION file"
@@ -28,4 +28,4 @@ cat env.tpl >> .env
 mkdir -p certs
 cp key.json certs/key.json
 
-echo "Ready, run docker-compose up -d"
+echo "Ready, go to /carto-selfhosted and run docker-compose up -d"
