@@ -22,7 +22,7 @@ fi
 version=`cat VERSION`
 
 cat customer.env > .env
-echo "CARTO_ONPREMISE_VERSION=$version" >> .env
+echo "\nCARTO_ONPREMISE_VERSION=$version" >> .env
 cat env.tpl >> .env
 
 mkdir -p certs
