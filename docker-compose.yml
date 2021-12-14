@@ -40,7 +40,7 @@ services:
         max-file: "20"
 
   workspace-api:
-    image: "${WORKSPACE_API_DOCKER_IMAGE}"
+    image: gcr.io/carto-artifacts/workspace-api:latest
     env_file:
       - .env
     depends_on:
@@ -58,7 +58,7 @@ services:
         max-file: "20"
 
   workspace-subscriber:
-    image: "${WORKSPACE_API_DOCKER_IMAGE}"
+    image: gcr.io/carto-artifacts/workspace-api:latest
     command: npm run start:built:subscriber
     volumes: *override-sa
     env_file:
@@ -73,7 +73,7 @@ services:
         max-file: "20"
 
   workspace-migrations:
-    image: "${WORKSPACE_MIGRATIONS_DOCKER_IMAGE}"
+    image: cloud-native_workspace-migrations:latest
     entrypoint: [ "/usr/src/app/onprem-init-db.sh"]
     env_file:
       - .env
@@ -87,7 +87,7 @@ services:
         max-file: "20"
 
   maps-api:
-    image: "${MAPS_API_DOCKER_IMAGE}"
+    image: gcr.io/carto-artifacts/maps-api:latest
     env_file:
       - .env
     depends_on:
@@ -135,7 +135,7 @@ services:
         max-file: "20"
 
   lds-api:
-    image: "${LDS_API_DOCKER_IMAGE}"
+    image: gcr.io/carto-artifacts/lds-api:latest
     env_file:
       - .env
     depends_on:
@@ -164,9 +164,11 @@ services:
         max-file: "20"
 
   redis:
-    image: "redis:5.0-alpine"
+    image: docker.io/bitnami/redis:5.0.14
     env_file:
       - .env
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
     restart: unless-stopped
     logging:
       driver: "local"
