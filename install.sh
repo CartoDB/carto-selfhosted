@@ -1,8 +1,69 @@
 #!/bin/sh
 
+
+DOCKER_MINIMUM_VERSION_MAJOR=20
+DOCKER_MINIMUM_VERSION_MINOR=10
+COMPOSE_MINIMUM_VERSION_MAJOR=2
+COMPOSE_MINIMUM_VERSION_MINOR=1
+
+function check_docker_version () {
+    docker_version_major=$(docker --version | awk  '{ print $3}' | awk -F. '{ print $1 }')
+    docker_version_minor=$(docker --version | awk  '{ print $3}' | awk -F. '{ print $2 }')
+
+    if [ $docker_version_major -ge $DOCKER_MINIMUM_VERSION_MAJOR ]
+    then
+      if [ $docker_version_minor -ge $DOCKER_MINIMUM_VERSION_MINOR ]
+      then
+        :
+      else
+        echo "minimum docker version is $DOCKER_MINIMUM_VERSION_MAJOR.$DOCKER_MINIMUM_VERSION_MINOR"
+        exit 1
+      fi
+    else
+      echo "minimum docker version is $DOCKER_MINIMUM_VERSION_MAJOR.$DOCKER_MINIMUM_VERSION_MINOR"
+      exit 1
+    fi
+}
+
+function check_compose_version () {
+    compose_version_major=$(docker-compose --version | awk  '{ print $4}' | awk -F. '{ print $1 }')
+    compose_version_major=${compose_version_major:1} # remove leading v
+    compose_version_minor=$(docker-compose --version | awk  '{ print $4}' | awk -F. '{ print $2 }')
+
+    if [ $compose_version_major -ge $COMPOSE_MINIMUM_VERSION_MAJOR ]
+    then
+      if [ $compose_version_minor -ge $COMPOSE_MINIMUM_VERSION_MINOR ]
+      then
+        :
+      else
+        echo "minimum docker-compose version is $COMPOSE_MINIMUM_VERSION_MAJOR.$COMPOSE_MINIMUM_VERSION_MINOR"
+        exit 1
+      fi
+    else
+      echo "minimum docker-compose version is $COMPOSE_MINIMUM_VERSION_MAJOR.$COMPOSE_MINIMUM_VERSION_MINOR"
+      exit 1
+    fi
+}
+
 set -e
 
-# ./scripts/install_docker.sh
+if ! command -v docker &> /dev/null
+then
+    echo "docker is not installed, you can use the ./scripts/install_docker.sh helper"
+    exit 1
+fi
+
+check_docker_version
+
+if ! command -v docker-compose &> /dev/null
+then
+    echo "docker-compose is not installed, you can use the ./scripts/install_docker-compose.sh helper"
+    exit 1
+fi
+
+check_compose_version
+
+
 
 if [ ! -f VERSION ]; then
     echo "Missing VERSION file"
