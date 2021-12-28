@@ -27,7 +27,7 @@ check_docker_version() {
 
 check_compose_version() {
     compose_version_major=$(docker-compose --version | awk  '{ print $4}' | awk -F. '{ print $1 }')
-    compose_version_major=${compose_version_major:1} # remove leading v
+    compose_version_major=$(printf '%s' "$compose_version_major" | cut -c 1) # remove leading v
     compose_version_minor=$(docker-compose --version | awk  '{ print $4}' | awk -F. '{ print $2 }')
 
     if [ $compose_version_major -ge $COMPOSE_MINIMUM_VERSION_MAJOR ]
