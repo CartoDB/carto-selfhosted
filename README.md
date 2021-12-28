@@ -13,6 +13,7 @@ Deploy CARTO in a self hosted environment.
 2. A domain/subdomain that will be pointing to the machine
 3. A TLS certificate for the domain/subdomain (if not provided a self signed will be generated)
 4. Two files received from CARTO (License and configuration)
+5. Docker and docker-compose installed (there are two helper scripts in the `scripts` folder)
 
 ### Steps
 
@@ -30,6 +31,7 @@ Deploy CARTO in a self hosted environment.
       WORKSPACE_POSTGRES_PORT=<FILL_ME>
       POSTGRES_PASSWORD=<FILL_ME>
     ```
+
     - Only for local database container: Follow the instructions in the .env file (comment and uncomment the vars as in the example below):
 
     ```bash
@@ -57,7 +59,6 @@ Deploy CARTO in a self hosted environment.
 
     - If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_API_KEY` (OPTIONAL step)
 
-    
 6. Run the installation script `./install.sh`
 7. Bring up the environment `docker-compose up -d`
     ⚠️ Until the registry is public you need to authenticate to pull images. You need to have the `gcloud` cli installed and run:
