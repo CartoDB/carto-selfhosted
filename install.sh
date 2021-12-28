@@ -47,7 +47,7 @@ check_compose_version() {
 
 set -e
 
-if ! command -v docker &> /dev/null
+if ! command -v docker > /dev/null 2>&1
 then
     echo "docker is not installed, you can use the ./scripts/install_docker.sh helper"
     exit 1
@@ -55,7 +55,7 @@ fi
 
 check_docker_version
 
-if ! command -v docker-compose &> /dev/null
+if ! command -v docker-compose > /dev/null 2>&1
 then
     echo "docker-compose is not installed, you can use the ./scripts/install_docker-compose.sh helper"
     exit 1
@@ -80,7 +80,7 @@ if [ ! -f key.json ]; then
     exit 1
 fi
 
-version=`cat VERSION`
+version=$(cat VERSION)
 
 cat customer.env > .env
 echo "" >> .env
