@@ -4,8 +4,8 @@ services:
   router:
     image: "${ROUTER_DOCKER_IMAGE}"
     ports:
-      - 80:80
-      - 443:443
+      - 80:8080
+      - 443:8443
     restart: unless-stopped
     volumes:
       - "${CARTO3_ONPREM_VOLUMES_BASE_PATH}certs/:/etc/nginx/ssl/:ro"
