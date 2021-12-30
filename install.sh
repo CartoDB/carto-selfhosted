@@ -3,8 +3,8 @@
 
 DOCKER_MINIMUM_VERSION_MAJOR=20
 DOCKER_MINIMUM_VERSION_MINOR=10
-COMPOSE_MINIMUM_VERSION_MAJOR=2
-COMPOSE_MINIMUM_VERSION_MINOR=1
+COMPOSE_MINIMUM_VERSION_MAJOR=1
+COMPOSE_MINIMUM_VERSION_MINOR=29
 
 check_docker_version() {
     docker_version_major=$(docker --version | awk  '{ print $3}' | awk -F. '{ print $1 }')
@@ -27,7 +27,7 @@ check_docker_version() {
 
 check_compose_version() {
     # Docker Compose version v2.1.1
-    # docker-compose version 1.29.2, build unknown
+    # docker-compose version 1.29.2, build 5becea4c
     compose_version_extracted=$(docker-compose --version | sed 's/^.*version\ //g' | sed 's/[\,\ ].*$//g' | sed 's/v//g')
     compose_version_major=$(echo "${compose_version_extracted}" | awk -F. '{ print $1 }')
     compose_version_minor=$(echo "${compose_version_extracted}" | awk -F. '{ print $2 }')
