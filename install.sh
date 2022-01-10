@@ -1,25 +1,5 @@
 #!/bin/sh
 
-if [ $# -gt 1 ]
-then
-  echo "[error] too many arguments, only one argument permitted"
-  echo "[help] usage: sh install.sh [--ignore-checks][--help]"
-  exit 1
-fi
-
-if [ $# -eq 1 ] && [ $1 = '--help' ]
-then
-  echo "[help] usage: sh install.sh [--ignore-checks][--help]"
-  exit 0
-fi
-
-if [ $# -eq 1 ] && [ $1 = '--ignore-checks' ]
-then
-  IGNORE_CHECKS=true
-else
-  IGNORE_CHECKS=false
-fi
-
 DOCKER_MINIMUM_VERSION_MAJOR=20
 DOCKER_MINIMUM_VERSION_MINOR=10
 COMPOSE_MINIMUM_VERSION_MAJOR=1
@@ -80,6 +60,28 @@ create_env_file() {
 }
 
 set -e
+
+# evaluate arguments
+if [ $# -gt 1 ]
+then
+  echo "[error] too many arguments, only one argument permitted"
+  echo "[help] usage: sh install.sh [--ignore-checks][--help]"
+  exit 1
+elif [ $# -eq 1 ] && [ $1 = '--help' ]
+then
+  echo "[help] usage: sh install.sh [--ignore-checks][--help]"
+  exit 0
+elif [ $# -eq 1 ] && [ $1 = '--ignore-checks' ]
+then
+  IGNORE_CHECKS=true
+elif [ $# -eq 1 ]
+then
+  echo "[error] invalid argument"
+  echo "[help] usage: sh install.sh [--ignore-checks][--help]"
+  exit 1
+else
+  IGNORE_CHECKS=false
+fi
 
 if [ $IGNORE_CHECKS = true ]
 then
