@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 DOCKER_MINIMUM_VERSION_MAJOR=20
 DOCKER_MINIMUM_VERSION_MINOR=10
 COMPOSE_MINIMUM_VERSION_MAJOR=1
@@ -16,11 +15,11 @@ check_docker_version() {
       then
         :
       else
-        echo "minimum docker version is $DOCKER_MINIMUM_VERSION_MAJOR.$DOCKER_MINIMUM_VERSION_MINOR"
+        echo "[error] minimum docker version is $DOCKER_MINIMUM_VERSION_MAJOR.$DOCKER_MINIMUM_VERSION_MINOR"
         exit 1
       fi
     else
-      echo "minimum docker version is $DOCKER_MINIMUM_VERSION_MAJOR.$DOCKER_MINIMUM_VERSION_MINOR"
+      echo "[error] minimum docker version is $DOCKER_MINIMUM_VERSION_MAJOR.$DOCKER_MINIMUM_VERSION_MINOR"
       exit 1
     fi
 }
@@ -38,20 +37,63 @@ check_compose_version() {
       then
         :
       else
-        echo "minimum docker-compose version is $COMPOSE_MINIMUM_VERSION_MAJOR.$COMPOSE_MINIMUM_VERSION_MINOR"
+        echo "[error] minimum docker-compose version is $COMPOSE_MINIMUM_VERSION_MAJOR.$COMPOSE_MINIMUM_VERSION_MINOR"
         exit 1
       fi
     else
-      echo "minimum docker-compose version is $COMPOSE_MINIMUM_VERSION_MAJOR.$COMPOSE_MINIMUM_VERSION_MINOR"
+      echo "[error] minimum docker-compose version is $COMPOSE_MINIMUM_VERSION_MAJOR.$COMPOSE_MINIMUM_VERSION_MINOR"
       exit 1
     fi
 }
 
+create_env_file() {
+    echo "[info] creating .env file..."
+    version=$(cat VERSION)
+    cat customer.env > .env
+    echo "" >> .env
+    echo "CARTO_ONPREMISE_VERSION=$version" >> .env
+    cat env.tpl >> .env
+    mkdir -p certs
+    cp key.json certs/key.json
+    echo "[info] file .env successfully created"
+    echo "[info] script finished, run docker-compose up -d"
+}
+
 set -e
 
+# evaluate arguments
+if [ $# -gt 1 ]
+then
+  echo "[error] too many arguments, only one argument permitted"
+  echo "[help] usage: sh install.sh [--ignore-checks][--help]"
+  exit 1
+elif [ $# -eq 1 ] && [ $1 = '--help' ]
+then
+  echo "[help] usage: sh install.sh [--ignore-checks][--help]"
+  exit 0
+elif [ $# -eq 1 ] && [ $1 = '--ignore-checks' ]
+then
+  IGNORE_CHECKS=true
+elif [ $# -eq 1 ]
+then
+  echo "[error] invalid argument"
+  echo "[help] usage: sh install.sh [--ignore-checks][--help]"
+  exit 1
+else
+  IGNORE_CHECKS=false
+fi
+
+if [ $IGNORE_CHECKS = true ]
+then
+  echo "[info] skipping command checks..."
+  create_env_file
+  exit 0
+fi
+
+echo "[info] running command checks..."
 if ! command -v docker > /dev/null 2>&1
 then
-    echo "docker is not installed, you can use the ./scripts/install_docker.sh helper"
+    echo "[error] docker is not installed, you can use the ./scripts/install_docker.sh helper"
     exit 1
 fi
 
@@ -59,37 +101,25 @@ check_docker_version
 
 if ! command -v docker-compose > /dev/null 2>&1
 then
-    echo "docker-compose is not installed, you can use the ./scripts/install_docker-compose.sh helper"
+    echo "[error] docker-compose is not installed, you can use the ./scripts/install_docker-compose.sh helper"
     exit 1
 fi
 
 check_compose_version
 
-
-
 if [ ! -f VERSION ]; then
-    echo "Missing VERSION file"
+    echo "[error] missing VERSION file"
     exit 1
 fi
 
 if [ ! -f customer.env ]; then
-    echo "Missing customer.env file"
+    echo "[error] missing customer.env file"
     exit 1
 fi
 
 if [ ! -f key.json ]; then
-    echo "Missing key.json file"
+    echo "[error] missing key.json file"
     exit 1
 fi
 
-version=$(cat VERSION)
-
-cat customer.env > .env
-echo "" >> .env
-echo "CARTO_ONPREMISE_VERSION=$version" >> .env
-cat env.tpl >> .env
-
-mkdir -p certs
-cp key.json certs/key.json
-
-echo "Ready, run docker-compose up -d"
+create_env_file
