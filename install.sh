@@ -51,7 +51,7 @@ create_env_file() {
     version=$(cat VERSION)
     cat customer.env > .env
     echo "" >> .env
-    echo "CARTO_ONPREMISE_VERSION=$version" >> .env
+    echo "CARTO_SELFHOSTED_VERSION=$version" >> .env
     cat env.tpl >> .env
     mkdir -p certs
     cp key.json certs/key.json
