@@ -45,9 +45,11 @@ IMPORT_PROJECTID='myproject'
 
 ### Notes
 
-if `_KEYFILENAME` is not defined  env `GOOGLE_APPLICATION_CREDENTIALS` is used as default value
+* If `_KEYFILENAME` is not defined  env `GOOGLE_APPLICATION_CREDENTIALS` is used as default value
 
-if `_PROJECTID` is not defined  env `GCLOUD_PROJECT` is used as default value
+* If `_PROJECTID` is not defined  env `GOOGLE_CLOUD_PROJECT` is used as default value
+
+* If neither _KEYFILENAME nor GOOGLE_APPLICATION_CREDENTIALS variable is provided (meaning the container is inheriting default credentials from an instance), the service account needs one additional permission at the project level: iam.serviceAccounts.signBlob (contained by the role roles/iam.serviceAccountTokenCreator)
 
 ## Azure Blob Storage
 
