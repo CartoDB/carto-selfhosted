@@ -5,20 +5,40 @@ DOCKER_MINIMUM_VERSION_MINOR=10
 COMPOSE_MINIMUM_VERSION_MAJOR=1
 COMPOSE_MINIMUM_VERSION_MINOR=29
 
+
+valid_version() {
+  local req_major=$1
+  local req_minor=$2
+  local check_major=$3
+  local check_minor=$4
+
+  if [ $check_major -gt $req_major ]
+  then
+    true
+    return
+  else
+    if [ $check_major -lt $req_major ]
+    then
+      false
+      return
+    fi
+    if [ $check_minor -ge $req_minor ]
+    then
+      true
+      return
+    else
+      false
+      return
+    fi
+  fi
+}
+
 check_docker_version() {
     docker_version_major=$(docker --version | awk  '{ print $3}' | awk -F. '{ print $1 }')
     docker_version_minor=$(docker --version | awk  '{ print $3}' | awk -F. '{ print $2 }')
 
-    if [ $docker_version_major -ge $DOCKER_MINIMUM_VERSION_MAJOR ]
+    if ! valid_version $DOCKER_MINIMUM_VERSION_MAJOR $DOCKER_MINIMUM_VERSION_MINOR $docker_version_major $docker_version_minor
     then
-      if [ $docker_version_minor -ge $DOCKER_MINIMUM_VERSION_MINOR ]
-      then
-        :
-      else
-        echo "[error] minimum docker version is $DOCKER_MINIMUM_VERSION_MAJOR.$DOCKER_MINIMUM_VERSION_MINOR"
-        exit 1
-      fi
-    else
       echo "[error] minimum docker version is $DOCKER_MINIMUM_VERSION_MAJOR.$DOCKER_MINIMUM_VERSION_MINOR"
       exit 1
     fi
@@ -31,16 +51,8 @@ check_compose_version() {
     compose_version_major=$(echo "${compose_version_extracted}" | awk -F. '{ print $1 }')
     compose_version_minor=$(echo "${compose_version_extracted}" | awk -F. '{ print $2 }')
 
-    if [ $compose_version_major -ge $COMPOSE_MINIMUM_VERSION_MAJOR ]
+    if ! valid_version $COMPOSE_MINIMUM_VERSION_MAJOR $COMPOSE_MINIMUM_VERSION_MINOR $compose_version_major $compose_version_minor
     then
-      if [ $compose_version_minor -ge $COMPOSE_MINIMUM_VERSION_MINOR ]
-      then
-        :
-      else
-        echo "[error] minimum docker-compose version is $COMPOSE_MINIMUM_VERSION_MAJOR.$COMPOSE_MINIMUM_VERSION_MINOR"
-        exit 1
-      fi
-    else
       echo "[error] minimum docker-compose version is $COMPOSE_MINIMUM_VERSION_MAJOR.$COMPOSE_MINIMUM_VERSION_MINOR"
       exit 1
     fi
