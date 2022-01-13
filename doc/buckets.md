@@ -84,7 +84,7 @@ IMPORT_STORAGE_ACCESSKEY='**AccessKey**'
 
 The buckets need the permissions:
 
-![Azure Permission](doc/images/azure-blob-permissions.png)
+![Azure Permission](images/azure-blob-permissions.png)
 
 ## AWS S3
 

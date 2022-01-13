@@ -14,7 +14,7 @@ Deploy CARTO in a self hosted environment.
 3. A TLS certificate for the domain/subdomain (if not provided a self signed will be generated)
 4. Two files received from CARTO (License and configuration)
 5. Docker and docker-compose installed (there are two helper scripts in the `scripts` folder)
-6. OPTIONAL: Cloud Buckets. CARTO provides them in GCP, but if you want to use your own in your cloud provider check the [Bucket configuration](docs/buckets.md)
+6. OPTIONAL: Cloud Buckets. CARTO provides them in GCP, but if you want to use your own in your cloud provider check the [Bucket configuration](doc/buckets.md)
 
 ### Steps
 
