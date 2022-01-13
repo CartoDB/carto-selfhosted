@@ -7,22 +7,22 @@ COMPOSE_MINIMUM_VERSION_MINOR=29
 
 
 valid_version() {
-  local req_major=$1
-  local req_minor=$2
-  local check_major=$3
-  local check_minor=$4
+  _req_major=$1
+  _req_minor=$2
+  _check_major=$3
+  _check_minor=$4
 
-  if [ $check_major -gt $req_major ]
+  if [ "$_check_major" -gt "$_req_major" ]
   then
     true
     return
   else
-    if [ $check_major -lt $req_major ]
+    if [ "$_check_major" -lt "$_req_major" ]
     then
       false
       return
     fi
-    if [ $check_minor -ge $req_minor ]
+    if [ "$_check_minor" -ge "$_req_minor" ]
     then
       true
       return
@@ -37,7 +37,7 @@ check_docker_version() {
     docker_version_major=$(docker --version | awk  '{ print $3}' | awk -F. '{ print $1 }')
     docker_version_minor=$(docker --version | awk  '{ print $3}' | awk -F. '{ print $2 }')
 
-    if ! valid_version $DOCKER_MINIMUM_VERSION_MAJOR $DOCKER_MINIMUM_VERSION_MINOR $docker_version_major $docker_version_minor
+    if ! valid_version $DOCKER_MINIMUM_VERSION_MAJOR $DOCKER_MINIMUM_VERSION_MINOR "$docker_version_major" "$docker_version_minor"
     then
       echo "[error] minimum docker version is $DOCKER_MINIMUM_VERSION_MAJOR.$DOCKER_MINIMUM_VERSION_MINOR"
       exit 1
@@ -51,7 +51,7 @@ check_compose_version() {
     compose_version_major=$(echo "${compose_version_extracted}" | awk -F. '{ print $1 }')
     compose_version_minor=$(echo "${compose_version_extracted}" | awk -F. '{ print $2 }')
 
-    if ! valid_version $COMPOSE_MINIMUM_VERSION_MAJOR $COMPOSE_MINIMUM_VERSION_MINOR $compose_version_major $compose_version_minor
+    if ! valid_version $COMPOSE_MINIMUM_VERSION_MAJOR $COMPOSE_MINIMUM_VERSION_MINOR "$compose_version_major" "$compose_version_minor"
     then
       echo "[error] minimum docker-compose version is $COMPOSE_MINIMUM_VERSION_MAJOR.$COMPOSE_MINIMUM_VERSION_MINOR"
       exit 1
@@ -79,11 +79,11 @@ then
   echo "[error] too many arguments, only one argument permitted"
   echo "[help] usage: sh install.sh [--ignore-checks][--help]"
   exit 1
-elif [ $# -eq 1 ] && [ $1 = '--help' ]
+elif [ $# -eq 1 ] && [ "$1" = '--help' ]
 then
   echo "[help] usage: sh install.sh [--ignore-checks][--help]"
   exit 0
-elif [ $# -eq 1 ] && [ $1 = '--ignore-checks' ]
+elif [ $# -eq 1 ] && [ "$1" = '--ignore-checks' ]
 then
   IGNORE_CHECKS=true
 elif [ $# -eq 1 ]
