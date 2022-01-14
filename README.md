@@ -14,6 +14,7 @@ Deploy CARTO in a self hosted environment.
 3. A TLS certificate for the domain/subdomain (if not provided a self signed will be generated)
 4. Two files received from CARTO (License and configuration)
 5. Docker and docker-compose installed (there are two helper scripts in the `scripts` folder)
+6. OPTIONAL: Cloud Buckets. CARTO provides them in GCP, but if you want to use your own in your cloud provider check the [Bucket configuration](doc/buckets.md)
 
 ### Steps
 
@@ -32,7 +33,7 @@ Deploy CARTO in a self hosted environment.
       POSTGRES_PASSWORD=<FILL_ME>
     ```
 
-    - Only for local database container: Follow the instructions in the .env file (comment and uncomment the vars as in the example below):
+    - Only for local database (this should be used only in development/testing environments) container: Follow the instructions in the .env file (comment and uncomment the vars as in the example below):
 
     ```bash
       # Your custom configuration for a external postgres database (comment when local db)
@@ -48,7 +49,7 @@ Deploy CARTO in a self hosted environment.
       WORKSPACE_POSTGRES_PORT=5432
     ```
 
-    - Configure the domain used. The value `ONPREM_DOMAIN` should be the domain that will point to this installation (by default the domain will be `carto3-onprem.lan` with a self signed certificate)
+    - Configure the domain used. The value `SELFHOSTED_DOMAIN` should be the domain that will point to this installation (by default the domain will be `carto3-onprem.lan` with a self signed certificate)
     - Copy your `.crt` and `.key` files from the TLS certificate in the `certs` folder. In the `customer.env` you should add three new values (changing `<cert>` for the file names you just copied):
 
     ```bash
@@ -61,8 +62,6 @@ Deploy CARTO in a self hosted environment.
 
 6. Run the installation script `./install.sh`
 7. Bring up the environment `docker-compose up -d`
-    ⚠️ Until the registry is public you need to authenticate to pull images. You need to have the `gcloud` cli installed and run:
-    `gcloud auth activate-service-account --key-file=key.json` and then `gcloud auth configure-docker` ⚠️
 8. Use your browser and go to the domain you configured. Follow the registration process
 
 ### Update

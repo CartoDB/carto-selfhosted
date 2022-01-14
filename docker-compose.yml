@@ -8,7 +8,7 @@ services:
       - 443:8443
     restart: unless-stopped
     volumes:
-      - "${CARTO3_ONPREM_VOLUMES_BASE_PATH}certs/:/etc/nginx/ssl/:ro"
+      - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/etc/nginx/ssl/:ro"
     env_file:
       - .env
     logging:
@@ -49,7 +49,7 @@ services:
       - redis
     command: npm run start:built
     volumes: &override-sa
-      - "${CARTO3_ONPREM_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
+      - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
     restart: unless-stopped
     logging:
       driver: "local"
