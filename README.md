@@ -18,9 +18,9 @@ Deploy CARTO in a self hosted environment.
 ### Steps
 
 1. Login in the machine where the deployment will happen
-2. Check out this git repository: `git clone https://github.com/CartoDB/carto-selfhosted.git`
+2. Clone this git repository: `git clone https://github.com/CartoDB/carto-selfhosted.git`
 3. Change to the directory where you cloned the repository `cd carto-selfhosted`
-4. You should have received two files from CARTO, please copy them inside this directory
+4. You should have received two files from CARTO (`customer.env`, `key.json`), please copy them inside this directory
 5. Open with an editor the `customer.env` file and:
     - For managed/external database: Configure the managed postgres database to use for workspace by filling these variables:
 
@@ -61,8 +61,6 @@ Deploy CARTO in a self hosted environment.
 
 6. Run the installation script `./install.sh`
 7. Bring up the environment `docker-compose up -d`
-    ⚠️ Until the registry is public you need to authenticate to pull images. You need to have the `gcloud` cli installed and run:
-    `gcloud auth activate-service-account --key-file=key.json` and then `gcloud auth configure-docker` ⚠️
 8. Use your browser and go to the domain you configured. Follow the registration process
 
 ### Update
