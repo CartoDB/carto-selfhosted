@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - master
-    path:
+    paths:
       - '/VERSION'
 jobs:
   create-tag:
