@@ -1,0 +1,29 @@
+name: "Auto create release"
+on:
+  push:
+    branches:
+      - main
+    path:
+      - '/VERSION'
+jobs:
+  create-tag:
+    timeout-minutes: 3
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Retrieve Release Name
+        id: info
+        shell: bash
+        run: |
+          set -ex
+          export RELEASE_NAME=$(cat VERSION)
+          echo "::set-output name=release_name::${RELEASE_NAME}"
+      - uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit: ${{ github.sha }}
+          name: ${{ steps.info.outputs.release_name }}
+          tag: ${{ steps.info.outputs.release_name }}
+          # draft: true
+          prerelease: true
+          body: |
+            Released the `${{ steps.info.outputs.release_name }}` version
