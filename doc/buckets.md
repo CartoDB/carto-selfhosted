@@ -14,6 +14,9 @@ Map thumbnails can be configured in two ways. Public (thumbnails are public) or 
 
 You need 3 buckets and a Service Account that can read/write to them.
 
+**NOTE:** For imports and thumbnails to work, the service account needs to create `signedURLs`. In order to do that, the service account must be granted with the role `roles/iam.serviceAccountTokenCreator` (or a custom role with `iam.serviceAccounts.signBlob`) inside the service account permissions (IAM > Service Accounts > `your_service_account` > Permissions).
+
+
 ### Thumbnails
 
 ```bash
@@ -23,11 +26,9 @@ WORKSPACE_THUMBNAILS_KEYFILENAME='route_to_json'
 WORKSPACE_THUMBNAILS_PROJECTID='myproject'
 ```
 
-To be able to sign URLs, the Service Account used needs to have the permission `iam.serviceAccounts.signBlob` on the bucket.
+
 
 ### Imports
-
-The Service Account used needs to have the permission `iam.serviceAccounts.signBlob` on this bucket.
 
 ```bash
 WORKSPACE_IMPORTS_PROVIDER='gcp'
@@ -49,7 +50,7 @@ IMPORT_PROJECTID='myproject'
 
 * If `_PROJECTID` is not defined  env `GOOGLE_CLOUD_PROJECT` is used as default value
 
-* If neither _KEYFILENAME nor GOOGLE_APPLICATION_CREDENTIALS variable is provided (meaning the container is inheriting default credentials from an instance), the service account needs one additional permission at the project level: iam.serviceAccounts.signBlob (contained by the role roles/iam.serviceAccountTokenCreator)
+* If neither _KEYFILENAME nor GOOGLE_APPLICATION_CREDENTIALS variable is provided (meaning the container is inheriting default credentials from an instance), the service account needs one additional permission: iam.serviceAccounts.signBlob (contained by the role roles/iam.serviceAccountTokenCreator). Instructions above.
 
 ## Azure Blob Storage
 
