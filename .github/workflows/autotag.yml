@@ -2,7 +2,7 @@ name: "Auto create release"
 on:
   push:
     branches:
-      - main
+      - master
     path:
       - '/VERSION'
 jobs:
@@ -10,6 +10,8 @@ jobs:
     timeout-minutes: 3
     runs-on: ubuntu-20.04
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Retrieve Release Name
         id: info
         shell: bash
