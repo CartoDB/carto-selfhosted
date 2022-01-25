@@ -19,9 +19,9 @@ Deploy CARTO in a self hosted environment.
 ### Steps
 
 1. Login in the machine where the deployment will happen
-2. Check out this git repository: `git clone https://github.com/CartoDB/carto-selfhosted.git`
+2. Clone this git repository: `git clone https://github.com/CartoDB/carto-selfhosted.git`
 3. Change to the directory where you cloned the repository `cd carto-selfhosted`
-4. You should have received two files from CARTO, please copy them inside this directory
+4. You should have received two files from CARTO (`customer.env`, `key.json`), please copy them inside this directory
 5. Open with an editor the `customer.env` file and:
     - For managed/external database: Configure the managed postgres database to use for workspace by filling these variables:
 
