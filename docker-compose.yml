@@ -17,6 +17,21 @@ services:
         max-size: "5M"
         max-file: "20"
 
+  http-cache:
+    ## Curently disabled, until we finish the implementation
+    scale: 0
+    image: "${HTTP_CACHE_DOCKER_IMAGE}"
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - maps-api
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
   accounts-www:
     image: "${ACCOUNTS_WWW_DOCKER_IMAGE}"
     env_file:
@@ -74,7 +89,7 @@ services:
 
   workspace-migrations:
     image: "${WORKSPACE_MIGRATIONS_DOCKER_IMAGE}"
-    entrypoint: [ "/usr/src/app/onprem-init-db.sh"]
+    entrypoint: ["/usr/src/app/onprem-init-db.sh"]
     env_file:
       - .env
     depends_on:
@@ -103,7 +118,22 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
-
+  cdn-invalidator-sub:
+    ## Curently disabled, until we finish the implementation
+    scale: 0
+    image: "${CDN_INVALIDATOR_SUB_DOCKER_IMAGE}"
+    command: npm run start:built
+    volumes: *override-sa
+    env_file:
+      - .env
+    depends_on:
+      - workspace-postgres
+    restart: unless-stopped
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
   import-api:
     image: "${IMPORT_API_DOCKER_IMAGE}"
     env_file:
