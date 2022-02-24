@@ -72,3 +72,4 @@ To update you CARTO Self Hosted to the newest version you will need to:
 2. Update to the latest version `git pull`
 3. Run `./install.sh`. If some new configuration is needed the script will inform you
 4. Run `docker-compose up -d`
+5. If there are open sesions in web browsers they should refresh the page. Otherwise they might get errors
