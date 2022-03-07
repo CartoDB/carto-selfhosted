@@ -61,7 +61,11 @@ Deploy CARTO in a self hosted environment.
     - If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_API_KEY` (OPTIONAL step)
 
 6. Run the installation script `./install.sh`
-7. Bring up the environment `docker-compose up -d`
+7. Bring up the environment
+    - If you are running with external databases. Run `docker-compose up -d`
+    - If you are using local databases:
+        - Run first `docker-compose up -d workspace-postgres redis` to start the databases
+        - And then `docker-compose up -d`
 8. Use your browser and go to the domain you configured. Follow the registration process
 
 ### Update
