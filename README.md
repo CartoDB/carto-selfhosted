@@ -1,20 +1,37 @@
 # CARTO Self Hosted
 
-Deploy CARTO in a self hosted environment.
+Deploy CARTO in a self hosted environment. It is provided in two flavours:
+
+- [Kubernetes with helm charts](https://github.com/CartoDB/carto-selfhosted-helm)
+- Docker compose for single manchine instalations
+
+## Databases
+
+Both flavours are recomended to be installed using external and managed databases (Postgres and Redis). The versions recommended are:
+
+- Redis 5.x
+- Postgres 13
+
+For development and testing purposues there is an option to use databases inside the deployment. But be aware that no backup, recovery, encryption… is provided.
+
+## Kubernetes
+
+Follow the instrucions from the [helm chart](https://github.com/CartoDB/carto-selfhosted-helm) repository.
 
 ## Docker Installation
 
 ### Things you will need
 
 1. A Linux machine with internet access (firewall permits outgoing connections, and incoming to port 80 and 443)
-    - It should have at least 2 CPUs (not ARM) and 8 GB of memory (in AWS a `t3.large` or `e2-standard-2` in GCP)
-    - 50 GB disk or more
+    - It should have at least 2 CPUs (x86) and 8 GB of memory (in AWS a `t3.large` or `e2-standard-2` in GCP)
+    - 60 GB disk or more
     - Ubuntu 18.04 or above (other Linux versions might work also)
 2. A domain/subdomain that will be pointing to the machine
 3. A TLS certificate for the domain/subdomain (if not provided a self signed will be generated)
 4. Two files received from CARTO (License and configuration)
 5. Docker and docker-compose installed (there are two helper scripts in the `scripts` folder)
 6. OPTIONAL: Cloud Buckets. CARTO provides them in GCP, but if you want to use your own in your cloud provider check the [Bucket configuration](doc/buckets.md)
+7. OPTIONAL BUT RECOMMENDED: External managed Postgres 13 and Redis 5 (eg Memory store or CloudSQL in GCP)
 
 ### Steps
 
@@ -59,6 +76,7 @@ Deploy CARTO in a self hosted environment.
     ```
 
     - If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_API_KEY` (OPTIONAL step)
+    - In case you want to use your own cloud buckets, read the information in `customer.env` and uncomment the supported provider (AWS S3, GCP Buckets or Azure Buckets). Fill in the [credentials](doc/buckets.md).
 
 6. Run the installation script `./install.sh`
 7. Bring up the environment
@@ -74,6 +92,7 @@ To update you CARTO Self Hosted to the newest version you will need to:
 
 1. Change to the directory where you cloned the repository `cd carto-selfhosted`
 2. Update to the latest version `git pull`
-3. Run `./install.sh`. If some new configuration is needed the script will inform you
-4. Run `docker-compose up -d`
-5. If there are open sesions in web browsers they should refresh the page. Otherwise they might get errors
+3. If you have received a new customer package from CARTO, apply the changes from your `customer.env` to the new `customer.env` (make a backup of your old and working `customer.env`)
+4. Run `./install.sh`. If some new configuration is needed the script will inform you
+5. Run `docker-compose up -d`
+6. If there are open sesions in web browsers they should refresh the page. Otherwise they might get errors
