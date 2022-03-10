@@ -17,6 +17,19 @@ services:
         max-size: "5M"
         max-file: "20"
 
+  http-cache:
+    image: "${HTTP_CACHE_DOCKER_IMAGE}"
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - maps-api
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
   accounts-www:
     image: "${ACCOUNTS_WWW_DOCKER_IMAGE}"
     env_file:
@@ -44,9 +57,7 @@ services:
     env_file:
       - .env
     depends_on:
-      - workspace-postgres
       - workspace-migrations
-      - redis
     command: npm run start:built
     volumes: &override-sa
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
@@ -63,8 +74,6 @@ services:
     volumes: *override-sa
     env_file:
       - .env
-    depends_on:
-      - workspace-postgres
     restart: unless-stopped
     logging:
       driver: "local"
@@ -74,11 +83,9 @@ services:
 
   workspace-migrations:
     image: "${WORKSPACE_MIGRATIONS_DOCKER_IMAGE}"
-    entrypoint: [ "/usr/src/app/onprem-init-db.sh"]
+    entrypoint: ["/usr/src/app/onprem-init-db.sh"]
     env_file:
       - .env
-    depends_on:
-      - workspace-postgres
     restart: on-failure
     logging:
       driver: "local"
@@ -90,9 +97,6 @@ services:
     image: "${MAPS_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    depends_on:
-      - workspace-postgres
-      - redis
     command: npm run start:built
     volumes: *override-sa
     environment:
@@ -103,13 +107,23 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
-
+  cdn-invalidator-sub:
+    image: "${CDN_INVALIDATOR_SUB_DOCKER_IMAGE}"
+    command: npm run start:built
+    volumes: &override-sa-double-level
+      - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/app/certs/:ro"
+    env_file:
+      - .env
+    restart: unless-stopped
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
   import-api:
     image: "${IMPORT_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    depends_on:
-      - workspace-postgres
     command: npm run start:built
     volumes: *override-sa
     restart: unless-stopped
@@ -124,8 +138,6 @@ services:
     volumes: *override-sa
     env_file:
       - .env
-    depends_on:
-      - workspace-postgres
     command: npm run start:built:subscriber
     restart: unless-stopped
     logging:
@@ -138,8 +150,6 @@ services:
     image: "${LDS_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    depends_on:
-      - workspace-postgres
     command: npm run start:built
     volumes: *override-sa
     restart: unless-stopped
@@ -164,6 +174,7 @@ services:
         max-file: "20"
 
   redis:
+    scale: "${LOCAL_POSTGRES_SCALE}"
     image: "redis:5.0-alpine"
     env_file:
       - .env
