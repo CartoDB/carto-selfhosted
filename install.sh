@@ -135,3 +135,13 @@ if [ ! -f key.json ]; then
 fi
 
 create_env_file
+
+if [ -f .env ]; then
+  (
+    # needed to remove the comments inside the .env
+    export $(cat .env | sed 's/#.*//g' | xargs)
+    if [ "$LOCAL_POSTGRES_SCALE" = "1" ]; then
+      echo "[warn]  Using embedded databases is not for PRODUCTION use"
+    fi
+  )
+fi
