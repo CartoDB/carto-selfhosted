@@ -47,7 +47,7 @@ Follow the instrucions from the [helm chart](https://github.com/CartoDB/carto-se
       LOCAL_POSTGRES_SCALE=0
       WORKSPACE_POSTGRES_HOST=<FILL_ME>
       WORKSPACE_POSTGRES_PORT=<FILL_ME>
-      POSTGRES_PASSWORD=<FILL_ME>
+      POSTGRES_ADMIN_PASSWORD=<FILL_ME>
     ```
 
     - Only for local database (this should be used only in development/testing environments) container: Follow the instructions in the .env file (comment and uncomment the vars as in the example below):
@@ -57,13 +57,13 @@ Follow the instrucions from the [helm chart](https://github.com/CartoDB/carto-se
       # LOCAL_POSTGRES_SCALE=0
       # WORKSPACE_POSTGRES_HOST=<FILL_ME>
       # WORKSPACE_POSTGRES_PORT=<FILL_ME>
-      # POSTGRES_PASSWORD=<FILL_ME>
+      # POSTGRES_ADMIN_PASSWORD=<FILL_ME>
 
       # Configuration for using a local postgres, instead of a external one (comment when external db)
-      # You also have to uncomment the POSTGRES_PASSWORD variable generated in the customer package
       LOCAL_POSTGRES_SCALE=1
       WORKSPACE_POSTGRES_HOST=workspace-postgres
       WORKSPACE_POSTGRES_PORT=5432
+      POSTGRES_ADMIN_PASSWORD=someRandomPasswordPrefilled
     ```
 
     - Configure the domain used. The value `SELFHOSTED_DOMAIN` should be the domain that will point to this installation (by default the domain will be `carto3-onprem.lan` with a self signed certificate)
