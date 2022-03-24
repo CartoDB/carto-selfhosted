@@ -58,7 +58,12 @@ check_compose_version() {
     fi
 }
 
+migrate_postgres_version_var() {
+  sed -i 's/\bPOSTGRES_PASSWORD/POSTGRES_ADMIN_PASSWORD/' customer.env
+}
+
 create_env_file() {
+    migrate_postgres_version_var
     echo "[info] creating .env file..."
     version=$(cat VERSION)
     cat customer.env > .env
