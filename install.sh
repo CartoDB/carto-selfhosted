@@ -148,5 +148,8 @@ if [ -f .env ]; then
     if [ "$LOCAL_POSTGRES_SCALE" = "1" ]; then
       echo "[warn]  Using embedded databases is not for PRODUCTION use"
     fi
+    if [ -z "${POSTGRES_ADMIN_PASSWORD}" ]; then
+      echo "[error]  There is no Postgres Admin password defined"
+    fi
   )
 fi
