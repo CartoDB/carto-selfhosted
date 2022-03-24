@@ -58,7 +58,12 @@ check_compose_version() {
     fi
 }
 
+migrate_postgres_version_var() {
+  sed -i 's/\bPOSTGRES_PASSWORD/POSTGRES_ADMIN_PASSWORD/' customer.env
+}
+
 create_env_file() {
+    migrate_postgres_version_var
     echo "[info] creating .env file..."
     version=$(cat VERSION)
     cat customer.env > .env
@@ -142,6 +147,9 @@ if [ -f .env ]; then
     export $(cat .env | sed 's/#.*//g' | xargs)
     if [ "$LOCAL_POSTGRES_SCALE" = "1" ]; then
       echo "[warn]  Using embedded databases is not for PRODUCTION use"
+    fi
+    if [ -z "${POSTGRES_ADMIN_PASSWORD}" ]; then
+      echo "[error]  There is no Postgres Admin password defined"
     fi
   )
 fi

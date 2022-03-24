@@ -58,7 +58,7 @@ services:
       - .env
     depends_on:
       - workspace-migrations
-    command: npm run start:built
+    command: bash -c "npm run ready-to-run:built && npm run start:built"
     volumes: &override-sa
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
     restart: unless-stopped
@@ -70,7 +70,7 @@ services:
 
   workspace-subscriber:
     image: "${WORKSPACE_API_DOCKER_IMAGE}"
-    command: npm run start:built:subscriber
+    command: bash -c "npm run ready-to-run:built && npm run start:built:subscriber"
     volumes: *override-sa
     env_file:
       - .env
@@ -97,7 +97,7 @@ services:
     image: "${MAPS_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    command: npm run start:built
+    command: bash -c "npm run ready-to-run:built && npm run start:built"
     volumes: *override-sa
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
@@ -124,7 +124,7 @@ services:
     image: "${IMPORT_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    command: npm run start:built
+    command: bash -c "npm run ready-to-run:built && npm run start:built"
     volumes: *override-sa
     restart: unless-stopped
     logging:
@@ -150,7 +150,7 @@ services:
     image: "${LDS_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    command: npm run start:built
+    command: bash -c "npm run ready-to-run:built && npm run start:built"
     volumes: *override-sa
     restart: unless-stopped
     logging:
