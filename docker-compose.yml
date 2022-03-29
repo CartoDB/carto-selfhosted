@@ -174,7 +174,7 @@ services:
         max-file: "20"
 
   redis:
-    scale: "${LOCAL_POSTGRES_SCALE}"
+    scale: "${LOCAL_REDIS_SCALE}"
     image: "redis:5.0-alpine"
     env_file:
       - .env
