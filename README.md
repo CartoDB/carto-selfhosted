@@ -9,7 +9,7 @@ Deploy CARTO in a self hosted environment. It is provided in two flavours:
 
 Both flavours are recomended to be installed using external and managed databases (Postgres and Redis). The versions recommended are:
 
-- Redis +5
+- Redis +6
 - Postgres +11
 
 For development and testing purposues there is an option to use databases inside the deployment. But be aware that no backup, recovery, encryption… is provided.
@@ -82,6 +82,31 @@ Follow the instrucions from the [helm chart](https://github.com/CartoDB/carto-se
       WORKSPACE_POSTGRES_HOST=workspace-postgres
       WORKSPACE_POSTGRES_PORT=5432
       POSTGRES_ADMIN_PASSWORD=someRandomPasswordPrefilled
+    ```
+
+    - For managed/external redis: Configure the managed redis to use for workspace by filling these variables:
+
+    ```bash
+      # Your custom configuration for a external redis (comment when local redis)
+      LOCAL_REDIS_SCALE=0
+      REDIS_HOST=<FILL_ME>
+      REDIS_PORT=<FILL_ME>
+      REDIS_PASSWORD=<FILL_ME>
+    ```
+
+    - Only for local redis (this should be used only in development/testing environments) container: Follow the instructions in the .env file (comment and uncomment the vars as in the example below):
+
+    ```bash
+    # Your custom configuration for a external redis (comment when local redis)
+    # LOCAL_REDIS_SCALE=0
+    # REDIS_HOST=<FILL_ME>
+    # REDIS_PORT=<FILL_ME>
+    # REDIS_PASSWORD=<FILL_ME>
+
+    # Configuration for using a local redis, instead of a external one (comment when external redis)
+    LOCAL_REDIS_SCALE=1
+    REDIS_HOST=redis
+    REDIS_PORT=6379
     ```
 
     - Configure the domain used. The value `SELFHOSTED_DOMAIN` should be the domain that will point to this installation (by default the domain will be `carto3-onprem.lan` with a self signed certificate)
