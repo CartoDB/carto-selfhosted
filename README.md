@@ -9,8 +9,8 @@ Deploy CARTO in a self hosted environment. It is provided in two flavours:
 
 Both flavours are recomended to be installed using external and managed databases (Postgres and Redis). The versions recommended are:
 
-- Redis 5.x
-- Postgres 13
+- Redis +5
+- Postgres +11
 
 For development and testing purposues there is an option to use databases inside the deployment. But be aware that no backup, recovery, encryption… is provided.
 
@@ -47,7 +47,22 @@ Follow the instrucions from the [helm chart](https://github.com/CartoDB/carto-se
       LOCAL_POSTGRES_SCALE=0
       WORKSPACE_POSTGRES_HOST=<FILL_ME>
       WORKSPACE_POSTGRES_PORT=<FILL_ME>
+      WORKSPACE_POSTGRES_USER=<FILL_ME>
+      WORKSPACE_POSTGRES_PASSWORD=<FILL_ME>
+      POSTGRES_ADMIN_USER=<FILL_ME>
       POSTGRES_ADMIN_PASSWORD=<FILL_ME>
+    ```
+
+    > Note: In case you are using a Postgres hosted on Azure, you should add two additional env vars. When connecting to Azure Postgres the connection user name it's different that the iternal user name, so we need to differentiate between those users, where
+
+    > `WORKSPACE_POSTGRES_INTERNAL_USER` - same value as `WORKSPACE_POSTGRES_USER` but without the `@db-name` prefix
+
+    > `POSTGRES_LOGIN_USER` - same value as `POSTGRES_ADMIN_USER` but without the `@db-name` prefix
+
+    ```bash
+      # In case your Postgres it's hosted on Azure you should add 2 additional env vars
+      WORKSPACE_POSTGRES_INTERNAL_USER=<FILL_ME>
+      POSTGRES_LOGIN_USER=<FILL_ME>
     ```
 
     - Only for local database (this should be used only in development/testing environments) container: Follow the instructions in the .env file (comment and uncomment the vars as in the example below):
@@ -57,6 +72,9 @@ Follow the instrucions from the [helm chart](https://github.com/CartoDB/carto-se
       # LOCAL_POSTGRES_SCALE=0
       # WORKSPACE_POSTGRES_HOST=<FILL_ME>
       # WORKSPACE_POSTGRES_PORT=<FILL_ME>
+      # WORKSPACE_POSTGRES_USER=<FILL_ME>
+      # WORKSPACE_POSTGRES_PASSWORD=<FILL_ME>
+      # POSTGRES_ADMIN_USER=<FILL_ME>
       # POSTGRES_ADMIN_PASSWORD=<FILL_ME>
 
       # Configuration for using a local postgres, instead of a external one (comment when external db)
