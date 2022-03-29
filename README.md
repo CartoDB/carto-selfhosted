@@ -47,8 +47,9 @@ Follow the instrucions from the [helm chart](https://github.com/CartoDB/carto-se
       LOCAL_POSTGRES_SCALE=0
       WORKSPACE_POSTGRES_HOST=<FILL_ME>
       WORKSPACE_POSTGRES_PORT=<FILL_ME>
-      WORKSPACE_POSTGRES_USER=<FILL_ME>
+      WORKSPACE_POSTGRES_USER=workspace_admin
       WORKSPACE_POSTGRES_PASSWORD=<FILL_ME>
+      WORKSPACE_POSTGRES_DB=workspace
       POSTGRES_ADMIN_USER=<FILL_ME>
       POSTGRES_ADMIN_PASSWORD=<FILL_ME>
     ```
@@ -72,8 +73,9 @@ Follow the instrucions from the [helm chart](https://github.com/CartoDB/carto-se
       # LOCAL_POSTGRES_SCALE=0
       # WORKSPACE_POSTGRES_HOST=<FILL_ME>
       # WORKSPACE_POSTGRES_PORT=<FILL_ME>
-      # WORKSPACE_POSTGRES_USER=<FILL_ME>
+      # WORKSPACE_POSTGRES_USER=workspace_admin
       # WORKSPACE_POSTGRES_PASSWORD=<FILL_ME>
+      # WORKSPACE_POSTGRES_DB=workspace
       # POSTGRES_ADMIN_USER=<FILL_ME>
       # POSTGRES_ADMIN_PASSWORD=<FILL_ME>
 
@@ -81,6 +83,10 @@ Follow the instrucions from the [helm chart](https://github.com/CartoDB/carto-se
       LOCAL_POSTGRES_SCALE=1
       WORKSPACE_POSTGRES_HOST=workspace-postgres
       WORKSPACE_POSTGRES_PORT=5432
+      WORKSPACE_POSTGRES_USER=workspace_admin
+      WORKSPACE_POSTGRES_PASSWORD=someRandomPasswordPrefilled
+      WORKSPACE_POSTGRES_DB=workspace
+      POSTGRES_ADMIN_USER=postgres
       POSTGRES_ADMIN_PASSWORD=someRandomPasswordPrefilled
     ```
 
