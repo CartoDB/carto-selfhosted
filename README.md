@@ -92,12 +92,17 @@ Follow the instrucions from the [helm chart](https://github.com/CartoDB/carto-se
 
     - For managed/external redis: Configure the managed redis to use for workspace by filling these variables:
 
+    > :warning: In case you are using a Redis TLS with a self-signed certificate you should add an extra env var named `REDIS_TLS_CA` which value it's the CA cert of the self-signed certificate in plain text
+
     ```bash
       # Your custom configuration for a external redis (comment when local redis)
       LOCAL_REDIS_SCALE=0
       REDIS_HOST=<FILL_ME>
       REDIS_PORT=<FILL_ME>
       REDIS_PASSWORD=<FILL_ME>
+      REDIS_TLS_ENABLED=true
+      # Only applies if Redis TLS certificate it's selfsniged
+      # REDIS_TLS_CA=<FILL_ME>
     ```
 
     - Only for local redis (this should be used only in development/testing environments) container: Follow the instructions in the .env file (comment and uncomment the vars as in the example below):
@@ -108,11 +113,13 @@ Follow the instrucions from the [helm chart](https://github.com/CartoDB/carto-se
     # REDIS_HOST=<FILL_ME>
     # REDIS_PORT=<FILL_ME>
     # REDIS_PASSWORD=<FILL_ME>
+    # REDIS_TLS_ENABLED=true
 
     # Configuration for using a local redis, instead of a external one (comment when external redis)
     LOCAL_REDIS_SCALE=1
     REDIS_HOST=redis
     REDIS_PORT=6379
+    REDIS_TLS_ENABLED=false
     ```
 
     - Configure the domain used. The value `SELFHOSTED_DOMAIN` should be the domain that will point to this installation (by default the domain will be `carto3-onprem.lan` with a self signed certificate)
