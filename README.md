@@ -163,13 +163,55 @@ To migrate your CARTO self Hosted from Docker Compose deployment to K8s / Helm y
 
 
  - Steps to migrate
-   - Generate helm customer package values for your onprem
-   - Check network conectivity from k8s nodes to  your databases.
+   - Clone https://github.com/CartoDB/carto3-onprem-customers if you don't have done it yet and generate helm customer package values for your onprem following running ``./tools/download_k8s_secrets.sh customers/YOUR-CUSTOMER-ID`` 
+   - Allow network conectivity from k8s nodes to  your databases. (i.e (Cloud SQL connection notes)[##Notes])
    - Create a customizations.yaml with client customizations environment variables following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations), keeping the same external database connection settings, [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis). 
    - Deploy self hosted with helm following [this steps](https://github.com/CartoDB/carto-selfhosted-helm#installation)
    - Check pods are running and stable with ``kubectl get pods <-n your_namespace>``
    - Check web access (and everything is working with an existing user)
    - Change DNS records to point to the new service
+
+#### Cloud SQL Connection configuration
+
+If you are connecting with public or private ip to a Google Cloud SQL in your self hosted, you need to add to the instance configuration external static (for public) or internal static IPs ranges as Authorized networks. If you have the resource terraformed you can add the networks with this way (take as a guide)):
+
+```hcl
+resource "random_id" "db_name_suffix" {
+  byte_length = 4
+}
+
+locals {
+  onprem = ["192.168.1.2", "192.168.2.3"]
+}
+
+resource "google_sql_database_instance" "postgres" {
+  name             = "postgres-instance-${random_id.db_name_suffix.hex}"
+  database_version = "POSTGRES_11"
+
+  settings {
+    tier = "db-f1-micro"
+
+    ip_configuration {
+
+      dynamic "authorized_networks" {
+        for_each = local.onprem
+        iterator = onprem
+
+        content {
+          name  = "onprem-${onprem.key}"
+          value = onprem.value
+        }
+      }
+    }
+  }
+}
+``
+
+Or in the web console:
+
+
+
+#### Troubleshooting
 
 
 
