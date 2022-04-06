@@ -160,14 +160,14 @@ To migrate your CARTO self Hosted from Docker Compose deployment to K8s / Helm y
   * You have a running self hosted deployed with docker compose i.e using a Google Compute engine instance.
   * You have configured external databases (Redis and postgresql) 
   * You have a K8s cluster to deploy the new self hosted and credentials to deploy
+  * You have received a new customer package from CARTO with  carto-values.yaml and carto-secrets.yaml files
 
 
  - Steps to migrate
-   - Clone https://github.com/CartoDB/carto3-onprem-customers if you don't have done it yet and generate helm customer package values for your onprem following running ``./tools/download_k8s_secrets.sh customers/YOUR-CUSTOMER-ID`` 
-   - Allow network conectivity from k8s nodes to  your databases. (i.e (Cloud SQL connection notes)[https://github.com/CartoDB/carto-selfhosted/README.md#cloud-sql-connection-configuration])
-   - Create a customizations.yaml with client customizations environment variables following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations), keeping the same external database connection settings, [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
+   1. Allow network conectivity from k8s nodes to  your pre-existing databases. (i.e (Cloud SQL connection notes)[https://github.com/CartoDB/carto-selfhosted/README.md#cloud-sql-connection-configuration])
+   2. Create a customizations.yaml with client customizations environment variables following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations), keeping the same external database connection settings, [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
 
-> NOTE: Do not trust in the defalt values and fill allvariables relatred to database conections, example below
+> ⚠️ NOTE: Do not trust in the defalt values and fill allvariables relatred to database conections, example below
 ```yaml
 externalPostgresql:
   host: "34.77.79.129"
@@ -188,10 +188,16 @@ externalRedis:
   password: <AUTH string>"
   tlsEnabled: false
 ```
-   - Deploy self hosted with helm following [this steps](https://github.com/CartoDB/carto-selfhosted-helm#installation)
-   - Check pods are running and stable with ``kubectl get pods <-n your_namespace>``
-   - Check web access (and everything is working with an existing user)
-   - Change DNS records to point to the new service
+   3. Deploy self hosted with helm following [this steps](https://github.com/CartoDB/carto-selfhosted-helm#installation)
+   4. Check pods are running and stable with ``kubectl get pods <-n your_namespace>``
+   5. Update yout /etc/host file and check web access (and everything is working with an existing user)
+   ```
+   #Update /etc/host in linux and Macos, as root
+   echo "<new_external_ip>  <current self hosted domain" >> /etc/hosts
+   ```
+   7. Stop your previous (docker) deployment with ``docker-compose down`` :warning: it involves downtime!
+   8. Change DNS records to point to the new service, it will take some time to propagate.
+   9. Test your new selfhosted.
 
 #### Cloud SQL Connection configuration
 
