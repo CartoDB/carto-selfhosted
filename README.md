@@ -164,8 +164,30 @@ To migrate your CARTO self Hosted from Docker Compose deployment to K8s / Helm y
 
  - Steps to migrate
    - Clone https://github.com/CartoDB/carto3-onprem-customers if you don't have done it yet and generate helm customer package values for your onprem following running ``./tools/download_k8s_secrets.sh customers/YOUR-CUSTOMER-ID`` 
-   - Allow network conectivity from k8s nodes to  your databases. (i.e (Cloud SQL connection notes)[##Notes])
-   - Create a customizations.yaml with client customizations environment variables following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations), keeping the same external database connection settings, [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis). 
+   - Allow network conectivity from k8s nodes to  your databases. (i.e (Cloud SQL connection notes)[https://github.com/CartoDB/carto-selfhosted/README.md#cloud-sql-connection-configuration])
+   - Create a customizations.yaml with client customizations environment variables following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations), keeping the same external database connection settings, [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
+
+> NOTE: Do not trust in the defalt values and fill allvariables relatred to database conections, example below
+```yaml
+externalPostgresql:
+  host: "34.77.79.129"
+  adminUser: postgres
+  adminPassword: <adminPassword>
+  password: <userPassword>
+  database: workspace
+  user: workspace_admin 
+internalPostgresql:
+  enabled: false
+
+internalRedis:
+  # Disable the internal Redis
+  enabled: false
+externalRedis:
+  host: "10.61.120.211"
+  port: "6379"
+  password: <AUTH string>"
+  tlsEnabled: false
+```
    - Deploy self hosted with helm following [this steps](https://github.com/CartoDB/carto-selfhosted-helm#installation)
    - Check pods are running and stable with ``kubectl get pods <-n your_namespace>``
    - Check web access (and everything is working with an existing user)
@@ -173,7 +195,7 @@ To migrate your CARTO self Hosted from Docker Compose deployment to K8s / Helm y
 
 #### Cloud SQL Connection configuration
 
-If you are connecting with public or private ip to a Google Cloud SQL in your self hosted, you need to add to the instance configuration external static (for public) or internal static IPs ranges as Authorized networks. If you have the resource terraformed you can add the networks with this way (take as a guide)):
+If you are connecting with public or private ip to a Google Cloud SQL in your self hosted, you need to add to the instance configuration external static (for public) or internal static IPs ranges as Authorized networks. If you have the resource terraformed you can add the networks with this way (take as a guide):
 
 ```hcl
 resource "random_id" "db_name_suffix" {
@@ -205,13 +227,17 @@ resource "google_sql_database_instance" "postgres" {
     }
   }
 }
-``
+```
 
 Or in the web console:
 
+<img width="605" alt="Captura de pantalla 2022-04-05 a las 11 11 11" src="https://user-images.githubusercontent.com/3384495/161965936-118dceab-75ba-4c5d-87de-8c433c046371.png">
 
 
 #### Troubleshooting
 
+If any of your pods is stuck in the init phase, you can get the init containers logs with
 
-
+```bash
+kubectl logs <pod_name> -n <your_namespace> --all-containers
+```
