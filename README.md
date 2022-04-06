@@ -165,7 +165,7 @@ To migrate your CARTO self Hosted from Docker Compose deployment to K8s / Helm y
  - Steps to migrate
    - Generate helm customer package values for your onprem
    - Check network conectivity from k8s nodes to  your databases.
-   - Create a customizations.yaml with client customizations environment variables following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations), keeping the same external database connection settings, [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis] (https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis). 
+   - Create a customizations.yaml with client customizations environment variables following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations), keeping the same external database connection settings, [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis). 
    - Deploy self hosted with helm following [this steps](https://github.com/CartoDB/carto-selfhosted-helm#installation)
    - Check pods are running and stable with ``kubectl get pods <-n your_namespace>``
    - Check web access (and everything is working with an existing user)
