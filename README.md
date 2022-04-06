@@ -152,3 +152,24 @@ To update you CARTO Self Hosted to the newest version you will need to:
 4. Run `./install.sh`. If some new configuration is needed the script will inform you
 5. Run `docker-compose up -d`
 6. If there are open sesions in web browsers they should refresh the page. Otherwise they might get errors
+
+### Migrate from Docker Compose deployment to K8s / Helm
+To migrate your CARTO self Hosted from Docker Compose deployment to K8s / Helm you need to follow this generic steps:
+
+* Preconditions:
+  * You have a running self hosted deployed with docker compose i.e using a Google Compute engine instance.
+  * You have configured external databases (Redis and postgresql) 
+  * You have a K8s cluster to deploy the new self hosted and credentials to deploy
+
+
+ - Steps to migrate
+   - Generate helm customer package values for your onprem
+   - Check network conectivity from k8s nodes to  your databases.
+   - Create a customizations.yaml with client customizations environment variables following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations), keeping the same external database connection settings, [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis] (https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis). 
+   - Deploy self hosted with helm following [this steps](https://github.com/CartoDB/carto-selfhosted-helm#installation)
+   - Check pods are running and stable with ``kubectl get pods <-n your_namespace>``
+   - Check web access (and everything is working with an existing user)
+   - Change DNS records to point to the new service
+
+
+
