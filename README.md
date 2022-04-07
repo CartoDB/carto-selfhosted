@@ -9,7 +9,7 @@ Deploy CARTO in a self hosted environment. It is provided in two flavours:
 
 Both flavours will need two databases in order to store the metadata of the users.
 
-It is recomended us external and managed databases (Postgres and Redis). The versions recommended are, at least:
+It is recomended to use external and managed databases (Postgres and Redis). The versions recommended are, at least:
 
 - Redis 6
 - Postgres 11
