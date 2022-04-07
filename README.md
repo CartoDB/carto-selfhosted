@@ -7,10 +7,12 @@ Deploy CARTO in a self hosted environment. It is provided in two flavours:
 
 ## Databases
 
-Both flavours are recomended to be installed using external and managed databases (Postgres and Redis). The versions recommended are:
+Both flavours will need two databases in order to store the metadata of the users.
 
-- Redis +6
-- Postgres +11
+It is recomended us external and managed databases (Postgres and Redis). The versions recommended are, at least:
+
+- Redis 6
+- Postgres 11
 
 For development and testing purposues there is an option to use databases inside the deployment. But be aware that no backup, recovery, encryption… is provided.
 
@@ -31,7 +33,7 @@ Follow the instrucions from the [helm chart](https://github.com/CartoDB/carto-se
 4. Two files received from CARTO (License and configuration)
 5. Docker and docker-compose installed (there are two helper scripts in the `scripts` folder)
 6. OPTIONAL: Cloud Buckets. CARTO provides them in GCP, but if you want to use your own in your cloud provider check the [Bucket configuration](doc/buckets.md)
-7. OPTIONAL BUT RECOMMENDED: External managed Postgres 13 and Redis 5 (eg Memory store or CloudSQL in GCP)
+7. OPTIONAL BUT RECOMMENDED: External managed Postgres 11 (or higher) and Redis 6 (or higher)(eg Memory store or CloudSQL in GCP)
 
 ### Steps
 
