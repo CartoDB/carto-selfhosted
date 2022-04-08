@@ -1,9 +1,11 @@
 # CARTO Self Hosted
 
-Deploy CARTO in a self hosted environment. It is provided in two flavours:
+Deploy CARTO in a Self Hosted environment. It is provided in two flavours:
 
 - [Kubernetes with helm charts](https://github.com/CartoDB/carto-selfhosted-helm)
 - Docker compose for single machine installations
+
+To be able to use CARTO Self Hosted you need to [contact CARTO](https://carto.com/request-live-demo/) and sign up for a CARTO License.
 
 ## Databases
 
@@ -28,7 +30,7 @@ Follow the instructions from the [helm chart](https://github.com/CartoDB/carto-s
     - Ubuntu 18.04 or above (other Linux versions might work also)
 2. A domain/subdomain that will be pointing to the machine
 3. A TLS certificate for the domain/subdomain (if not provided a self signed will be generated)
-4. Two files received from CARTO (License and configuration)
+4. *Two files received from CARTO* (License and configuration)
 5. Docker and docker-compose installed (there are two helper scripts in the `scripts` folder)
 6. OPTIONAL: Cloud Buckets. CARTO provides them in GCP, but if you want to use your own in your cloud provider check the [Bucket configuration](doc/buckets.md)
 7. OPTIONAL BUT RECOMMENDED: External managed Postgres 13 and Redis 5 (eg Memory store or CloudSQL in GCP)
@@ -195,8 +197,7 @@ externalRedis:
 
 > Read also the instructions on how to [expose the Kubernetes](https://github.com/CartoDB/carto-selfhosted-helm/blob/main/customizations/README.md#access-to-carto-from-outside-the-cluster) installation to outside the cluster.
 
-   2. Create a `customizations.yaml` following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
-
+   2. Create a `customizations.yaml` following [these instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
 
    3. Shut down you CARTO for Docker deployment: `docker-compose down` ⚠️ From this point, the service is down.
    4. Deploy to your cluster. Follow the [installation steps](https://github.com/CartoDB/carto-selfhosted-helm#installation)
