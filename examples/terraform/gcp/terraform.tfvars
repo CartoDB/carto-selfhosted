@@ -3,7 +3,7 @@
 gke_cluster_name        = "gke-default"
 region                  = "europe-west1"
 zones                   = ["europe-west1-b", "europe-west1-c", "europe-west1-d"]
-node_pool_instance_type = "n1-standard-16"
+node_pool_instance_type = "e2-standard-8"
 ip_range_pods_name      = "pod-ranges"
 ip_range_services_name  = "services-range"
 
