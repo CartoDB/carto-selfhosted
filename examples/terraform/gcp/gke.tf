@@ -31,6 +31,7 @@ module "gke" {
   create_service_account            = true
   remove_default_node_pool          = true
   disable_legacy_metadata_endpoints = false
+  default_max_pods_per_node         = 16
   node_pools = [
     {
       name           = "pool-01"
@@ -38,9 +39,10 @@ module "gke" {
       node_locations = "${var.region}-b"
       autoscaling    = true
       min_count      = 1
-      max_count      = 3
+      max_count      = 5
       disk_size_gb   = 30
       disk_type      = "pd-standard"
+      auto_upgrade   = false
     },
     {
       name           = "pool-02"
@@ -48,9 +50,10 @@ module "gke" {
       node_locations = "${var.region}-d"
       autoscaling    = true
       min_count      = 1
-      max_count      = 3
+      max_count      = 5
       disk_size_gb   = 30
       disk_type      = "pd-standard"
+      auto_upgrade   = false
     },
   ]
 
