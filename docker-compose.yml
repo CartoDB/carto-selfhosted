@@ -167,6 +167,9 @@ services:
     volumes:
       - workspace-pgdata:/var/lib/postgresql/data
     restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=$POSTGRES_ADMIN_PASSWORD
+      - POSTGRES_USER=$POSTGRES_ADMIN_USER
     logging:
       driver: "local"
       options:
