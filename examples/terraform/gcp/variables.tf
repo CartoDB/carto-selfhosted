@@ -64,7 +64,7 @@ variable "redis_tier" {
 variable "redis_version" {
   type        = string
   description = "Redis version to use.\nhttps://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/redis_instance#redis_version"
-  default     = "REDIS_5_0"
+  default     = "REDIS_6_X"
 }
 
 # Postgres
