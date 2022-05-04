@@ -1,3 +1,5 @@
 key.json
 .env
-customer.env
+customer.env*
+docker-compose.yml
+certs/
