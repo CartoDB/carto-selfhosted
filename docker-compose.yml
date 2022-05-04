@@ -1,6 +1,5 @@
-version: '2.4'
+version: "2.4"
 services:
-
   router:
     image: "${ROUTER_DOCKER_IMAGE}"
     ports:
@@ -59,7 +58,7 @@ services:
     depends_on:
       - workspace-migrations
     command: bash -c "npm run ready-to-run:built && npm run start:built"
-    volumes: &override-sa
+    volumes: &default-volumes
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
     restart: unless-stopped
     logging:
@@ -71,7 +70,7 @@ services:
   workspace-subscriber:
     image: "${WORKSPACE_API_DOCKER_IMAGE}"
     command: bash -c "npm run ready-to-run:built && npm run start:built:subscriber"
-    volumes: *override-sa
+    volumes: *default-volumes
     env_file:
       - .env
     restart: unless-stopped
@@ -86,6 +85,7 @@ services:
     entrypoint: ["/usr/src/app/onprem-init-db.sh"]
     env_file:
       - .env
+    volumes: *default-volumes
     restart: on-failure
     logging:
       driver: "local"
@@ -98,7 +98,7 @@ services:
     env_file:
       - .env
     command: bash -c "npm run ready-to-run:built && npm run start:built"
-    volumes: *override-sa
+    volumes: *default-volumes
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
     restart: unless-stopped
@@ -110,7 +110,7 @@ services:
   cdn-invalidator-sub:
     image: "${CDN_INVALIDATOR_SUB_DOCKER_IMAGE}"
     command: npm run start:built
-    volumes: &override-sa-double-level
+    volumes: &default-volumes-double-level
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/app/certs/:ro"
     env_file:
       - .env
@@ -125,7 +125,7 @@ services:
     env_file:
       - .env
     command: bash -c "npm run ready-to-run:built && npm run start:built"
-    volumes: *override-sa
+    volumes: *default-volumes
     restart: unless-stopped
     logging:
       driver: "local"
@@ -135,7 +135,7 @@ services:
 
   import-worker:
     image: "${IMPORT_API_DOCKER_IMAGE}"
-    volumes: *override-sa
+    volumes: *default-volumes
     env_file:
       - .env
     command: npm run start:built:subscriber
@@ -151,7 +151,7 @@ services:
     env_file:
       - .env
     command: bash -c "npm run ready-to-run:built && npm run start:built"
-    volumes: *override-sa
+    volumes: *default-volumes
     restart: unless-stopped
     logging:
       driver: "local"
@@ -177,8 +177,8 @@ services:
         max-file: "20"
 
   redis:
-    scale: "${LOCAL_POSTGRES_SCALE}"
-    image: "redis:5.0-alpine"
+    scale: "${LOCAL_REDIS_SCALE}"
+    image: "redis:6.0-alpine"
     env_file:
       - .env
     restart: unless-stopped
