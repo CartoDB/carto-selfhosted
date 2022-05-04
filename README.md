@@ -1,192 +1,339 @@
-# CARTO Self Hosted
+# CARTO Self Hosted [Docker]
 
-Deploy CARTO in a Self Hosted environment. It is provided in two flavours:
+- [Carto Self Hosted](#carto-self-hosted-docker)
+  - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [Installation Steps](#installation-steps)
+    - [Production Ready](#production-ready)
+      - [External Database](#external-database)
+      - [External Redis](#external-redis)
+      - [External Domain](#external-domain)
+      - [Google Maps](#google-maps)
+      - [Custom buckets](#custom-buckets)
+  - [Update](#update)
+  - [Migrate to Kubernetes](#migrate-to-kubernetes)
+  - [Troubleshooting](#troubleshooting)
 
-- [Kubernetes with helm charts](https://github.com/CartoDB/carto-selfhosted-helm)
-- Docker compose for single machine installations
+Deploy CARTO in a Self Hosted environment. It's provided in two flavours
 
-To be able to use CARTO Self Hosted you need to [contact CARTO](https://carto.com/request-live-demo/) and sign up for a CARTO License.
+- [Kubernetes Helm](https://github.com/CartoDB/carto-selfhosted-helm)
+- [Docker compose](https://github.com/CartoDB/carto-selfhosted)
 
-## Databases
+> To be able to use CARTO Self Hosted you need to [contact CARTO](https://carto.com/request-live-demo/) and sign up for a CARTO License.
 
-Both self hosted flavours need two databases (Postgres and Redis) in order to work.
+## Installation
 
-It is recomended to use external and managed databases (Postgres and Redis). The versions recommended are, at least:
+### Prerequisites
 
-- Redis 6
-- Postgres 11
+You will need a Linux machine with
 
-For development and testing purposes there is an option to use databases inside the deployment. But be aware that no backup, recovery, encryption… is provided.
+- Ubuntu 18.04 or above
+- 60 GB disk
+- 2 CPUs (x86)
+- 8 GB memory
+- Docker
+- Docker compose
+- A TLS certificate for the domain/subdomain (if not provided a self-signed one will be generated)
+- Configuration and license files received from CARTO
 
-## Kubernetes
+> :warning: CARTO provides an out-of-the-box installation that is **not production ready**. In order to make your CARTO installation production ready take a look at [Production Ready](#production-ready) section
 
-Follow the instructions from the [helm chart](https://github.com/CartoDB/carto-selfhosted-helm) repository. There is also a way
-to [migrate from a Docker installation](#migrate-from-docker-compose-deployment-to-kubernetes)
+### Installation Steps
 
-## Docker Installation
+1. Login into the machine where you are going to deploy CARTO
 
-### Things you will need
+2. Clone this repository
 
-1. A Linux machine with internet access (firewall permits outgoing connections, and incoming to port 80 and 443)
-    - It should have at least 2 CPUs (x86) and 8 GB of memory (in AWS a `t3.large` or `e2-standard-2` in GCP)
-    - 60 GB disk or more
-    - Ubuntu 18.04 or above (other Linux versions might work also)
-2. A domain/subdomain that will be pointing to the machine
-3. A TLS certificate for the domain/subdomain (if not provided a self signed will be generated)
-4. *Two files received from CARTO* (License and configuration)
-5. Docker and docker-compose installed (there are two helper scripts in the `scripts` folder)
-6. OPTIONAL: Cloud Buckets. CARTO provides them in GCP, but if you want to use your own in your cloud provider check the [Bucket configuration](doc/buckets.md)
-7. OPTIONAL BUT RECOMMENDED: External managed Postgres 11 (or higher) and Redis 6 (or higher)(eg Memory store or CloudSQL in GCP)
+```bash
+git clone https://github.com/CartoDB/carto-selfhosted.git
+cd carto-selfhosted
+```
 
-### Steps
+3. You should have received two files from CARTO, copy them in the current directory (`carto-selfhosted`)
 
-1. Login in the machine where the deployment will happen
-2. Clone this git repository: `git clone https://github.com/CartoDB/carto-selfhosted.git`
-3. Change to the directory where you cloned the repository `cd carto-selfhosted`
-4. You should have received two files from CARTO (`customer.env`, `key.json`), please copy them inside this directory
-5. Open with an editor the `customer.env` file and:
-    - For managed/external database: Configure the managed postgres database to use for workspace by filling these variables:
+- `customer.env`
+- `key.json`
 
-    ```bash
-      # Your custom configuration for a external postgres database (comment when local db)
-      LOCAL_POSTGRES_SCALE=0
-      WORKSPACE_POSTGRES_HOST=<FILL_ME>
-      WORKSPACE_POSTGRES_PORT=<FILL_ME>
-      WORKSPACE_POSTGRES_USER=workspace_admin
-      WORKSPACE_POSTGRES_PASSWORD=<FILL_ME>
-      WORKSPACE_POSTGRES_DB=workspace
-      POSTGRES_ADMIN_USER=<FILL_ME>
-      POSTGRES_ADMIN_PASSWORD=<FILL_ME>
-    ```
+4. Configure the CARTO domain. The env var `SELFHOSTD_DOMAIN` defines the domain used by CARTO, by default this domain will point to `carto3-onprem.lan`. In order to access CARTO yo should modify your `/etc/hosts` to point `localhost` to this domain
 
-    > Note: In case you are using a Postgres hosted on Azure, you should add two additional env vars. When connecting to Azure Postgres the connection user name it's different that the internal user name, so we need to differentiate between those users, where
+```bash
+sudo vi /etc/hosts
+```
 
-    > `WORKSPACE_POSTGRES_INTERNAL_USER` - same value as `WORKSPACE_POSTGRES_USER` but without the `@db-name` prefix
+```
+# Carto selfhosted
+127.0.0.1 carto3-onprem.lan
+```
 
-    > `POSTGRES_LOGIN_USER` - same value as `POSTGRES_ADMIN_USER` but without the `@db-name` prefix
+5. Generate the `.env` file out of `customer.env` file.
 
-    ```bash
-      # In case your Postgres it's hosted on Azure you should add 2 additional env vars
-      WORKSPACE_POSTGRES_INTERNAL_USER=<FILL_ME>
-      POSTGRES_LOGIN_USER=<FILL_ME>
-    ```
+```bash
+bash install.sh
+```
 
-    - Only for local database (this should be used only in development/testing environments) container: Follow the instructions in the .env file (comment and uncomment the vars as in the example below):
+6. Bring up the environment
 
-    ```bash
-      # Your custom configuration for a external postgres database (comment when local db)
-      # LOCAL_POSTGRES_SCALE=0
-      # WORKSPACE_POSTGRES_HOST=<FILL_ME>
-      # WORKSPACE_POSTGRES_PORT=<FILL_ME>
-      # WORKSPACE_POSTGRES_USER=workspace_admin
-      # WORKSPACE_POSTGRES_PASSWORD=<FILL_ME>
-      # WORKSPACE_POSTGRES_DB=workspace
-      # POSTGRES_ADMIN_USER=<FILL_ME>
-      # POSTGRES_ADMIN_PASSWORD=<FILL_ME>
+```bash
+docker-compose up -d
+```
 
-      # Configuration for using a local postgres, instead of a external one (comment when external db)
-      LOCAL_POSTGRES_SCALE=1
-      WORKSPACE_POSTGRES_HOST=workspace-postgres
-      WORKSPACE_POSTGRES_PORT=5432
-      WORKSPACE_POSTGRES_USER=workspace_admin
-      WORKSPACE_POSTGRES_PASSWORD=someRandomPasswordPrefilled
-      WORKSPACE_POSTGRES_DB=workspace
-      POSTGRES_ADMIN_USER=postgres
-      POSTGRES_ADMIN_PASSWORD=someRandomPasswordPrefilled
-    ```
+7. Open a browser and go to http://carto3-onprem.lan
 
-    - For managed/external redis: Configure the managed redis to use for workspace by filling these variables:
+### Production Ready
 
-    > :warning: In case you are using a Redis TLS with a self-signed certificate you should add an extra env var named `REDIS_TLS_CA` which value it's the CA cert of the self-signed certificate in plain text
+The default Docker compose configuration provided by Carto works out-of-the-box, but it's **not production ready**.
+There are a few things to configure in order to make the Carto installation production ready.
 
-    ```bash
-      # Your custom configuration for a external redis (comment when local redis)
-      LOCAL_REDIS_SCALE=0
-      REDIS_HOST=<FILL_ME>
-      REDIS_PORT=<FILL_ME>
-      REDIS_PASSWORD=<FILL_ME>
-      REDIS_TLS_ENABLED=true
-      # Only applies if Redis TLS certificate it's self signed
-      # REDIS_TLS_CA=<FILL_ME>
-    ```
+Recommended
 
-    - Only for local redis (this should be used only in development/testing environments) container: Follow the instructions in the .env file (comment and uncomment the vars as in the example below):
+- [External Database](#external-database)
+- [External Domain](#external-domain)
 
-    ```bash
-    # Your custom configuration for a external redis (comment when local redis)
-    # LOCAL_REDIS_SCALE=0
-    # REDIS_HOST=<FILL_ME>
-    # REDIS_PORT=<FILL_ME>
-    # REDIS_PASSWORD=<FILL_ME>
-    # REDIS_TLS_ENABLED=true
+Optional
 
-    # Configuration for using a local redis, instead of a external one (comment when external redis)
-    LOCAL_REDIS_SCALE=1
-    REDIS_HOST=redis
-    REDIS_PORT=6379
-    REDIS_TLS_ENABLED=false
-    ```
+- [External Redis](#external-redis)
+- [Google Maps](#google-maps)
+- [Custom Buckets](#custom-buckets)
 
-    - Configure the domain used. The value `SELFHOSTED_DOMAIN` should be the domain that will point to this installation (by default the domain will be `carto3-onprem.lan` with a self signed certificate)
-    - Copy your `.crt` and `.key` files from the TLS certificate in the `certs` folder. In the `customer.env` you should add three new values (changing `<cert>` for the file names you just copied):
+> :warning: Anytime you edit the `customer.env` file to change the CARTO configuration you will need to run the `install.sh` script to updathe the `.env` file used by Docker compose
 
-    ```bash
-      ROUTER_SSL_CERTIFICATE_PATH=/etc/nginx/ssl/<cert>.crt
-      ROUTER_SSL_CERTIFICATE_KEY_PATH=/etc/nginx/ssl/<cert>.key
-      ROUTER_SSL_AUTOGENERATE=0
-    ```
+#### External Database
 
-    - If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_API_KEY` (OPTIONAL step)
-    - In case you want to use your own cloud buckets, read the information in `customer.env` and uncomment the supported provider (AWS S3, GCP Buckets or Azure Buckets). Fill in the [credentials](doc/buckets.md).
+CARTO comes with an embedded Postgresql database that is not recommended for production installations, we recommend to use your own Postgresql database that lives outside the Docker ecosystem
 
-6. Run the installation script `./install.sh`
-7. Bring up the environment
-    - If you are running with external databases. Run `docker-compose up -d`
-    - If you are using local databases:
-        - Run first `docker-compose up -d workspace-postgres redis` to start the databases
-        - And then `docker-compose up -d`
-8. Use your browser and go to the domain you configured. Follow the registration process
+**Prerequisites**
 
-### Update
+- Postgresql 11 or above
+
+**Configuration**
+
+Open with an editor the `customer.env` file and modify the next variables
+
+1. Comment the local Postgres configuration
+
+```diff
+# Configuration for using a local postgres, instead of an external one (comment when external postgres)
+- LOCAL_POSTGRES_SCALE=1
+- WORKSPACE_POSTGRES_HOST=workspace-postgres
+- WORKSPACE_POSTGRES_PORT=5432
+- WORKSPACE_POSTGRES_USER=workspace_admin
+- WORKSPACE_POSTGRES_PASSWORD=<verySecureRandomPassword>
+- WORKSPACE_POSTGRES_DB=workspace
+- WORKSPACE_POSTGRES_SSL_ENABLED=false
+- WORKSPACE_POSTGRES_SSL_MODE=disable
+- POSTGRES_ADMIN_USER=postgres
+- POSTGRES_ADMIN_PASSWORD=<verySecureRandomPassword>
++ # LOCAL_POSTGRES_SCALE=1
++ # WORKSPACE_POSTGRES_HOST=workspace-postgres
++ # WORKSPACE_POSTGRES_PORT=5432
++ # WORKSPACE_POSTGRES_USER=workspace_admin
++ # WORKSPACE_POSTGRES_PASSWORD=<verySecureRandomPassword>
++ # WORKSPACE_POSTGRES_DB=workspace
++ # WORKSPACE_POSTGRES_SSL_ENABLED=false
++ # WORKSPACE_POSTGRES_SSL_MODE=disable
++ # POSTGRES_ADMIN_USER=postgres
++ # POSTGRES_ADMIN_PASSWORD=<verySecureRandomPassword>
+```
+
+2. Uncomment the external postgres configuration
+
+```diff
+# Your custom configuration for an external postgres database (comment when local postgres)
+- # LOCAL_POSTGRES_SCALE=0
+- # WORKSPACE_POSTGRES_HOST=<FILL_ME>
+- # WORKSPACE_POSTGRES_PORT=<FILL_ME>
+- # WORKSPACE_POSTGRES_USER=workspace_admin
+- # WORKSPACE_POSTGRES_PASSWORD=<FILL_ME>
+- # WORKSPACE_POSTGRES_DB=workspace
+- # WORKSPACE_POSTGRES_SSL_ENABLED=true
+- # WORKSPACE_POSTGRES_SSL_MODE=require
+# Only applies if Postgres SSL certificate is selfsigned, read the documentation
+# WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
+- # POSTGRES_ADMIN_USER=<FILL_ME>
+- # POSTGRES_ADMIN_PASSWORD=<FILL_ME>
++ LOCAL_POSTGRES_SCALE=0
++ WORKSPACE_POSTGRES_HOST=<FILL_ME>
++ WORKSPACE_POSTGRES_PORT=<FILL_ME>
++ WORKSPACE_POSTGRES_USER=workspace_admin
++ WORKSPACE_POSTGRES_PASSWORD=<FILL_ME>
++ WORKSPACE_POSTGRES_SSL_ENABLED=true
++ WORKSPACE_POSTGRES_SSL_MODE=require
++ WORKSPACE_POSTGRES_DB=workspace
++ POSTGRES_ADMIN_USER=<FILL_ME>
++ POSTGRES_ADMIN_PASSWORD=<FILL_ME>
+```
+
+3. Fill the `<FILL_ME>` parameters
+
+##### Configure SSL
+
+By default CARTO will try to connect to your Postgresql via SSL. In case you don't want to connect via SSL , which is not recommended, you can configure it via the next env vars in the `customer.env`file
+
+```diff
+- WORKSPACE_POSTGRES_SSL_ENABLED=true
+- WORKSPACE_POSTGRES_SSL_MODE=require
++ WORKSPACE_POSTGRES_SSL_ENABLED=false
++ WORKSPACE_POSTGRES_SSL_MODE=disable
+```
+
+> :warning: In case you are connecting to a Postgresql where the SSL certificate it's selfsigned or from a custom CA you will need to configure the `WORKSPACE_POSTGRES_SSL_CA`
+
+1. Create a `certs` folder in the current directory (`carto-selfhosted`)
+2. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `postgresql-ssl-ca.crt`
+3. Uncomment the `WORKSPACE_POSTGRES_SSL_CA` env var in the `customer.env` file
+
+```diff
+# Only applies if Postgres SSL certificate is selfsigned, read the documentation
+- # WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
++ WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
+```
+
+##### Azure Postgresql
+
+In case you are connection to an Azure hosted Postgres you will need to uncomment the `WORKSPACE_POSTGRES_INTERNAL_USER` and `POSTGRES_LOGIN_USER` env vars where
+
+- `WORKSPACE_POSTGRES_INTERNAL_USER` - same value as `WORKSPACE_POSTGRES_USER` but without the `@db-name` prefix
+- `POSTGRES_LOGIN_USER` - same value as `POSTGRES_ADMIN_USER` but without the `@db-name` prefix
+
+#### External Redis
+
+CARTO comes with an embedded Redis that is not recommended for production installations, we recommend to use your own Redis that lives outside the Docker ecosystem
+
+**Prerequisites**
+
+- Redis 6 or above
+
+**Configuration**
+
+1. Comment the local Redis configuration
+
+```diff
+# Configuration for using a local redis, instead of a external one (comment when external redis)
+- LOCAL_REDIS_SCALE=1
+- REDIS_HOST=redis
+- REDIS_PORT=6379
+- REDIS_TLS_ENABLED=false
++ # LOCAL_REDIS_SCALE=1
++ # REDIS_HOST=redis
++ # REDIS_PORT=6379
++ # REDIS_TLS_ENABLED=false
+```
+
+2. Uncomment the external Redis configuration
+
+```diff
+# Your custom configuration for a external redis (comment when local redis)
+- # LOCAL_REDIS_SCALE=0
+- # REDIS_HOST=<FILL_ME>
+- # REDIS_PORT=<FILL_ME>
+- # REDIS_PASSWORD=<FILL_ME>
+- # REDIS_TLS_ENABLED=true
+# Only applies if Redis TLS certificate it's selfsniged
+# REDIS_TLS_CA=<FILL_ME>
++ LOCAL_REDIS_SCALE=0
++ REDIS_HOST=<FILL_ME>
++ REDIS_PORT=<FILL_ME>
++ REDIS_PASSWORD=<FILL_ME>
++ REDIS_TLS_ENABLED=true
+```
+
+3. Fill the `<FILL_ME>` parameters
+
+##### Configure TLS
+
+By default CARTO will try to connect to your Redis via TLS, in case you don't want to connect via TLS (that it's NOT recommended) you can configure it via the next env vars in the `customer.env`file
+
+```diff
+- REDIS_TLS_ENABLED=true
++ REDIS_TLS_ENABLED=false
+```
+
+> :warning: In case you are connection to a Redis where the TLS certificate it's selfsigned or from a custom CA you will need to configure the `REDIS_TLS_CA`
+
+- `REDIS_TLS_CA` contains the CA `.crt` file content in plain text
+
+#### External Domain
+
+The value defined at `SELFHOSTED_DOMAIN` should be the domain that points to the CARTO installation. By default this domain points to `carto3-onprem.lan` but you can configure a custom one
+
+**Prerequisites**
+
+- A `.crt` file with your custom domain x509 certificate
+- A `.key` file with your custom domain private key
+
+**Configuration**
+
+1. Create a `certs` folder in the current directory (`carto-selfhosted`)
+2. Copy your `<cert>.crt` and `<cert>.key` files in the `certs` folders
+3. Modify the next vars in the `customer.env` file
+
+```diff
+- # ROUTER_SSL_AUTOGENERATE= <1 to enable | 0 to disable>
+- # ROUTER_SSL_CERTIFICATE_PATH=/etc/nginx/ssl/<cert>.crt
+- # ROUTER_SSL_CERTIFICATE_KEY_PATH=/etc/nginx/ssl/<cert>.key
++ ROUTER_SSL_AUTOGENERATE=0
++ ROUTER_SSL_CERTIFICATE_PATH=/etc/nginx/ssl/<cert>.crt
++ ROUTER_SSL_CERTIFICATE_KEY_PATH=/etc/nginx/ssl/<cert>.key
+```
+
+> Remember to change the `<cert>` value with the correct file name
+
+#### Google Maps
+
+If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_API_KEY` (optional)
+
+#### Custom buckets
+
+In case you want to use your own cloud buckets, read the information in `customer.env` and uncomment the supported provider (AWS S3, GCP Buckets or Azure Buckets). Fill in the [credentials](doc/buckets.md).
+
+## Update
 
 To update you CARTO Self Hosted to the newest version you will need to:
 
-1. Change to the directory where you cloned the repository `cd carto-selfhosted`
-2. Update to the latest version `git pull`
-3. If you have received a new customer package from CARTO, apply the changes from your `customer.env` to the new `customer.env` (make a backup of your old and working `customer.env`)
-4. Run `./install.sh`. If some new configuration is needed the script will inform you
-5. Run `docker-compose up -d`
-6. If there are open sessions in web browsers they should refresh the page. Otherwise they might get errors
+```bash
+# Go to CARTO installation directory
+cd carto-selfhosted
+# Pull last changes
+git pull
+# Apply the changes from the old customer.env to the new customer.env
+cp customer.env customer.env.bak
+# Generate the .env file
+bash install.sh
+# Recreate the containers
+docker-compose up -d
+```
 
-### Migrate from Docker Compose deployment to Kubernetes
+## Migrate to Kubernetes
 
-To migrate your CARTO Self Hosted from Docker Compose deployment to
-[Kubernetes / Helm](https://github.com/CartoDB/carto-selfhosted-helm) you need to follow these steps:
+To migrate your CARTO Self Hosted from Docker Compose installation to
+[Kubernetes/Helm](https://github.com/CartoDB/carto-selfhosted-helm) you need to follow these steps:
 
 ⚠️ Migration incurs in downtime. To minimize it, reduce the DNS TTL before starting the process
 
 - Preconditions:
+
   - You have a running Self Hosted deployed with Docker Compose i.e using a Google Compute engine instance.
   - You have configured external databases (Redis and PostgreSQL).
   - You have a K8s cluster to deploy the new self hosted and credentials to deploy.
   - You have received a new customer package from CARTO (with files for Kubernetes and for Docker). If you do not
-  have them, please contact Support.
+    have them, please contact Support.
 
 - Steps to migrate
-   1. [Update](#update) Docker installation to the latest release with the customer package received
-   2. Allow network connectivity from k8s nodes to your pre-existing databases. [i.e (Cloud SQL connection notes](https://github.com/CartoDB/carto-selfhosted/README.md#cloud-sql-connection-configuration))
-   3. Create a `customizations.yaml` following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
+  1.  [Update](#update) Docker installation to the latest release with the customer package received
+  2.  Allow network connectivity from k8s nodes to your pre-existing databases. [i.e (Cloud SQL connection notes](https://github.com/CartoDB/carto-selfhosted/README.md#cloud-sql-connection-configuration))
+  3.  Create a `customizations.yaml` following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
 
 > ⚠️ NOTE: Do not trust the default values and fill all variables related to database connections, example:
 
 ```yaml
 externalPostgresql:
-  host: "<yourPostgresqlHost"
+  host: "<yourPostgresqlHost>"
   adminUser: postgres
   adminPassword: <adminPassword>
   password: <userPassword>
   database: workspace
-  user: workspace_admin 
+  user: workspace_admin
+  sslEnabled: true
 internalPostgresql:
   enabled: false
 
@@ -202,17 +349,19 @@ externalRedis:
 
 > Read also the instructions on how to [expose the Kubernetes](https://github.com/CartoDB/carto-selfhosted-helm/blob/main/customizations/README.md#access-to-carto-from-outside-the-cluster) installation to outside the cluster.
 
-   4. Create a `customizations.yaml` following [these instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
+4.  Create a `customizations.yaml` following [these instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
 
-   5. Shut down you CARTO for Docker deployment: `docker-compose down` ⚠️ From this point, the service is down.
-   6. Deploy to your cluster. Follow the [installation steps](https://github.com/CartoDB/carto-selfhosted-helm#installation)
-   7. Check pods are running and stable with `kubectl get pods <-n your_namespace>`
-   8. Change DNS records to point to the new service (`helm install` will point how to get the IP or DNS), it will take some time to propagate.
-   9. Test your CARTO Self Hosted for Kubernetes installation. Service is restored.
+5.  Shut down you CARTO for Docker installation: `docker-compose down` ⚠️ From this point, the service is down.
+6.  Deploy to your cluster. Follow the [installation steps](https://github.com/CartoDB/carto-selfhosted-helm#installation)
+7.  Check pods are running and stable with `kubectl get pods <-n your_namespace>`
+8.  Change DNS records to point to the new service (`helm install` will point how to get the IP or DNS), it will take some time to propagate.
+9.  Test your CARTO Self Hosted for Kubernetes installation. Service is restored.
 
 If for whatever reason the installation did not go as planned. You can bring back the docker installation and point back your DNS to it.
 
-#### Cloud SQL Connection configuration
+## Troubleshooting
+
+### Cloud SQL Connection configuration
 
 If you are connecting with public or private ip to a Google Cloud SQL in your self hosted, you need to add to the instance configuration external static (for public) or internal static IPs ranges as Authorized networks. If you have the resource terraformed you can add the networks with this way (take as a guide):
 
@@ -251,11 +400,3 @@ resource "google_sql_database_instance" "postgres" {
 Or in the web console:
 
 <img width="605" alt="Captura de pantalla 2022-04-05 a las 11 11 11" src="https://user-images.githubusercontent.com/3384495/161965936-118dceab-75ba-4c5d-87de-8c433c046371.png">
-
-#### Troubleshooting
-
-If any of your pods is stuck in the init phase, you can get the init containers logs with
-
-```bash
-kubectl logs <pod_name> -n <your_namespace> --all-containers
-```
