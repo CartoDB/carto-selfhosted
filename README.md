@@ -74,7 +74,7 @@ docker-compose up -d
 ### Production Ready
 
 The default Docker compose configuration provided by Carto works out-of-the-box, but it's **not production ready**.
-There are a few things to configure in order to make the Carto deployment production ready.
+There are a few things to configure in order to make the Carto installation production ready.
 
 Recommended
 
@@ -90,7 +90,7 @@ Optional configuration
 
 #### External Database
 
-CARTO comes with an embedded Postgresql database that is not recommended for production deployments, we recommend to use your own Postgresql database that lives outside the Docker ecosystem
+CARTO comes with an embedded Postgresql database that is not recommended for production installations, we recommend to use your own Postgresql database that lives outside the Docker ecosystem
 
 **Prerequisites**
 
@@ -188,6 +188,8 @@ In case you are connection to an Azure hosted Postgres you will need to uncommen
 
 #### External Redis
 
+CARTO comes with an embedded Redis that is not recommended for production installations, we recommend to use your own Redis that lives outside the Docker ecosystem
+
 **Prerequisites**
 
 - Redis 6 or above
@@ -280,7 +282,7 @@ In case you want to use your own cloud buckets, read the information in `custome
 To update you CARTO Self Hosted to the newest version you will need to:
 
 ```bash
-# Go to CARTO deployment directory
+# Go to CARTO installation directory
 cd carto-selfhosted
 # Pull last changes
 git pull
@@ -294,7 +296,7 @@ docker-compose up -d
 
 ## Migrate to Kubernetes
 
-To migrate your CARTO Self Hosted from Docker Compose deployment to
+To migrate your CARTO Self Hosted from Docker Compose installation to
 [Kubernetes/Helm](https://github.com/CartoDB/carto-selfhosted-helm) you need to follow these steps:
 
 ⚠️ Migration incurs in downtime. To minimize it, reduce the DNS TTL before starting the process
@@ -340,7 +342,7 @@ externalRedis:
 
 4.  Create a `customizations.yaml` following [these instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
 
-5.  Shut down you CARTO for Docker deployment: `docker-compose down` ⚠️ From this point, the service is down.
+5.  Shut down you CARTO for Docker installation: `docker-compose down` ⚠️ From this point, the service is down.
 6.  Deploy to your cluster. Follow the [installation steps](https://github.com/CartoDB/carto-selfhosted-helm#installation)
 7.  Check pods are running and stable with `kubectl get pods <-n your_namespace>`
 8.  Change DNS records to point to the new service (`helm install` will point how to get the IP or DNS), it will take some time to propagate.
