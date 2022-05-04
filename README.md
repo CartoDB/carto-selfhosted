@@ -1,4 +1,4 @@
-# Carto Self Hosted [Docker]
+# CARTO Self Hosted [Docker]
 
 - [Carto Self Hosted](#carto-self-hosted-docker)
   - [Installation](#installation)
