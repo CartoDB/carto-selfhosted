@@ -1,17 +1,25 @@
 # Carto Self Hosted [Docker]
 
-- [Installation](#installation)
-  - [Prerequisites](#prerequisites)
-  - [Installation Steps](#installation-steps)
-  - [Production Ready](#production-ready)
-    - [External Database](#external-database)
-    - [External Redis](#external-redis)
-    - [External Domain](#external-domain)
-    - [Google Maps](#google-maps)
-    - [Custom buckets](#custom-buckets)
-- [Update](#update)
-- [Migrate to Kubernetes](#migrate-to-kubernetes)
-- [Troubleshooting](#troubleshooting)
+- [Carto Self Hosted](#carto-self-hosted-docker)
+  - [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [Installation Steps](#installation-steps)
+    - [Production Ready](#production-ready)
+      - [External Database](#external-database)
+      - [External Redis](#external-redis)
+      - [External Domain](#external-domain)
+      - [Google Maps](#google-maps)
+      - [Custom buckets](#custom-buckets)
+  - [Update](#update)
+  - [Migrate to Kubernetes](#migrate-to-kubernetes)
+  - [Troubleshooting](#troubleshooting)
+
+Deploy CARTO in a Self Hosted environment. It's provided in two flavours
+
+- [Kubernetes Helm](https://github.com/CartoDB/carto-selfhosted-helm)
+- [Docker compose](https://github.com/CartoDB/carto-selfhosted)
+
+> To be able to use CARTO Self Hosted you need to [contact CARTO](https://carto.com/request-live-demo/) and sign up for a CARTO License.
 
 ## Installation
 
@@ -28,7 +36,7 @@ You will need a Linux machine with
 - A TLS certificate for the domain/subdomain (if not provided a self-signed one will be generated)
 - Configuration and license files received from CARTO
 
-> :warning: CARTO provides an out-of-the-box installation that it's **not production ready**. In order to make your CARTO installation production ready take a look at [Production Ready](#production-ready) section
+> :warning: CARTO provides an out-of-the-box installation that is **not production ready**. In order to make your CARTO installation production ready take a look at [Production Ready](#production-ready) section
 
 ### Installation Steps
 
