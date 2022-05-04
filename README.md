@@ -89,9 +89,10 @@ Recommended
 - [External Database](#external-database)
 - [External Domain](#external-domain)
 
-Optional configuration
+Optional
 
 - [External Redis](#external-redis)
+- [Google Maps](#google-maps)
 - [Custom Buckets](#custom-buckets)
 
 > :warning: Anytime you edit the `customer.env` file to change the CARTO configuration you will need to run the `install.sh` script to updathe the `.env` file used by Docker compose
@@ -166,7 +167,7 @@ Open with an editor the `customer.env` file and modify the next variables
 
 ##### Configure SSL
 
-By default CARTO will try to connect to your Postgresql via SSL, in case you don't want to connect via SSL (that it's NOT recommended) you can configure it via the next env vars in the `customer.env`file
+By default CARTO will try to connect to your Postgresql via SSL. In case you don't want to connect via SSL , which is not recommended, you can configure it via the next env vars in the `customer.env`file
 
 ```diff
 - WORKSPACE_POSTGRES_SSL_ENABLED=true
@@ -175,7 +176,7 @@ By default CARTO will try to connect to your Postgresql via SSL, in case you don
 + WORKSPACE_POSTGRES_SSL_MODE=disable
 ```
 
-> :warning: In case you are connection to a Postgresql where the SSL certificate it's selfsigned or from a custom CA you will need to configure the `WORKSPACE_POSTGRES_SSL_CA`
+> :warning: In case you are connecting to a Postgresql where the SSL certificate it's selfsigned or from a custom CA you will need to configure the `WORKSPACE_POSTGRES_SSL_CA`
 
 1. Create a `certs` folder in the current directory (`carto-selfhosted`)
 2. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `postgresql-ssl-ca.crt`
