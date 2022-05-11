@@ -167,20 +167,17 @@ Open with an editor the `customer.env` file and modify the next variables
 
 ##### Configure SSL
 
-By default CARTO will try to connect to your Postgresql via SSL. In case you don't want to connect via SSL , which is not recommended, you can configure it via the next env vars in the `customer.env`file
+By default CARTO will try to connect to your Postgresql without SSL. In case you want to connect via SSL, you can configure it via the next env vars
 
-```diff
-- WORKSPACE_POSTGRES_SSL_ENABLED=true
-- WORKSPACE_POSTGRES_SSL_MODE=require
-+ WORKSPACE_POSTGRES_SSL_ENABLED=false
-+ WORKSPACE_POSTGRES_SSL_MODE=disable
+```
+WORKSPACE_POSTGRES_SSL_ENABLED=true
+WORKSPACE_POSTGRES_SSL_MODE=require
 ```
 
-> :warning: In case you are connecting to a Postgresql where the SSL certificate it's selfsigned or from a custom CA you will need to configure the `WORKSPACE_POSTGRES_SSL_CA`
+> :warning: In case you are connecting to a Postgresql where the SSL certificate is selfsigned or from a custom CA you will need to configure the `WORKSPACE_POSTGRES_SSL_CA` variable
 
-1. Create a `certs` folder in the current directory (`carto-selfhosted`)
-2. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `postgresql-ssl-ca.crt`
-3. Uncomment the `WORKSPACE_POSTGRES_SSL_CA` env var in the `customer.env` file
+1. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `postgresql-ssl-ca.crt`
+2. Uncomment the `WORKSPACE_POSTGRES_SSL_CA` env var in the `customer.env` file
 
 ```diff
 # Only applies if Postgres SSL certificate is selfsigned, read the documentation
@@ -228,7 +225,7 @@ CARTO comes with an embedded Redis that is not recommended for production instal
 - # REDIS_PORT=<FILL_ME>
 - # REDIS_PASSWORD=<FILL_ME>
 - # REDIS_TLS_ENABLED=true
-# Only applies if Redis TLS certificate it's selfsniged
+# Only applies if Redis TLS certificate it's selfsigned, read the documentation
 # REDIS_TLS_CA=<FILL_ME>
 + LOCAL_REDIS_SCALE=0
 + REDIS_HOST=<FILL_ME>
@@ -241,16 +238,22 @@ CARTO comes with an embedded Redis that is not recommended for production instal
 
 ##### Configure TLS
 
-By default CARTO will try to connect to your Redis via TLS, in case you don't want to connect via TLS (that it's NOT recommended) you can configure it via the next env vars in the `customer.env`file
+By default CARTO will try to connect to your Redis without TLS, in case you want to connect via TLS ,you can configure it via `REDIS_TLS_ENABLED` env vars in the `customer.env`file
 
-```diff
-- REDIS_TLS_ENABLED=true
-+ REDIS_TLS_ENABLED=false
+```
+REDIS_TLS_ENABLED=true
 ```
 
-> :warning: In case you are connection to a Redis where the TLS certificate it's selfsigned or from a custom CA you will need to configure the `REDIS_TLS_CA`
+> :warning: In case you are connection to a Redis where the TLS certificate is selfsigned or from a custom CA you will need to configure the `REDIS_TLS_CA` variable
 
-- `REDIS_TLS_CA` contains the CA `.crt` file content in plain text
+1. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `redis-tls-ca.crt`
+2. Uncomment the `REDIS_TLS_CA` env var in the `customer.env` file
+
+```diff
+# Only applies if Redis TLS certificate it's selfsigned, read the documentation
+- # REDIS_TLS_CA=/usr/src/certs/redis-tls-ca.crt
++ REDIS_TLS_CA=/usr/src/certs/redis-tls-ca.crt
+```
 
 #### External Domain
 
