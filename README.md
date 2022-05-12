@@ -31,8 +31,8 @@ You will need a Linux machine with
 - 60 GB disk
 - 2 CPUs (x86)
 - 8 GB memory
-- Docker
-- Docker compose
+- Docker version 20.10 or above
+- Docker compose version 1.29 or above
 - A TLS certificate for the domain/subdomain (if not provided a self-signed one will be generated)
 - Configuration and license files received from CARTO
 
