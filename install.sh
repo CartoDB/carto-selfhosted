@@ -177,6 +177,20 @@ _create_env_file() {
   _info "Script finished, run docker-compose up -d"
 }
 
+
+# Description Private function to check versions.
+# Not thread-safe.
+#
+# Example
+#    echo "test: $(_check_min_cloud_version 1.2 1.3)"
+#
+#
+# arg $1 string version A
+# arg $2 string version B
+#
+# It orders asc version A and version b and if the first in the list is
+# version A returns true, else return false
+#
 _check_min_cloud_version() {
   local MINIMAL_VERSION
   local PACKAGE_VERSION
