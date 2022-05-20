@@ -83,7 +83,7 @@ _COMPOSE_MINIMUM_VERSION_MINOR=29
 #
 # Print the program help information.
 _print_help() {
-  cat <<HEREDOC
+  cat <<-HEREDOC
 
 install.sh prepares your environment to run the docker-compose flavor of Carto Self Hosted
 Usage:
