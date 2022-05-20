@@ -199,7 +199,7 @@ _check_min_cloud_version() {
 
   if [[ "$(echo "$MINIMAL_VERSION $PACKAGE_VERSION" | tr ' ' '\n' | sort -V | head -n1)" == $MINIMAL_VERSION ]]; then
     cat <<-EOF
-      [error] minimum cloud version version is $MINIMAL_VERSION but your package was generated with $MINIMAL_VERSION
+      [error] minimum cloud version version is $MINIMAL_VERSION but your package was generated with $PACKAGE_VERSION
       Contact with support for futher assistance.
 EOF
     false
