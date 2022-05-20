@@ -22,5 +22,5 @@ jobs:
         uses: thollander/actions-comment-pull-request@v1
         with:
           message: |
-            ':warning: Some files in this repo are PRed on release from https://github.com/CartoDB/cloud-native/onprem.
+            :warning: SYou are modifiying files that should be changed in  https://github.com/CartoDB/cloud-native/onprem.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
