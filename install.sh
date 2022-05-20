@@ -194,14 +194,10 @@ _create_env_file() {
 _check_min_cloud_version() {
   local MINIMAL_VERSION
   local PACKAGE_VERSION
-  MINIMAL_VERSION=$1
-  PACKAGE_VERSION=$2
+  MINIMAL_VERSION=$(echo "$1" | tr -d '"')
+  PACKAGE_VERSION=$(echo "$2" | tr -d '"')
 
-  if [[ "$(echo "$MINIMAL_VERSION $PACKAGE_VERSION" | tr ' ' '\n' | sort -V | head -n1)" == $MINIMAL_VERSION ]]; then
-    cat <<-EOF
-      [error] minimum cloud version version is $MINIMAL_VERSION but your package was generated with $PACKAGE_VERSION
-      Contact with support (support-team@carto.com) for further assistance.
-EOF
+  if [[ "$(echo "$MINIMAL_VERSION $PACKAGE_VERSION" | tr ' ' '\n' | sort -V | head -n1)" != $MINIMAL_VERSION ]]; then
     false
   else
     true
@@ -249,10 +245,10 @@ function _run_post_checks(){
         _warn "Using embedded databases is not for PRODUCTION use"
       fi
       if [[ -z "${POSTGRES_ADMIN_PASSWORD}" ]]; then
-        _err " There is no Postgres Admin password defined"
+        _err "There is no Postgres Admin password defined"
       fi
-      if _check_min_cloud_version $CARTO_SELFHOSTED_VERSION $CARTO_SELFHOSTED_CUSTOMER_PACKAGE_VERSION = false ; then
-        _err "Customer Package outdated, please contact our Support team at support@carto.com"
+      if ! _check_min_cloud_version $CARTO_SELFHOSTED_VERSION $CARTO_SELFHOSTED_CUSTOMER_PACKAGE_VERSION  ; then
+        _err "Minimum cloud version version is $MINIMAL_VERSION but your package was generated with $PACKAGE_VERSION Contact with support (support-team@carto.com) for further assistance."
       fi
     )
   fi
