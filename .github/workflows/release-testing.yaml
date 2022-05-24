@@ -29,6 +29,7 @@ jobs:
       - name: Install Docker Compose
         run: |
           bash scripts/install_docker-compose.sh
+          docker-compose --version
 
       - name: Ngrok tunnel
         id: ngrok-tunnel
@@ -42,7 +43,7 @@ jobs:
           curl -sSL -O https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
           sudo tar -zxvf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
 
-          ngrok http 443 &> /dev/null &
+          ngrok http 443 > /dev/null &
 
           # Obtain ngrok random generated URL
           URL="$(curl -sqSL http://localhost:4040/api/tunnels | jq -r ".tunnels[0].public_url")"
@@ -96,15 +97,17 @@ jobs:
 
       - name: Bring up Docker environment
         run: |
-          echo Pulling docker images
+          echo "::group::Pulling Docker images"
           docker-compose pull
+          echo "::endgroup::"
 
           echo "::group::Docker images"
           docker image list
           echo "::endgroup::"
 
-          echo Bring up the environment
-          timeout --foreground 3m docker-compose up -d --no-build --wait=0
+          echo "::group::Docker compose up"
+          docker-compose up -d
+          echo "::endgroup::"
 
           echo "::group::Docker containers"
           docker container list
