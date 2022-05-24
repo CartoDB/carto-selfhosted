@@ -43,6 +43,7 @@ jobs:
           cd /tmp
           curl -sSL -O https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
           sudo tar -zxvf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
+          ngrok version
 
           ngrok http 443 &
 
