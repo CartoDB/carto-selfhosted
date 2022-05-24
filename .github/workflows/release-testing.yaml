@@ -52,8 +52,9 @@ jobs:
           # Obtain ngrok random generated URL
           URL="$(curl -sqSL http://localhost:4040/api/tunnels | jq -r ".tunnels[0].public_url")"
           # Remove protocol
-          URL="${URL//https:\/\/}"
+          URL_WITHOUT_PROTOCOL="${URL//https:\/\/}"
           echo "::set-output name=ngrok-url::${URL}"
+          echo "::set-output name=ngrok-url-without-protocol::${URL_WITHOUT_PROTOCOL}"
 
       - name: Google Cloud Auth
         uses: google-github-actions/auth@v0
@@ -73,7 +74,7 @@ jobs:
         env:
           CUSTOMER_ENV: ${{ steps.customer-package.outputs.CUSTOMER_ENV }}
           KEY_JSON: ${{ steps.customer-package.outputs.KEY_JSON }}
-          NGROK_URL: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
+          NGROK_URL: ${{ steps.ngrok-tunnel.outputs.ngrok-url-without-protocol }}
         run: |
           set -e
           echo Testing Selfhosted version: $(cat VERSION)
@@ -128,7 +129,7 @@ jobs:
       - name: Test e2e
         uses: ./cloud-native/.github/actions/e2e-tests
         with:
-          carto3-workspace-url: ${{ steps.env-info.outputs.workspace-www-url }}
+          carto3-workspace-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
           carto3-tenant-id: ${{ env.TENANT_ID }}
           secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
           secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
