@@ -30,6 +30,7 @@ jobs:
       - name: Ngrok tunnel
         id: ngrok-tunnel
         env:
+          # FIXME: Pass this as a secret
           NGROK_TOKEN: "29NYgOc10QWedcikUSnpV9F1e5w_4hkpEs8iausqQQMEuinKL"
         run: |
           set -e
@@ -115,13 +116,13 @@ jobs:
 
       - name: Generate env-info
         id: env-info
-        uses: cloud-native/.github/actions/env-info
+        uses: ./cloud-native/.github/actions/env-info
         with:
           environment: ${{ env.ENVIRONMENT }}
           tenant-id: ${{ env.TENANT_ID }}
 
       - name: Test e2e
-        uses: cloud-native/.github/actions/e2e-tests
+        uses: ./cloud-native/.github/actions/e2e-tests
         with:
           carto3-workspace-url: ${{ steps.env-info.outputs.workspace-www-url }}
           carto3-tenant-id: ${{ env.TENANT_ID }}
