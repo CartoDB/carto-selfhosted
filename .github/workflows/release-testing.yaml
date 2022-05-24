@@ -34,8 +34,6 @@ jobs:
       - name: Ngrok tunnel
         id: ngrok-tunnel
         run: |
-          #FIXME:
-          set -x
 
           # Expose docker deployment via Ngrok
           # Install ngrok
@@ -43,10 +41,8 @@ jobs:
           curl -sSL -O https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
           sudo tar -zxvf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin &>/dev/null
 
-          # FIXME: Cat ngrok.log in case of failure
           ngrok version
-          # ngrok http 80 --log=stdout > ngrok.log &
-          ngrok http 80 --log=stdout &
+          ngrok http 80 --log=stdout > ngrok.log &
 
           sleep 5
 
@@ -55,10 +51,6 @@ jobs:
           # Remove protocol
           URL="${URL//https:\/\/}"
           echo "::set-output name=ngrok-url::${URL}"
-
-          echo "::group::Ngrok tunnel"
-          curl -sqSL http://localhost:4040/api/tunnels | jq
-          echo "::endgroup::"
 
       - name: Retrieve Selfhosted customer package
         id: customer-package
