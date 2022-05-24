@@ -48,6 +48,8 @@ jobs:
           # ngrok http 80 --log=stdout > ngrok.log &
           ngrok http 80 --log=stdout &
 
+          sleep 5
+
           # Obtain ngrok random generated URL
           URL="$(curl -sqSL http://localhost:4040/api/tunnels | jq -r ".tunnels[0].public_url")"
           # Remove protocol
