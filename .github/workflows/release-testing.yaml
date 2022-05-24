@@ -64,9 +64,9 @@ jobs:
 
       - name: Prepare Docker environment
         env:
-          CUSTOMER_ENV: ${{ step.customer-package.outputs.CUSTOMER_ENV }}
-          KEY_JSON: ${{ step.customer-package.outputs.KEY_JSON }}
-          NGROK_URL: ${{ step.ngrok-tunnel.outputs.ngrok-url }}
+          CUSTOMER_ENV: ${{ steps.customer-package.outputs.CUSTOMER_ENV }}
+          KEY_JSON: ${{ steps.customer-package.outputs.KEY_JSON }}
+          NGROK_URL: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
         run: |
           # FIXME: Remove debug
           set -x
