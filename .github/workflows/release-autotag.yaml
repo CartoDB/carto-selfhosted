@@ -1,10 +1,10 @@
-name: "Auto create release"
+name: Release - Autotag
 on:
   push:
     branches:
       - master
     paths:
-      - 'VERSION'
+      - "VERSION"
 jobs:
   create-tag:
     timeout-minutes: 3
