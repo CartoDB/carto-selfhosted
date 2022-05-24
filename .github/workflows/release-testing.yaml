@@ -134,7 +134,6 @@ jobs:
           secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
           secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
           base-variable-file: "cloud-native/workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
-          github-token: ${{ secrets.X_GITHUB_CARTOFANTE }}
 
       - name: Clean organizations
         uses: ./cloud-native/.github/actions/tests-cleaning
@@ -145,7 +144,6 @@ jobs:
           secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
           secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
           base-variable-file: "cloud-native/workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
-          github-token: ${{ secrets.X_GITHUB_CARTOFANTE }}
 
       # TODO: Put a message in the PR?
 
