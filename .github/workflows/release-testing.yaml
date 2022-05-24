@@ -20,12 +20,6 @@ jobs:
       - name: Checkout project
         uses: actions/checkout@v3
 
-      - name: Google Cloud Auth
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
-          project_id: ${{ env.GOOGLE_PROJECT_ID }}
-
       - name: Install Docker compose
         uses: KengoTODA/actions-setup-docker-compose@main
         with:
@@ -33,24 +27,36 @@ jobs:
 
       - name: Ngrok tunnel
         id: ngrok-tunnel
+        env:
+          NGROK_TOKEN: "29NYgOc10QWedcikUSnpV9F1e5w_4hkpEs8iausqQQMEuinKL"
         run: |
-
           # Expose docker deployment via Ngrok
           # Install ngrok
           cd /tmp
           curl -sSL -O https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
           sudo tar -zxvf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin &>/dev/null
+          cd -
 
+          # FIXME: Cat ngrok logs at the end
           ngrok version
-          ngrok http 80 --log=stdout > ngrok.log &
+          ngrok http 443 \
+            --log=stdout \
+            --authtoken=${NGROK_TOKEN} \
+            > ngrok.log &
 
-          sleep 5
+          sleep 3
 
           # Obtain ngrok random generated URL
           URL="$(curl -sqSL http://localhost:4040/api/tunnels | jq -r ".tunnels[0].public_url")"
           # Remove protocol
           URL="${URL//https:\/\/}"
           echo "::set-output name=ngrok-url::${URL}"
+
+      - name: Google Cloud Auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
+          project_id: ${{ env.GOOGLE_PROJECT_ID }}
 
       - name: Retrieve Selfhosted customer package
         id: customer-package
@@ -129,3 +135,23 @@ jobs:
       #     secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
       #     base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
       #     github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Ngrok logs
+        if: failure()
+        run: |
+          echo "::group::Ngrok logs"
+          cat ngrok.log
+          echo "::endgroup::"
+
+      - name: Containers logs
+        if: failure()
+        run: |
+          echo "::group::Containers General status"
+          docker-compose ps -a
+          echo "::endgroup::"
+          ALL_CONTAINERS=$(docker-compose ps -a --format json | jq  '.[] | .Name' -r)
+          for con in ${ALL_CONTAINERS}; do
+            echo "::group::Container ${con}"
+            docker logs --timestamps ${con}
+            echo "::endgroup::"
+          done
