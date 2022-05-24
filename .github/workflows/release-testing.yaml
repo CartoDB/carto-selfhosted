@@ -26,7 +26,8 @@ jobs:
           credentials_json: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
           project_id: ${{ env.GOOGLE_PROJECT_ID }}
 
-      - uses: KengoTODA/actions-setup-docker-compose@main
+      - name: Install Docker compose
+        uses: KengoTODA/actions-setup-docker-compose@main
         with:
           version: "2.5.1"
 
@@ -43,7 +44,7 @@ jobs:
           sudo tar -zxvf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
           ngrok version
 
-          ngrok http 443 &
+          ngrok https http://localhost:443 &
 
           # Obtain ngrok random generated URL
           URL="$(curl -sqSL http://localhost:4040/api/tunnels | jq -r ".tunnels[0].public_url")"
