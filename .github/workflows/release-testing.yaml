@@ -59,8 +59,8 @@ jobs:
         uses: google-github-actions/get-secretmanager-secrets@v0
         with:
           secrets: |-
-            CUSTOMER_ENV:/projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-package
-            KEY_JSON:/projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-service-account
+            CUSTOMER_ENV:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-package
+            KEY_JSON:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-service-account
 
       - name: Prepare Docker environment
         env:
