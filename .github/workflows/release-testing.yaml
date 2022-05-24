@@ -1,0 +1,128 @@
+name: Release - Testing
+on:
+  pull_request:
+    branches:
+      - master
+    # FIXME: Uncomment
+    # paths:
+    #   - VERSION
+
+env:
+  # https://github.com/CartoDB/carto3-onprem-customers/tree/master/customers/infra-release
+  GOOGLE_PROJECT_ID: carto-tnt-onp-infra-release
+jobs:
+  release-testing:
+    runs-on: ubuntu-20.04
+    name: "Release - Testing"
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+
+      - name: Google Cloud Auth
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
+          project_id: ${{ env.GOOGLE_PROJECT_ID }}
+
+      - name: Install Docker Compose
+        run: |
+          bash scripts/install_docker-compose.sh
+
+      - name: Ngrok tunnel
+        id: ngrok-tunnel
+        run: |
+          # FIXME: Remove debug
+          set -x
+
+          # Expose docker deployment via Ngrok
+          # Install ngrok
+          cd /tmp
+          curl -sSL -O https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
+          sudo tar -zxvf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
+
+          ngrok http 443 &> /dev/null
+
+          # Obtain ngrok random generated URL
+          URL="$(curl -sqSL http://localhost:4040/api/tunnels | jq -r ".tunnels[0].public_url")"
+          # Remove protocol
+          URL="${URL//https:\/\/}"
+          echo "::set-output name=ngrok-url::${URL}"
+
+          echo "::group::Ngrok tunnel"
+          curl -sqSL http://localhost:4040/api/tunnels | jq
+          echo "::endgroup::"
+
+      - name: Retrieve Selfhosted customer package
+        id: customer-package
+        uses: google-github-actions/get-secretmanager-secrets@v0
+        with:
+          secrets: |-
+            CUSTOMER_ENV:/projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-package
+            KEY_JSON:/projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-service-account
+
+      - name: Prepare Docker environment
+        env:
+          CUSTOMER_ENV: ${{ step.customer-package.outputs.CUSTOMER_ENV }}
+          KEY_JSON: ${{ step.customer-package.outputs.KEY_JSON }}
+          NGROK_URL: ${{ step.ngrok-tunnel.outputs.ngrok-url }}
+        run: |
+          # FIXME: Remove debug
+          set -x
+          # Uncomment when debugging
+          # set -x
+
+          echo Testing Selfhosted version: $(cat VERSION)
+
+          echo "${CUSTOMER_ENV}" > customer.env
+          echo "${KEY_JSON}" > key.json
+
+          # Set ngrok tunnel URL as SELFHOSTED_DOMAIN
+          sed -i "s/^SELFHOSTED_DOMAIN=.+$/SELFHOSTED_DOMAIN=${NGROK_URL}/" customer.env
+
+          echo "::group::Customer package"
+          cat customer.env
+          echo "::endgroup::"
+
+          echo Generating .env file
+          echo "::group::install.sh"
+          bash install.sh
+          echo "::endgroup::"
+
+          echo "::group::.env"
+          cat .env
+          echo "::endgroup::"
+
+      - name: Bring up Docker environment
+        run: |
+          echo Pulling docker images
+          docker-compose pull
+
+          echo "::group::Docker images"
+          docker image list
+          echo "::endgroup::"
+
+          echo Bring up the environment
+          timeout --foreground 3m docker-compose up -d --no-build --wait=0
+
+          echo "::group::Docker containers"
+          docker container list
+          echo "::endgroup::"
+
+      # TODO:
+      # - name: Generate env-info
+      #   id: env-info
+      #   uses: ./.github/actions/env-info
+      #   with:
+      #     environment: ${{ needs.general-config.outputs.environment-name }}
+      #     tenant-id: "gcp-${{ env.MAIN_REGION }}"
+      # - name: Test e2e
+      #   uses: ./.github/actions/e2e-tests
+      #   with:
+      #     carto3-workspace-url: ${{ steps.env-info.outputs.workspace-www-url }}
+      #     carto3-tenant-id: ${{ steps.env-info.outputs.tenant-id }}
+      #     secrets-service-account: ${{ secrets.CARTO_ARTIFACTS_SERVICE_ACCOUNT }}
+      #     secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
+      #     base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
