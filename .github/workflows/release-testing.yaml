@@ -28,8 +28,9 @@ jobs:
 
       - name: Install Docker Compose
         run: |
-          bash scripts/install_docker-compose.sh
-          docker-compose --version
+          # FIXME: Remove -x
+          bash -x scripts/install_docker-compose.sh
+          docker-compose version
 
       - name: Ngrok tunnel
         id: ngrok-tunnel
