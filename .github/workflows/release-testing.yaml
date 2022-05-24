@@ -9,7 +9,9 @@ on:
 
 env:
   # https://github.com/CartoDB/carto3-onprem-customers/tree/master/customers/infra-release
+  ENVIRONMENT: production
   GOOGLE_PROJECT_ID: carto-tnt-onp-infra-release
+  TENANT_ID: onp-infra-release
 jobs:
   release-testing:
     runs-on: ubuntu-20.04
@@ -30,8 +32,6 @@ jobs:
         env:
           NGROK_TOKEN: "29NYgOc10QWedcikUSnpV9F1e5w_4hkpEs8iausqQQMEuinKL"
         run: |
-          #FIXME:
-          set -x
           # Expose docker deployment via Ngrok
           # Install ngrok
           cd /tmp
@@ -39,12 +39,11 @@ jobs:
           sudo tar -zxvf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin &>/dev/null
           cd -
 
-          # FIXME: Cat ngrok logs at the end
           ngrok version
           ngrok http 443 \
             --log=stdout \
             --authtoken="${NGROK_TOKEN}" \
-          > ngrok.log &
+            > ngrok.log &
 
           sleep 3
 
@@ -74,8 +73,6 @@ jobs:
           KEY_JSON: ${{ steps.customer-package.outputs.KEY_JSON }}
           NGROK_URL: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
         run: |
-          # FIXME: Remove debug
-          set -x
           # Uncomment when debugging
           # set -x
 
@@ -86,19 +83,6 @@ jobs:
 
           # Set ngrok tunnel URL as SELFHOSTED_DOMAIN
           sed -i "s/^SELFHOSTED_DOMAIN=.+$/SELFHOSTED_DOMAIN=${NGROK_URL}/" customer.env
-
-          echo "::group::Customer package"
-          cat customer.env
-          echo "::endgroup::"
-
-          echo Generating .env file
-          echo "::group::install.sh"
-          bash install.sh
-          echo "::endgroup::"
-
-          echo "::group::.env"
-          cat .env
-          echo "::endgroup::"
 
       - name: Bring up Docker environment
         run: |
@@ -121,22 +105,30 @@ jobs:
           docker container list
           echo "::endgroup::"
 
-      # TODO:
-      # - name: Generate env-info
-      #   id: env-info
-      #   uses: ./.github/actions/env-info
-      #   with:
-      #     environment: ${{ needs.general-config.outputs.environment-name }}
-      #     tenant-id: "gcp-${{ env.MAIN_REGION }}"
-      # - name: Test e2e
-      #   uses: ./.github/actions/e2e-tests
-      #   with:
-      #     carto3-workspace-url: ${{ steps.env-info.outputs.workspace-www-url }}
-      #     carto3-tenant-id: ${{ steps.env-info.outputs.tenant-id }}
-      #     secrets-service-account: ${{ secrets.CARTO_ARTIFACTS_SERVICE_ACCOUNT }}
-      #     secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
-      #     base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout cloud-native repository
+        uses: actions/checkout@v3
+        with:
+          repository: CartoDB/cloud-native
+          path: cloud-native
+
+      - name: Generate env-info
+        id: env-info
+        uses: cloud-native/.github/actions/env-info
+        with:
+          environment: ${{ env.ENVIRONMENT }}
+          tenant-id: ${{ env.TENANT_ID }}
+
+      - name: Test e2e
+        uses: cloud-native/.github/actions/e2e-tests
+        with:
+          carto3-workspace-url: ${{ steps.env-info.outputs.workspace-www-url }}
+          carto3-tenant-id: ${{ env.TENANT_ID }}
+          secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
+          secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
+          base-variable-file: "cloud-native/workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+        # TODO: Put a message in the PR?
 
       - name: Ngrok logs
         if: failure()
