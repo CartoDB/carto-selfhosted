@@ -116,7 +116,7 @@ jobs:
         with:
           repository: CartoDB/cloud-native
           path: cloud-native
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.X_GITHUB_CARTOFANTE }} # token: carto-selfhosted
 
       - name: Generate env-info
         id: env-info
@@ -133,17 +133,18 @@ jobs:
           secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
           secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
           base-variable-file: "cloud-native/workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.X_GITHUB_CARTOFANTE }}
 
-      # - name: Clean organizations
-      #   uses: cloud-native/.github/actions/tests-cleaning
-      #   with:
-      #     carto3-account-api-url: "${{ needs.prepare.outputs.carto3-account-api-url }}"
-      #     registry-service-account: ${{ secrets.CARTO_ARTIFACTS_SERVICE_ACCOUNT }}
-      #     secrets-service-account: ${{ secrets.CARTO_ARTIFACTS_SERVICE_ACCOUNT }}
-      #     secrets-manager-path: "${{ needs.prepare.outputs.secrets-manager-path }}"
-      #     base-variable-file: "${{ needs.prepare.outputs.base-variable-file }}"
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Clean organizations
+        uses: ./cloud-native/.github/actions/tests-cleaning
+        if: always()
+        with:
+          carto3-account-api-url: ${{ steps.env-info.outputs.account-api-url }}
+          registry-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
+          secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
+          secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
+          base-variable-file: "cloud-native/workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
+          github-token: ${{ secrets.X_GITHUB_CARTOFANTE }}
 
       # TODO: Put a message in the PR?
 
