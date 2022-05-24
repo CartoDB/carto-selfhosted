@@ -30,6 +30,8 @@ jobs:
         env:
           NGROK_TOKEN: "29NYgOc10QWedcikUSnpV9F1e5w_4hkpEs8iausqQQMEuinKL"
         run: |
+          #FIXME:
+          set -x
           # Expose docker deployment via Ngrok
           # Install ngrok
           cd /tmp
@@ -41,7 +43,7 @@ jobs:
           ngrok version
           ngrok http 443 \
             --log=stdout \
-            --authtoken=${NGROK_TOKEN} \
+            --authtoken="${NGROK_TOKEN}" \
             > ngrok.log &
 
           sleep 3
