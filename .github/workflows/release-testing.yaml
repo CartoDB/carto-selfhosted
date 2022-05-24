@@ -44,7 +44,7 @@ jobs:
           ngrok http 443 \
             --log=stdout \
             --authtoken="${NGROK_TOKEN}" \
-            > ngrok.log &
+          > ngrok.log &
 
           sleep 3
 
