@@ -26,11 +26,9 @@ jobs:
           credentials_json: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
           project_id: ${{ env.GOOGLE_PROJECT_ID }}
 
-      - name: Install Docker Compose
-        run: |
-          # FIXME: Remove -x
-          bash -x scripts/install_docker-compose.sh
-          docker-compose version
+      - uses: KengoTODA/actions-setup-docker-compose@main
+        with:
+          version: "2.5.1"
 
       - name: Ngrok tunnel
         id: ngrok-tunnel
@@ -99,6 +97,9 @@ jobs:
 
       - name: Bring up Docker environment
         run: |
+          docker-compose version
+          docker version
+
           echo "::group::Pulling Docker images"
           docker-compose pull
           echo "::endgroup::"
