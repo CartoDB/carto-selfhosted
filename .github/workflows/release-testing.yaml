@@ -44,7 +44,7 @@ jobs:
           sudo tar -zxvf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
           ngrok version
 
-          ngrok https http://localhost:443 &
+          ngrok http 443 &
 
           # Obtain ngrok random generated URL
           URL="$(curl -sqSL http://localhost:4040/api/tunnels | jq -r ".tunnels[0].public_url")"
@@ -60,7 +60,7 @@ jobs:
         id: customer-package
         uses: google-github-actions/get-secretmanager-secrets@v0
         with:
-          secrets: |-
+          secrets: |
             CUSTOMER_ENV:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-package
             KEY_JSON:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-service-account
 
