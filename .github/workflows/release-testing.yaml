@@ -34,6 +34,9 @@ jobs:
       - name: Ngrok tunnel
         id: ngrok-tunnel
         run: |
+          #FIXME:
+          set -x
+
           # Expose docker deployment via Ngrok
           # Install ngrok
           cd /tmp
@@ -42,7 +45,8 @@ jobs:
 
           # FIXME: Cat ngrok.log in case of failure
           ngrok version
-          ngrok http 80 --log=stdout > ngrok.log &
+          # ngrok http 80 --log=stdout > ngrok.log &
+          ngrok http 80 --log=stdout &
 
           # Obtain ngrok random generated URL
           URL="$(curl -sqSL http://localhost:4040/api/tunnels | jq -r ".tunnels[0].public_url")"
