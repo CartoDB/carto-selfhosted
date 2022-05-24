@@ -42,7 +42,7 @@ jobs:
           curl -sSL -O https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
           sudo tar -zxvf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
 
-          ngrok http 443 &> /dev/null
+          ngrok http 443 &> /dev/null &
 
           # Obtain ngrok random generated URL
           URL="$(curl -sqSL http://localhost:4040/api/tunnels | jq -r ".tunnels[0].public_url")"
