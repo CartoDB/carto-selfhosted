@@ -84,6 +84,10 @@ jobs:
           # Set ngrok tunnel URL as SELFHOSTED_DOMAIN
           sed -i "s/^SELFHOSTED_DOMAIN=.+$/SELFHOSTED_DOMAIN=${NGROK_URL}/" customer.env
 
+          echo "::group::Run install.sh"
+          bash install.sh
+          echo "::endgroup::"
+
       - name: Bring up Docker environment
         run: |
           set -e
