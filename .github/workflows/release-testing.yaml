@@ -115,6 +115,8 @@ jobs:
       - name: Checkout cloud-native repository
         uses: actions/checkout@v3
         with:
+          # FIXME: Set ref to main
+          ref: feature/sc-170633/run-tests-e2e-along-with-the-release-process
           repository: CartoDB/cloud-native
           path: cloud-native
           token: ${{ secrets.X_GITHUB_CARTOFANTE }} # token: carto-selfhosted
