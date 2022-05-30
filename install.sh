@@ -236,6 +236,7 @@ done
 
 function _run_post_checks(){
   MIN_VERSION=$(cat MIN_VERSION)
+  PACKAGE_VERSION=$(cat .env | grep CARTO_SELFHOSTED_CUSTOMER_PACKAGE_VERSION | cut -d \" -f2)
   if [ -f .env ]; then
     (
       # needed to remove the comments inside the .env
@@ -248,9 +249,9 @@ function _run_post_checks(){
       if [[ -z "${POSTGRES_ADMIN_PASSWORD}" ]]; then
         _err "There is no Postgres Admin password defined"
       fi
-      # if ! _check_min_cloud_version $MIN_VERSION $CARTO_SELFHOSTED_CUSTOMER_PACKAGE_VERSION  ; then
-      #   _err "Minimum cloud version version is $MINIMAL_VERSION but your package was generated with $PACKAGE_VERSION Contact with support (support-team@carto.com) for further assistance."
-      # fi
+      if ! _check_min_cloud_version $MIN_VERSION $PACKAGE_VERSION  ; then
+        _err "Minimum cloud version version is $MINIMAL_VERSION but your package was generated with $PACKAGE_VERSION Contact with support (support-team@carto.com) for further assistance."
+      fi
     )
   fi
 }
