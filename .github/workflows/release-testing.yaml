@@ -33,7 +33,7 @@ jobs:
           # FIXME: Pass this as a secret
           NGROK_TOKEN: "29NYgOc10QWedcikUSnpV9F1e5w_4hkpEs8iausqQQMEuinKL"
         run: |
-          set -xe
+          set -xeu
           # Expose docker deployment via Ngrok
           # Install ngrok
           cd /tmp
@@ -89,9 +89,6 @@ jobs:
           bash install.sh
           echo "::endgroup::"
 
-          # FIXME:
-          grep SELFHOSTED_DOMAIN .env
-
       - name: Bring up Docker environment
         run: |
           set -e
@@ -142,15 +139,15 @@ jobs:
           # FIXME:
           github-custom-sha: feature/sc-170633/run-tests-e2e-along-with-the-release-process
 
-      # - name: Clean organizations
-      #   uses: ./cloud-native/.github/actions/tests-cleaning
-      #   if: always()
-      #   with:
-      #     carto3-account-api-url: ${{ steps.env-info.outputs.account-api-url }}
-      #     registry-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
-      #     secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
-      #     secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
-      #     base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
+      - name: Clean organizations
+        uses: ./cloud-native/.github/actions/tests-cleaning
+        if: always()
+        with:
+          carto3-account-api-url: ${{ steps.env-info.outputs.account-api-url }}
+          registry-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
+          secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
+          secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
+          base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
 
       # TODO: Put a message in the PR?
 
