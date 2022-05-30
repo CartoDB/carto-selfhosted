@@ -139,17 +139,35 @@ jobs:
       #     # FIXME:
       #     github-custom-sha: feature/sc-170633/run-tests-e2e-along-with-the-release-process
 
-      - name: Clean up orgs & Auth0 users
+      # TODO: Put a message in the PR?
+
+      - name: Create PR message
+        id: pr-message
         if: always()
+        run: |
+          if [[ "${JOB_STATUS}" == "success" ]];then
+            MESSAGE=":white_check_mark: Tests passed"
+          else
+            MESSAGE=":x: Something went wrong with tests"
+          fi
+          echo "::set-output name=message::${MESSAGE}"
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v1
+        if: always()
+        with:
+          message: ${{ steps.pr-message.message }}
+          GITHUB_TOKEN: ${{ secrets.X_GITHUB_CARTOFANTE }}
+
+      # Failure
+
+      - name: Clean up orgs & Auth0 users
+        if: failure()
         uses: ./cloud-native/.github/actions/tests-cleaning
         with:
           environment: "${{ env.ENVIRONMENT }}"
           registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
           secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
-
-      # TODO: Put a message in the PR?
-
-      # TODO: Put a message on Slack
 
       - name: Ngrok logs
         if: failure()
