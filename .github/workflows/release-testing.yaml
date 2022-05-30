@@ -90,7 +90,7 @@ jobs:
           echo "::endgroup::"
 
           # FIXME:
-          head -25 .env
+          grep SELFHOSTED_DOMAIN .env
 
       - name: Bring up Docker environment
         run: |
