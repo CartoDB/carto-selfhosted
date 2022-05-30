@@ -141,14 +141,15 @@ jobs:
 
       - name: Clean up orgs & Auth0 users
         if: always()
-        uses: ./.github/actions/tests-cleaning
+        uses: ./cloud-native/.github/actions/tests-cleaning
         with:
           environment: "${{ env.ENVIRONMENT }}"
-          override-carto3-accounts-api-url: "${{ github.event.inputs.override_account_api_url }}"
           registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
           secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
 
       # TODO: Put a message in the PR?
+
+      # TODO: Put a message on Slack
 
       - name: Ngrok logs
         if: failure()
