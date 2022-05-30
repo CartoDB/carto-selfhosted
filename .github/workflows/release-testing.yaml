@@ -83,7 +83,7 @@ jobs:
           echo "${KEY_JSON}" > key.json
 
           # Set ngrok tunnel URL as SELFHOSTED_DOMAIN
-          sed -i "s/^SELFHOSTED_DOMAIN=.+$/SELFHOSTED_DOMAIN=${NGROK_URL}/" customer.env
+          sed -Ei "s/^SELFHOSTED_DOMAIN=.+$/SELFHOSTED_DOMAIN=${NGROK_URL}/" customer.env
 
           echo "::group::Run install.sh"
           bash install.sh
