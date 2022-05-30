@@ -157,7 +157,7 @@ _check_compose_version() {
 }
 
 _migrate_postgres_version_var() {
-  sed -i -e 's/POSTGRES_PASSWORD/POSTGRES_ADMIN_PASSWORD/g' customer.env
+  sed -i -e 's/^POSTGRES_PASSWORD/POSTGRES_ADMIN_PASSWORD/g' customer.env
 }
 
 _create_env_file() {
