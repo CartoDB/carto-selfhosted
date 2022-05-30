@@ -89,6 +89,9 @@ jobs:
           bash install.sh
           echo "::endgroup::"
 
+          # FIXME:
+          head -25 .env
+
       - name: Bring up Docker environment
         run: |
           set -e
