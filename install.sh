@@ -196,7 +196,6 @@ _check_min_cloud_version() {
   local PACKAGE_VERSION
   MINIMAL_VERSION=$(echo "$1" | tr -d '"')
   PACKAGE_VERSION=$(echo "$2" | tr -d '"')
-
   if [[ "$(echo "$MINIMAL_VERSION $PACKAGE_VERSION" | tr ' ' '\n' | sort -V | head -n1)" != $MINIMAL_VERSION ]]; then
     false
   else
@@ -236,7 +235,7 @@ done
 
 function _run_post_checks(){
   MIN_VERSION=$(cat MIN_VERSION)
-  PACKAGE_VERSION=$(cat .env | grep CARTO_SELFHOSTED_CUSTOMER_PACKAGE_VERSION | cut -d \" -f2)
+  PACKAGE_VERSION=$(cat .env | grep CARTO_SELFHOSTED_CUSTOMER_PACKAGE_VERSION | cut -d \= -f2)
   if [ -f .env ]; then
     (
       # needed to remove the comments inside the .env
