@@ -144,6 +144,8 @@ jobs:
       - name: Create PR message
         id: pr-message
         if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
         run: |
           set -xeu
           if [[ "${JOB_STATUS}" == "success" ]];then
