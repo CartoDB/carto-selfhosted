@@ -264,7 +264,7 @@ The value defined at `SELFHOSTED_DOMAIN` should be the domain that points to the
 **Configuration**
 
 1. Create a `certs` folder in the current directory (`carto-selfhosted`)
-2. Copy your `<cert>.crt` and `<cert>.key` files in the `certs` folders
+2. Copy your `<cert>.crt` and `<cert>.key` files in the `certs` folders (the files must be directly accesible from the server, i.e.: not protected with password and with the proper permissions)
 3. Modify the next vars in the `customer.env` file
 
 ```diff
