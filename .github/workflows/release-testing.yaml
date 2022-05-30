@@ -145,6 +145,7 @@ jobs:
         id: pr-message
         if: always()
         run: |
+          set -xeu
           if [[ "${JOB_STATUS}" == "success" ]];then
             MESSAGE=":white_check_mark: Tests passed"
           else
