@@ -139,15 +139,14 @@ jobs:
           # FIXME:
           github-custom-sha: feature/sc-170633/run-tests-e2e-along-with-the-release-process
 
-      - name: Clean organizations
-        uses: ./cloud-native/.github/actions/tests-cleaning
+      - name: Clean up orgs & Auth0 users
         if: always()
+        uses: ./.github/actions/tests-cleaning
         with:
-          carto3-account-api-url: ${{ steps.env-info.outputs.account-api-url }}
-          registry-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
-          secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
-          secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
-          base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
+          environment: "${{ env.ENVIRONMENT }}"
+          override-carto3-accounts-api-url: "${{ github.event.inputs.override_account_api_url }}"
+          registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
+          secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
 
       # TODO: Put a message in the PR?
 
