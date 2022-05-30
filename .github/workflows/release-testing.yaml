@@ -156,7 +156,7 @@ jobs:
         uses: thollander/actions-comment-pull-request@v1
         if: always()
         with:
-          message: ${{ steps.pr-message.message }}
+          message: ${{ steps.pr-message.outputs.message }}
           GITHUB_TOKEN: ${{ secrets.X_GITHUB_CARTOFANTE }}
 
       # Failure
