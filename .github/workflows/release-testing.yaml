@@ -30,11 +30,10 @@ jobs:
       - name: Ngrok tunnel
         id: ngrok-tunnel
         env:
-          # FIXME: Pass this as a secret
           NGROK_TOKEN: "29NYgOc10QWedcikUSnpV9F1e5w_4hkpEs8iausqQQMEuinKL"
         run: |
           set -xeu
-          # Expose docker deployment via Ngrok
+
           # Install ngrok
           cd /tmp
           curl -sSL -O https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
@@ -53,6 +52,7 @@ jobs:
           URL="$(curl -sqSL http://localhost:4040/api/tunnels | jq -r ".tunnels[0].public_url")"
           # Remove protocol
           URL_WITHOUT_PROTOCOL="${URL//https:\/\/}"
+
           echo "::set-output name=ngrok-url::${URL}"
           echo "::set-output name=ngrok-url-without-protocol::${URL_WITHOUT_PROTOCOL}"
 
@@ -128,16 +128,16 @@ jobs:
           environment: ${{ env.ENVIRONMENT }}
           tenant-id: ${{ env.TENANT_ID }}
 
-      - name: Test e2e
-        uses: ./cloud-native/.github/actions/e2e-tests
-        with:
-          carto3-workspace-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
-          carto3-tenant-id: ${{ env.TENANT_ID }}
-          secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
-          secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
-          base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
-          # FIXME:
-          github-custom-sha: feature/sc-170633/run-tests-e2e-along-with-the-release-process
+      # - name: Test e2e
+      #   uses: ./cloud-native/.github/actions/e2e-tests
+      #   with:
+      #     carto3-workspace-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
+      #     carto3-tenant-id: ${{ env.TENANT_ID }}
+      #     secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
+      #     secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
+      #     base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
+      #     # FIXME:
+      #     github-custom-sha: feature/sc-170633/run-tests-e2e-along-with-the-release-process
 
       - name: Clean up orgs & Auth0 users
         if: always()
