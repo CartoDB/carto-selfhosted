@@ -135,7 +135,7 @@ jobs:
           carto3-tenant-id: ${{ env.TENANT_ID }}
           secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
           secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
-          base-variable-file: "cloud-native/workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
+          base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
           # FIXME:
           github-custom-sha: feature/sc-170633/run-tests-e2e-along-with-the-release-process
 
@@ -147,7 +147,7 @@ jobs:
           registry-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
           secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
           secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
-          base-variable-file: "cloud-native/workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
+          base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
 
       # TODO: Put a message in the PR?
 
