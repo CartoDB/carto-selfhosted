@@ -178,7 +178,7 @@ jobs:
   auto-merge-pr:
     runs-on: ubuntu-20.04
     name: "Automerge PR"
-    if: sucess()
+    if: success()
     needs:
       - release-testing
     steps:
