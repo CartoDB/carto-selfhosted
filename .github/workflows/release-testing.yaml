@@ -7,6 +7,9 @@ on:
     # paths:
     #   - VERSION
 
+# Only 1 concurrent execution in all the repository
+concurrency: self-hosted-${{ github.repository }}
+
 env:
   # https://github.com/CartoDB/carto3-onprem-customers/tree/master/customers/infra-release
   ENVIRONMENT: production
@@ -16,28 +19,39 @@ jobs:
   release-testing:
     runs-on: ubuntu-20.04
     name: "Release - Testing"
-    timeout-minutes: 60
+    timeout-minutes: 90
 
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
 
-      - name: Install Docker compose
-        uses: KengoTODA/actions-setup-docker-compose@main
+      - name: Google Cloud Auth
+        uses: google-github-actions/auth@v0
         with:
-          version: "2.5.1"
+          credentials_json: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
+          project_id: ${{ env.GOOGLE_PROJECT_ID }}
 
+      - name: Retrieve Selfhosted customer package and Ngrok token
+        id: secrets
+        uses: google-github-actions/get-secretmanager-secrets@v0
+        with:
+          secrets: |-
+            NGROK_TOKEN:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/carto3-ngrok-token
+            CUSTOMER_ENV:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-package
+            KEY_JSON:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-service-account
+
+      # NOTE: Only 1 tunnel can be opened at the same time
       - name: Ngrok tunnel
         id: ngrok-tunnel
         env:
-          NGROK_TOKEN: "29NYgOc10QWedcikUSnpV9F1e5w_4hkpEs8iausqQQMEuinKL"
+          NGROK_TOKEN: ${{ steps.secrets.outputs.NGROK_TOKEN }}
         run: |
           set -xeu
 
           # Install ngrok
           cd /tmp
           curl -sSL -O https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
-          sudo tar -zxvf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin &>/dev/null
+          sudo tar -zxvf ngrok-v3-stable-linux-amd64.tgz -C /usr/local/bin
           cd -
 
           ngrok version
@@ -56,24 +70,15 @@ jobs:
           echo "::set-output name=ngrok-url::${URL}"
           echo "::set-output name=ngrok-url-without-protocol::${URL_WITHOUT_PROTOCOL}"
 
-      - name: Google Cloud Auth
-        uses: google-github-actions/auth@v0
+      - name: Install Docker compose
+        uses: KengoTODA/actions-setup-docker-compose@main
         with:
-          credentials_json: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
-          project_id: ${{ env.GOOGLE_PROJECT_ID }}
-
-      - name: Retrieve Selfhosted customer package
-        id: customer-package
-        uses: google-github-actions/get-secretmanager-secrets@v0
-        with:
-          secrets: |
-            CUSTOMER_ENV:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-package
-            KEY_JSON:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-service-account
+          version: "2.5.1"
 
       - name: Prepare Docker environment
         env:
-          CUSTOMER_ENV: ${{ steps.customer-package.outputs.CUSTOMER_ENV }}
-          KEY_JSON: ${{ steps.customer-package.outputs.KEY_JSON }}
+          CUSTOMER_ENV: ${{ steps.secrets.outputs.CUSTOMER_ENV }}
+          KEY_JSON: ${{ steps.secrets.outputs.KEY_JSON }}
           NGROK_URL: ${{ steps.ngrok-tunnel.outputs.ngrok-url-without-protocol }}
         run: |
           set -e
@@ -91,7 +96,7 @@ jobs:
 
       - name: Bring up Docker environment
         run: |
-          set -e
+          set -eu
           docker-compose version
           docker version
 
@@ -139,95 +144,6 @@ jobs:
           # FIXME:
           github-custom-sha: feature/sc-170633/run-tests-e2e-along-with-the-release-process
 
-      # TODO: Put a message in the PR?
-
-      - name: Create PR message
-        id: pr-message
-        if: always()
-        env:
-          JOB_STATUS: ${{ job.status }}
-        run: |
-          set -xeu
-          if [[ "${JOB_STATUS}" == "success" ]];then
-            MESSAGE=":white_check_mark: Tests passed"
-          else
-            MESSAGE=":x: Something went wrong with tests"
-          fi
-          echo "::set-output name=message::${MESSAGE}"
-
-      - name: Comment PR
-        uses: thollander/actions-comment-pull-request@v1
-        if: always()
-        with:
-          message: ${{ steps.pr-message.outputs.message }}
-          GITHUB_TOKEN: ${{ secrets.X_GITHUB_CARTOFANTE }}
-
-      # TODO: Automerge PR if success
-
-      - name: Update PR
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.X_GITHUB_CARTOFANTE }} # token: cloud_native
-          script: |
-            const { repo: { owner, repo }  } = context;
-            const issue_number = ${{ github.event.number }};
-            const user_responsible = context.actor;
-
-            // Add labels
-            console.log("Adding labels");
-            await github.rest.issues.addLabels({
-              issue_number: issue_number,
-              owner: owner,
-              repo: repo,
-              labels: ["infra"]
-            });
-
-            // Add asignee
-            console.log("Adding assignees");
-            await github.rest.issues.addAssignees({
-              owner: owner,
-              repo: repo,
-              issue_number: issue_number,
-              assignees: ["supercartofante"]
-            });
-
-            // Add reviewer
-            console.log("Adding Reviewers");
-            await github.rest.pulls.requestReviewers({
-              owner: owner,
-              repo: repo,
-              pull_number: issue_number,
-              reviewers: ["supercartofante"]
-            });
-
-            // Create review
-            console.log("Creating Review");
-            review = await github.rest.pulls.createReview({
-              owner: owner,
-              repo: repo,
-              pull_number: issue_number
-            });
-
-            // Approve PR
-            console.log("Approving PR");
-            await github.rest.pulls.submitReview({
-              owner: owner,
-              repo: repo,
-              pull_number: issue_number,
-              event: "APPROVE",
-              review_id: review.data.id,
-              body: ":robot: Nice code _beep_ _boop_"
-            });
-
-            // Merge PR
-            // console.log("Merging automatically");
-            // await github.rest.pulls.merge({
-            //   owner: owner,
-            //   repo: repo,
-            //   pull_number: issue_number,
-            //   merge_method: "merge"
-            // });
-
       # Failure
 
       # FIXME:
@@ -258,3 +174,92 @@ jobs:
             docker logs --timestamps ${con}
             echo "::endgroup::"
           done
+
+  auto-merge-pr:
+    runs-on: ubuntu-20.04
+    name: "Automerge PR"
+    if: sucess()
+    needs:
+      - release-testing
+    steps:
+      # FIXME: ADD automerge PR
+      - name: Update PR
+        uses: actions/github-script@v6
+        if: success()
+        with:
+          github-token: ${{ secrets.X_GITHUB_CARTOFANTE }} # token: cloud_native
+          script: |
+            ;
+            // const { repo: { owner, repo }  } = context;
+            // const issue_number = ${{ github.event.pull_request.number }};
+            // const user_responsible = context.actor;
+
+            // // Add labels
+            // console.log("Adding labels");
+            // await github.rest.issues.addLabels({
+            //   issue_number: issue_number,
+            //   owner: owner,
+            //   repo: repo,
+            //   labels: ["infra"]
+            // });
+
+            // // Add asignee
+            // console.log("Adding assignees");
+            // await github.rest.issues.addAssignees({
+            //   owner: owner,
+            //   repo: repo,
+            //   issue_number: issue_number,
+            //   assignees: ["supercartofante"]
+            // });
+
+            // // Add reviewer
+            // console.log("Adding Reviewers");
+            // await github.rest.pulls.requestReviewers({
+            //   owner: owner,
+            //   repo: repo,
+            //   pull_number: issue_number,
+            //   reviewers: ["supercartofante"]
+            // });
+
+            // // Create review
+            // console.log("Creating Review");
+            // review = await github.rest.pulls.createReview({
+            //   owner: owner,
+            //   repo: repo,
+            //   pull_number: issue_number
+            // });
+
+            // // Approve PR
+            // console.log("Approving PR");
+            // await github.rest.pulls.submitReview({
+            //   owner: owner,
+            //   repo: repo,
+            //   pull_number: issue_number,
+            //   event: "APPROVE",
+            //   review_id: review.data.id,
+            //   body: ":white_check_mark: Tests passed"
+            // });
+
+            // // Merge PR
+            // console.log("Merging automatically");
+            // await github.rest.pulls.merge({
+            //   owner: owner,
+            //   repo: repo,
+            //   pull_number: issue_number,
+            //   merge_method: "merge"
+            // });
+
+  notify-errors:
+    runs-on: ubuntu-20.04
+    name: "Notify errors"
+    if: failure()
+    needs:
+      - release-testing
+    steps:
+      - name: Add comment in PR
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            :x: Something went wrong when testing the new release. Please, [check the associated logs](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}).
