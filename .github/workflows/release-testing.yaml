@@ -137,7 +137,7 @@ jobs:
         with:
           registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
           docker-tag: ${{ steps.info.outputs.release-version }}
-          environment: docker-compose
+          environment: production
           carto3-tenant-id: ${{ env.TENANT_ID }}
 
       # E2E test
