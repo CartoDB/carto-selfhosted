@@ -131,21 +131,28 @@ jobs:
           token: ${{ secrets.X_GITHUB_CARTOFANTE }}
 
       # Integration tests
-      - name: Integration Tests
-        id: integration-tests
-        uses: ./cloud-native/.github/actions/integration-tests
-        with:
-          registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
-          docker-tag: ${{ steps.info.outputs.release-version }}
-          environment: production
-          mount-local-env: false
-          carto3-tenant-id: ${{ env.TENANT_ID }}
-          direct-apis-access: false
-          carto3-workspace-www-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
-          carto3-workspace-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/workspace-api
-          carto3-maps-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
-          carto3-maps-api-direct-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
-          carto3-import-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/import-api
+      # - name: Integration Tests
+      #   id: integration-tests
+      #   uses: ./cloud-native/.github/actions/integration-tests
+      #   with:
+      #     registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
+      #     docker-tag: ${{ steps.info.outputs.release-version }}
+      #     environment: production
+      #     mount-local-env: false
+      #     carto3-tenant-id: ${{ env.TENANT_ID }}
+      #     direct-apis-access: false
+      #     carto3-workspace-www-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
+      #     carto3-workspace-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/workspace-api
+      #     carto3-maps-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
+      #     carto3-maps-api-direct-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
+      #     carto3-import-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/import-api
+
+      # - name: Clean up orgs & Auth0 users for Integration Tests
+      #   uses: ./cloud-native/.github/actions/tests-cleaning
+      #   with:
+      #     environment: ${{ env.ENVIRONMENT }}
+      #     registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
+      #     secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
 
       # E2E test
       - name: Generate env-info
@@ -155,26 +162,26 @@ jobs:
           environment: ${{ env.ENVIRONMENT }}
           tenant-id: ${{ env.TENANT_ID }}
 
-      # - name: Test e2e
-      #   uses: ./cloud-native/.github/actions/e2e-tests
-      #   with:
-      #     carto3-workspace-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
-      #     carto3-tenant-id: ${{ env.TENANT_ID }}
-      #     secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
-      #     secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
-      #     base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
-      #     # FIXME:
-      #     github-custom-sha: feature/sc-170633/run-tests-e2e-along-with-the-release-process
+      - name: Test e2e
+        uses: ./cloud-native/.github/actions/e2e-tests
+        with:
+          carto3-workspace-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
+          carto3-tenant-id: ${{ env.TENANT_ID }}
+          secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
+          secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
+          base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
+          # FIXME:
+          github-custom-sha: feature/sc-170633/run-tests-e2e-along-with-the-release-process
 
-      # In case of Failure
-      - name: Clean up orgs & Auth0 users
-        if: failure()
+      - name: Clean up orgs & Auth0 users for E2E
         uses: ./cloud-native/.github/actions/tests-cleaning
         with:
           environment: ${{ env.ENVIRONMENT }}
           registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
           secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
+          override-run-id: "${{ github.repository }}:${{ github.run_id }}[${{ github.run_attempt }}]"
 
+      # In case of Failure
       - name: Ngrok logs
         if: failure()
         run: |
