@@ -141,14 +141,13 @@ jobs:
           mount-local-env: false
           carto3-tenant-id: ${{ env.TENANT_ID }}
           direct-apis-access: false
-          carto3-workspace-www-url: ${{ steps.ngrok-tunnel.outupts.ngrok-url }}
-          carto3-workspace-api-url: ${{ steps.ngrok-tunnel.outupts.ngrok-url }}/workspace-api
-          carto3-maps-api-url: ${{ steps.ngrok-tunnel.outupts.ngrok-url }}/api
-          carto3-maps-api-direct-url: ${{ steps.ngrok-tunnel.outupts.ngrok-url }}/api
-          carto3-import-api-url: ${{ steps.ngrok-tunnel.outupts.ngrok-url }}/import-api
+          carto3-workspace-www-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
+          carto3-workspace-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/workspace-api
+          carto3-maps-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
+          carto3-maps-api-direct-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
+          carto3-import-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/import-api
 
       # E2E test
-
       - name: Generate env-info
         id: env-info
         uses: ./cloud-native/.github/actions/env-info
