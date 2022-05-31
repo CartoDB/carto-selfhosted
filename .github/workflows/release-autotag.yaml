@@ -12,20 +12,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Retrieve Release Name
+
+      - name: Retrieve Release Version
         id: info
         shell: bash
         run: |
-          set -ex
-          export RELEASE_NAME=$(cat VERSION)
-          echo "::set-output name=release_name::${RELEASE_NAME}"
+          set -xeu
+          echo "::set-output name=release-version::$(cat VERSION)"
+
       - uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit: ${{ github.sha }}
-          name: ${{ steps.info.outputs.release_name }}
-          tag: ${{ steps.info.outputs.release_name }}
-          # draft: true
+          name: ${{ steps.info.outputs.release-version }}
+          tag: ${{ steps.info.outputs.release-version }}
           prerelease: true
           body: |
-            Released the `${{ steps.info.outputs.release_name }}` version
+            Released the `${{ steps.info.outputs.release-version }}` version
