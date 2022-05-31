@@ -31,6 +31,10 @@ jobs:
           credentials_json: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
           project_id: ${{ env.GOOGLE_PROJECT_ID }}
 
+      - name: Retrieve Release Version
+        id: info
+        run: echo "::set-output name=release-version::$(cat VERSION)"
+
       - name: Retrieve Selfhosted customer package and Ngrok token
         id: secrets
         uses: google-github-actions/get-secretmanager-secrets@v0
@@ -132,8 +136,7 @@ jobs:
         uses: ./cloud-native/.github/actions/integration-tests
         with:
           registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
-          docker-tag: ${{ needs.docker-info.outputs.revision_sha }}
-          # Localself
+          docker-tag: ${{ steps.info.outputs.release-version }}
           environment: docker-compose
           carto3-tenant-id: ${{ env.TENANT_ID }}
 
