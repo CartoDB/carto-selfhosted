@@ -3,9 +3,8 @@ on:
   pull_request:
     branches:
       - master
-    # FIXME: Uncomment
-    # paths:
-    #   - VERSION
+    paths:
+      - VERSION
 
 # Only 1 concurrent execution in all the repository
 concurrency: self-hosted-${{ github.repository }}
@@ -124,12 +123,11 @@ jobs:
       - name: Checkout cloud-native repository
         uses: actions/checkout@v3
         with:
-          # FIXME:
-          ref: feature/sc-170633/run-tests-e2e-along-with-the-release-process
           repository: CartoDB/cloud-native
           path: cloud-native
           token: ${{ secrets.X_GITHUB_CARTOFANTE }}
 
+      # FIXME: Disabled as they are not working now
       # Integration tests
       # - name: Integration Tests
       #   id: integration-tests
@@ -170,8 +168,7 @@ jobs:
           secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
           secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
           base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
-          # FIXME:
-          github-custom-sha: feature/sc-170633/run-tests-e2e-along-with-the-release-process
+          github-custom-sha: main
 
       - name: Clean up orgs & Auth0 users for E2E
         uses: ./cloud-native/.github/actions/tests-cleaning

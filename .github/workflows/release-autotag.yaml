@@ -15,10 +15,7 @@ jobs:
 
       - name: Retrieve Release Version
         id: info
-        shell: bash
-        run: |
-          set -xeu
-          echo "::set-output name=release-version::$(cat VERSION)"
+        run: echo "::set-output name=release-version::$(cat VERSION)"
 
       - uses: ncipollo/release-action@v1
         with:
