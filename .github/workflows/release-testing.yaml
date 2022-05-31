@@ -138,7 +138,14 @@ jobs:
           registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
           docker-tag: ${{ steps.info.outputs.release-version }}
           environment: production
+          mount-local-env: false
           carto3-tenant-id: ${{ env.TENANT_ID }}
+          direct-apis-access: false
+          carto3-workspace-www-url: ${{ steps.ngrok-tunnel.outupts.ngrok-url }}
+          carto3-workspace-api-url: ${{ steps.ngrok-tunnel.outupts.ngrok-url }}/workspace-api
+          carto3-maps-api-url: ${{ steps.ngrok-tunnel.outupts.ngrok-url }}/api
+          carto3-maps-api-direct-url: ${{ steps.ngrok-tunnel.outupts.ngrok-url }}/api
+          carto3-import-api-url: ${{ steps.ngrok-tunnel.outupts.ngrok-url }}/import-api
 
       # E2E test
 
