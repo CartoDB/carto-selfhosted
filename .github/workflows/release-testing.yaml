@@ -128,16 +128,16 @@ jobs:
           environment: ${{ env.ENVIRONMENT }}
           tenant-id: ${{ env.TENANT_ID }}
 
-      # - name: Test e2e
-      #   uses: ./cloud-native/.github/actions/e2e-tests
-      #   with:
-      #     carto3-workspace-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
-      #     carto3-tenant-id: ${{ env.TENANT_ID }}
-      #     secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
-      #     secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
-      #     base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
-      #     # FIXME:
-      #     github-custom-sha: feature/sc-170633/run-tests-e2e-along-with-the-release-process
+      - name: Test e2e
+        uses: ./cloud-native/.github/actions/e2e-tests
+        with:
+          carto3-workspace-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
+          carto3-tenant-id: ${{ env.TENANT_ID }}
+          secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
+          secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
+          base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
+          # FIXME:
+          github-custom-sha: feature/sc-170633/run-tests-e2e-along-with-the-release-process
 
       # TODO: Put a message in the PR?
 
@@ -162,15 +162,82 @@ jobs:
           message: ${{ steps.pr-message.outputs.message }}
           GITHUB_TOKEN: ${{ secrets.X_GITHUB_CARTOFANTE }}
 
+      # TODO: Automerge PR if success
+
+      - name: Update PR
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.X_GITHUB_CARTOFANTE }} # token: cloud_native
+          script: |
+            const { repo: { owner, repo }  } = context;
+            const issue_number = ${{ github.event.number }};
+            const user_responsible = context.actor;
+
+            // Add labels
+            console.log("Adding labels");
+            await github.rest.issues.addLabels({
+              issue_number: issue_number,
+              owner: owner,
+              repo: repo,
+              labels: ["infra"]
+            });
+
+            // Add asignee
+            console.log("Adding assignees");
+            await github.rest.issues.addAssignees({
+              owner: owner,
+              repo: repo,
+              issue_number: issue_number,
+              assignees: ["supercartofante"]
+            });
+
+            // Add reviewer
+            console.log("Adding Reviewers");
+            await github.rest.pulls.requestReviewers({
+              owner: owner,
+              repo: repo,
+              pull_number: issue_number,
+              reviewers: ["supercartofante"]
+            });
+
+            // Create review
+            console.log("Creating Review");
+            review = await github.rest.pulls.createReview({
+              owner: owner,
+              repo: repo,
+              pull_number: issue_number
+            });
+
+            // Approve PR
+            console.log("Approving PR");
+            await github.rest.pulls.submitReview({
+              owner: owner,
+              repo: repo,
+              pull_number: issue_number,
+              event: "APPROVE",
+              review_id: review.data.id,
+              body: ":robot: Nice code _beep_ _boop_"
+            });
+
+            // Merge PR
+            // console.log("Merging automatically");
+            // await github.rest.pulls.merge({
+            //   owner: owner,
+            //   repo: repo,
+            //   pull_number: issue_number,
+            //   merge_method: "merge"
+            // });
+
       # Failure
 
-      - name: Clean up orgs & Auth0 users
-        if: failure()
-        uses: ./cloud-native/.github/actions/tests-cleaning
-        with:
-          environment: "${{ env.ENVIRONMENT }}"
-          registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
-          secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
+      # FIXME:
+      # - name: Clean up orgs & Auth0 users
+      #   if: failure()
+      #   uses: ./cloud-native/.github/actions/tests-cleaning
+      #   with:
+      #     environment: "${{ env.ENVIRONMENT }}"
+      #     registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
+      #     secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
 
       - name: Ngrok logs
         if: failure()
