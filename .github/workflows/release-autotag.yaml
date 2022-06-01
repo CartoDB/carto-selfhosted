@@ -1,0 +1,28 @@
+name: Release - Autotag
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "VERSION"
+jobs:
+  create-tag:
+    timeout-minutes: 3
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Retrieve Release Version
+        id: info
+        run: echo "::set-output name=release-version::$(cat VERSION)"
+
+      - uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit: ${{ github.sha }}
+          name: ${{ steps.info.outputs.release-version }}
+          tag: ${{ steps.info.outputs.release-version }}
+          prerelease: true
+          body: |
+            Released the `${{ steps.info.outputs.release-version }}` version
