@@ -3,8 +3,8 @@ on:
   pull_request:
     branches:
       - master
-    # paths:
-    #   - VERSION
+    paths:
+      - VERSION
 
 # Only 1 concurrent execution in all the repository
 concurrency: self-hosted-${{ github.repository }}
@@ -217,8 +217,8 @@ jobs:
       # - name: Automerge PR
       #   uses: ./cloud-native/.github/actions/automerge-pr
       #   with:
-      #     github-token: ${{ secrets.X_GITHUB_SUPERCARTOFANTE }} # token: carto_selfhosted
-      #     github-user: supercartofante
+      #     github-token: ${{ secrets.X_GITHUB_CARTOFANTE }} # token: carto_selfhosted
+      #     github-user: cartofante
       #     pr-number: ${{ github.event.pull_request.number }}
 
   notify-errors:
