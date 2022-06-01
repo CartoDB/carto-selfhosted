@@ -237,7 +237,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            :x: Something went wrong testing the new `${{ env.RELEASE_VERSION }}` release. Please, [check the associated GHAction logs](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}).
+            :x: Something went wrong testing the new `${{ env.RELEASE_VERSION }}` release. Please, check the associated [GHAction logs](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}).
 
       - uses: kceb/pull-request-url-action@v1
         id: pr-url
