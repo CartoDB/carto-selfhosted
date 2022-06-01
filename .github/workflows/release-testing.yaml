@@ -3,8 +3,8 @@ on:
   pull_request:
     branches:
       - master
-    paths:
-      - VERSION
+    # paths:
+    #   - VERSION
 
 # Only 1 concurrent execution in all the repository
 concurrency: self-hosted-${{ github.repository }}
