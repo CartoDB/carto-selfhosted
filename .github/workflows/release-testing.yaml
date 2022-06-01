@@ -19,7 +19,8 @@ jobs:
     runs-on: ubuntu-20.04
     name: "Release - Testing"
     timeout-minutes: 90
-
+    outputs:
+      release-version: ${{ steps.info.outputs.release-version }}
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
@@ -227,6 +228,8 @@ jobs:
     if: failure()
     needs:
       - release-testing
+    env:
+      RELEASE_VERSION: ${{ needs.release-testing.outputs.release-version }}
     steps:
       - name: Add comment in PR
         uses: peter-evans/create-or-update-comment@v2
@@ -234,4 +237,17 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
-            :x: Something went wrong testing the new release. Please, [check the associated logs](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}).
+            :x: Something went wrong testing the new `${{ env.RELEASE_VERSION }}` release. Please, [check the associated GHAction logs](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}).
+
+      - uses: kceb/pull-request-url-action@v1
+        id: pr-url
+      - name: Slack notification (#carto-selfhosted)
+        env:
+          SLACK_CHANNEL: C02PADFM0E4 #carto-selfhosted
+        run: |
+          curl -F "text=:x: Something went wrong testing the new `${{ env.RELEASE_VERSION }}` release in `carto-selfhosted``. Please take a look
+           - *<${{steps.pr-url.outputs.url}}|Pull Request Docker>*
+           - *<https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|GHAction Logs>*"
+            -F "channel=${SLACK_CHANNEL}" \
+            -H "Authorization: Bearer ${{ secrets.SLACK_KEY }}" \
+            -X POST https://slack.com/api/chat.postMessage
