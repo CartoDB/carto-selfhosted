@@ -245,7 +245,7 @@ jobs:
         env:
           SLACK_CHANNEL: C02PADFM0E4 #carto-selfhosted
         run: |
-          curl -F "text=:x: Something went wrong testing the new `${{ env.RELEASE_VERSION }}` release in `carto-selfhosted``. Please take a look
+          curl -F "text=:x: Something went wrong testing the new `${{ env.RELEASE_VERSION }}` release in `carto-selfhosted`. Please take a look
            - *<${{steps.pr-url.outputs.url}}|Pull Request Docker>*
            - *<https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|GHAction Logs>*"
             -F "channel=${SLACK_CHANNEL}" \
