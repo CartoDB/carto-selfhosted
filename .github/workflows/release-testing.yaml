@@ -135,6 +135,7 @@ jobs:
         id: git-info
         env:
           RELEASE_VERSION: ${{ steps.info.outputs.release-version }}
+        working-directory: cloud-native
         run: |
           run: echo "::set-output name=git-tag-sha::$(git rev-parse ${RELEASE_VERSION})"
 
