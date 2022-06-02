@@ -3,9 +3,8 @@ on:
   pull_request:
     branches:
       - master
-    # FIXME:
-    # paths:
-    #   - VERSION
+    paths:
+      - VERSION
 
 # Only 1 concurrent execution in all the repository
 concurrency: self-hosted-${{ github.repository }}
@@ -86,7 +85,7 @@ jobs:
           KEY_JSON: ${{ steps.secrets.outputs.KEY_JSON }}
           NGROK_URL: ${{ steps.ngrok-tunnel.outputs.ngrok-url-without-protocol }}
         run: |
-          set -e
+          set -xeu
           echo Testing Selfhosted version: $(cat VERSION)
 
           echo "${CUSTOMER_ENV}" > customer.env
@@ -155,7 +154,7 @@ jobs:
       #     carto3-workspace-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/workspace-api
       #     carto3-maps-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
       #     carto3-maps-api-direct-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
-      #     carto3-import-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/import-api
+      #     carto3-import-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
 
       # - name: Clean up orgs & Auth0 users for Integration Tests
       #   uses: ./cloud-native/.github/actions/tests-cleaning
@@ -252,9 +251,7 @@ jobs:
 
       - name: Slack notification (#carto-selfhosted)
         env:
-          # FIXME:
-          # SLACK_CHANNEL: C02PADFM0E4 #carto-selfhosted
-          SLACK_CHANNEL: C01UQE5MJR0
+           SLACK_CHANNEL: C02PADFM0E4 #carto-selfhosted
         run: |
           curl -F "text=:x: Something went wrong testing the new \`${{ env.RELEASE_VERSION }}\` release in \`carto-selfhosted\`. Please take a look
            - *<${{github.event.pull_request.html_url}}|Pull Request Docker>*
