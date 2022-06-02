@@ -241,9 +241,6 @@ jobs:
     env:
       RELEASE_VERSION: ${{ needs.release-testing.outputs.release-version }}
     steps:
-      - name: Checkout project
-        uses: actions/checkout@v3
-
       - name: Add comment in PR
         uses: peter-evans/create-or-update-comment@v2
         with:
@@ -252,11 +249,6 @@ jobs:
           body: |
             :x: Something went wrong testing the new `${{ env.RELEASE_VERSION }}` release. Please, check the associated [GHAction logs](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}).
 
-      - uses: kceb/pull-request-url-action@v1
-        id: pr-url
-        with:
-          github-oauth-token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Slack notification (#carto-selfhosted)
         env:
           # FIXME:
@@ -264,7 +256,7 @@ jobs:
           SLACK_CHANNEL: C01UQE5MJR0
         run: |
           curl -F "text=:x: Something went wrong testing the new \`${{ env.RELEASE_VERSION }}\` release in \`carto-selfhosted\`. Please take a look
-           - *<${{steps.pr-url.outputs.url}}|Pull Request Docker>*
+           - *<${{github.event.pull_request.html_url}}|Pull Request Docker>*
            - *<https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|GHAction Logs>*" \
             -F "channel=${SLACK_CHANNEL}" \
             -H "Authorization: Bearer ${{ secrets.SLACK_KEY }}" \
