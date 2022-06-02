@@ -85,7 +85,7 @@ jobs:
           KEY_JSON: ${{ steps.secrets.outputs.KEY_JSON }}
           NGROK_URL: ${{ steps.ngrok-tunnel.outputs.ngrok-url-without-protocol }}
         run: |
-          set -e
+          set -xeu
           echo Testing Selfhosted version: $(cat VERSION)
 
           echo "${CUSTOMER_ENV}" > customer.env
@@ -125,8 +125,18 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: CartoDB/cloud-native
+          fetch-depth: 0 # Fetch the tags
           path: cloud-native
           token: ${{ secrets.X_GITHUB_CARTOFANTE }}
+
+      # This tag and commit are from cloud-native repository
+      - name: Get SHA commit associated to the release tag
+        id: git-info
+        env:
+          RELEASE_VERSION: ${{ steps.info.outputs.release-version }}
+        working-directory: cloud-native
+        run: |
+          echo "::set-output name=git-tag-sha::$(git rev-parse ${RELEASE_VERSION})"
 
       # FIXME: Disabled as they are not working now
       # Integration tests
@@ -144,7 +154,7 @@ jobs:
       #     carto3-workspace-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/workspace-api
       #     carto3-maps-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
       #     carto3-maps-api-direct-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
-      #     carto3-import-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/import-api
+      #     carto3-import-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
 
       # - name: Clean up orgs & Auth0 users for Integration Tests
       #   uses: ./cloud-native/.github/actions/tests-cleaning
@@ -169,7 +179,7 @@ jobs:
           secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
           secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
           base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
-          github-custom-sha: main
+          github-custom-sha: ${{ steps.git-info.outputs.git-tag-sha }}
 
       - name: Clean up orgs & Auth0 users for E2E
         uses: ./cloud-native/.github/actions/tests-cleaning
@@ -239,14 +249,12 @@ jobs:
           body: |
             :x: Something went wrong testing the new `${{ env.RELEASE_VERSION }}` release. Please, check the associated [GHAction logs](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}).
 
-      - uses: kceb/pull-request-url-action@v1
-        id: pr-url
       - name: Slack notification (#carto-selfhosted)
         env:
           SLACK_CHANNEL: C02PADFM0E4 #carto-selfhosted
         run: |
-          curl -F "text=:x: Something went wrong testing the new `${{ env.RELEASE_VERSION }}` release in `carto-selfhosted`. Please take a look
-           - *<${{steps.pr-url.outputs.url}}|Pull Request Docker>*
+          curl -F "text=:x: Something went wrong testing the new \`${{ env.RELEASE_VERSION }}\` release in \`carto-selfhosted\`. Please take a look
+           - *<${{github.event.pull_request.html_url}}|Pull Request Docker>*
            - *<https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|GHAction Logs>*" \
             -F "channel=${SLACK_CHANNEL}" \
             -H "Authorization: Bearer ${{ secrets.SLACK_KEY }}" \
