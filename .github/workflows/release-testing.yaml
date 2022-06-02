@@ -128,6 +128,14 @@ jobs:
           path: cloud-native
           token: ${{ secrets.X_GITHUB_CARTOFANTE }}
 
+      # This tag and commit are from cloud-native repository
+      - name: Get SHA commit associated to the release tag
+        id: git-info
+        env:
+          RELEASE_VERSION: ${{ steps.info.outputs.release-version }}
+        run: |
+          run: echo "::set-output name=git-tag-sha::$(git rev-parse ${RELEASE_VERSION})"
+
       # FIXME: Disabled as they are not working now
       # Integration tests
       # - name: Integration Tests
@@ -169,7 +177,7 @@ jobs:
           secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT }}
           secrets-manager-path: ${{ steps.env-info.outputs.e2e-secrets-manager-path }}
           base-variable-file: "workspace-www/${{ steps.env-info.outputs.workspace-www-url-env-vars-file-relative-path }}"
-          github-custom-sha: main
+          github-custom-sha: ${{ steps.git-info.outputs.git-tag-sha }}
 
       - name: Clean up orgs & Auth0 users for E2E
         uses: ./cloud-native/.github/actions/tests-cleaning
@@ -241,11 +249,14 @@ jobs:
 
       - uses: kceb/pull-request-url-action@v1
         id: pr-url
+        with:
+          github-oauth-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Slack notification (#carto-selfhosted)
         env:
           SLACK_CHANNEL: C02PADFM0E4 #carto-selfhosted
         run: |
-          curl -F "text=:x: Something went wrong testing the new `${{ env.RELEASE_VERSION }}` release in `carto-selfhosted`. Please take a look
+          curl -F "text=:x: Something went wrong testing the new \`${{ env.RELEASE_VERSION }}\` release in \`carto-selfhosted\`. Please take a look
            - *<${{steps.pr-url.outputs.url}}|Pull Request Docker>*
            - *<https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}|GHAction Logs>*" \
             -F "channel=${SLACK_CHANNEL}" \
