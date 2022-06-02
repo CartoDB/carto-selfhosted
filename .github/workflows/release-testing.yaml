@@ -241,6 +241,9 @@ jobs:
     env:
       RELEASE_VERSION: ${{ needs.release-testing.outputs.release-version }}
     steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+
       - name: Add comment in PR
         uses: peter-evans/create-or-update-comment@v2
         with:
@@ -256,7 +259,9 @@ jobs:
 
       - name: Slack notification (#carto-selfhosted)
         env:
-          SLACK_CHANNEL: C02PADFM0E4 #carto-selfhosted
+          # FIXME:
+          # SLACK_CHANNEL: C02PADFM0E4 #carto-selfhosted
+          SLACK_CHANNEL: C01UQE5MJR0
         run: |
           curl -F "text=:x: Something went wrong testing the new \`${{ env.RELEASE_VERSION }}\` release in \`carto-selfhosted\`. Please take a look
            - *<${{steps.pr-url.outputs.url}}|Pull Request Docker>*
