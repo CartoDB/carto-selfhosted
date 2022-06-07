@@ -138,30 +138,30 @@ jobs:
         run: |
           echo "::set-output name=git-tag-sha::$(git rev-parse ${RELEASE_VERSION})"
 
-      # FIXME: Disabled as they are not working now
       # Integration tests
-      # - name: Integration Tests
-      #   id: integration-tests
-      #   uses: ./cloud-native/.github/actions/integration-tests
-      #   with:
-      #     registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
-      #     docker-tag: ${{ steps.info.outputs.release-version }}
-      #     environment: production
-      #     mount-local-env: false
-      #     carto3-tenant-id: ${{ env.TENANT_ID }}
-      #     direct-apis-access: false
-      #     carto3-workspace-www-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
-      #     carto3-workspace-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/workspace-api
-      #     carto3-maps-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
-      #     carto3-maps-api-direct-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
-      #     carto3-import-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
+      - name: Integration Tests
+        id: integration-tests
+        uses: ./cloud-native/.github/actions/integration-tests
+        with:
+          registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
+          docker-tag: ${{ steps.info.outputs.release-version }}
+          environment: production
+          mount-local-env: false
+          carto3-tenant-id: ${{ env.TENANT_ID }}
+          direct-apis-access: false
+          carto3-workspace-www-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}
+          carto3-workspace-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/workspace-api
+          carto3-maps-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
+          carto3-maps-api-direct-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
+          carto3-import-api-url: ${{ steps.ngrok-tunnel.outputs.ngrok-url }}/api
 
-      # - name: Clean up orgs & Auth0 users for Integration Tests
-      #   uses: ./cloud-native/.github/actions/tests-cleaning
-      #   with:
-      #     environment: ${{ env.ENVIRONMENT }}
-      #     registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
-      #     secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
+      - name: Clean up orgs & Auth0 users for Integration Tests
+        if: always()
+        uses: ./cloud-native/.github/actions/tests-cleaning
+        with:
+          environment: ${{ env.ENVIRONMENT }}
+          registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
+          secrets-service-account: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
 
       # E2E test
       - name: Generate env-info
@@ -182,6 +182,7 @@ jobs:
           github-custom-sha: ${{ steps.git-info.outputs.git-tag-sha }}
 
       - name: Clean up orgs & Auth0 users for E2E
+        if: always()
         uses: ./cloud-native/.github/actions/tests-cleaning
         with:
           environment: ${{ env.ENVIRONMENT }}
