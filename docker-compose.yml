@@ -15,6 +15,9 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 512M
+    mem_reservation: 372M
+    cpus: 0.5
 
   http-cache:
     image: "${HTTP_CACHE_DOCKER_IMAGE}"
@@ -28,6 +31,9 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 1024M
+    mem_reservation: 768M
+    cpus: 0.5
 
   accounts-www:
     image: "${ACCOUNTS_WWW_DOCKER_IMAGE}"
@@ -39,6 +45,9 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 1024M
+    mem_reservation: 768M
+    cpus: 0.5
 
   workspace-www:
     image: "${WORKSPACE_WWW_DOCKER_IMAGE}"
@@ -50,6 +59,9 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 1024M
+    mem_reservation: 768M
+    cpus: 0.5
 
   workspace-api:
     image: "${WORKSPACE_API_DOCKER_IMAGE}"
@@ -66,6 +78,9 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 1024M
+    mem_reservation: 768M
+    cpus: 1
 
   workspace-subscriber:
     image: "${WORKSPACE_API_DOCKER_IMAGE}"
@@ -79,6 +94,9 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 512M
+    mem_reservation: 372M
+    cpus: 0.25
 
   workspace-migrations:
     image: "${WORKSPACE_MIGRATIONS_DOCKER_IMAGE}"
@@ -92,6 +110,9 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 512M
+    mem_reservation: 248M
+    cpus: 0.25
 
   maps-api:
     image: "${MAPS_API_DOCKER_IMAGE}"
@@ -107,6 +128,10 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 2048M
+    mem_reservation: 768M
+    cpus: 1
+
   cdn-invalidator-sub:
     image: "${CDN_INVALIDATOR_SUB_DOCKER_IMAGE}"
     command: npm run start:built
@@ -120,6 +145,10 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 512M
+    mem_reservation: 372M
+    cpus: 0.25
+
   import-api:
     image: "${IMPORT_API_DOCKER_IMAGE}"
     env_file:
@@ -132,6 +161,9 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 512M
+    mem_reservation: 372M
+    cpus: 1
 
   import-worker:
     image: "${IMPORT_API_DOCKER_IMAGE}"
@@ -145,6 +177,9 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 4096M
+    mem_reservation: 2048M
+    cpus: 1
 
   lds-api:
     image: "${LDS_API_DOCKER_IMAGE}"
@@ -158,6 +193,9 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 1024M
+    mem_reservation: 768M
+    cpus: 1
 
   workspace-postgres:
     scale: "${LOCAL_POSTGRES_SCALE}"
@@ -175,6 +213,9 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 2048M
+    mem_reservation: 1024M
+    cpus: 1
 
   redis:
     scale: "${LOCAL_REDIS_SCALE}"
@@ -187,6 +228,9 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+    mem_limit: 1024M
+    mem_reservation: 768M
+    cpus: 0.5
 networks:
   default:
 
