@@ -211,27 +211,27 @@ jobs:
             echo "::endgroup::"
           done
 
-  auto-merge-pr:
-    runs-on: ubuntu-20.04
-    name: "Automerge PR"
-    if: success()
-    needs:
-      - release-testing
-    steps:
-      - name: Checkout cloud-native repository
-        uses: actions/checkout@v3
-        with:
-          repository: CartoDB/cloud-native
-          path: cloud-native
-          token: ${{ secrets.X_GITHUB_CARTOFANTE }}
+  # auto-merge-pr:
+  #   runs-on: ubuntu-20.04
+  #   name: "Automerge PR"
+  #   if: success()
+  #   needs:
+  #     - release-testing
+  #   steps:
+  #     - name: Checkout cloud-native repository
+  #       uses: actions/checkout@v3
+  #       with:
+  #         repository: CartoDB/cloud-native
+  #         path: cloud-native
+  #         token: ${{ secrets.X_GITHUB_CARTOFANTE }}
 
-      # FIXME: Uncomment when stable
-      # - name: Automerge PR
-      #   uses: ./cloud-native/.github/actions/automerge-pr
-      #   with:
-      #     github-token: ${{ secrets.X_GITHUB_CARTOFANTE }} # token: carto_selfhosted
-      #     github-user: cartofante
-      #     pr-number: ${{ github.event.pull_request.number }}
+  #     # FIXME: Uncomment when stable
+  #     - name: Automerge PR
+  #       uses: ./cloud-native/.github/actions/automerge-pr
+  #       with:
+  #         github-token: ${{ secrets.X_GITHUB_CARTOFANTE }} # token: carto_selfhosted
+  #         github-user: cartofante
+  #         pr-number: ${{ github.event.pull_request.number }}
 
   notify-errors:
     runs-on: ubuntu-20.04
