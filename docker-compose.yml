@@ -107,6 +107,21 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+  sql-worker:
+    image: "${MAPS_API_DOCKER_IMAGE}"
+    env_file:
+      - .env
+    command: bash -c "npm run ready-to-run:built && npm run start:built:subscriber"
+    volumes: *default-volumes
+    environment:
+      - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
+    restart: unless-stopped
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
   cdn-invalidator-sub:
     image: "${CDN_INVALIDATOR_SUB_DOCKER_IMAGE}"
     command: npm run start:built
