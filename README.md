@@ -10,6 +10,7 @@
       - [External Domain](#external-domain)
       - [Google Maps](#google-maps)
       - [Custom buckets](#custom-buckets)
+      - [Enable BigQuery Oauth connections](#enable-bigquery-oauth-connections)
   - [Update](#update)
   - [Migrate to Kubernetes](#migrate-to-kubernetes)
   - [Troubleshooting](#troubleshooting)
@@ -94,6 +95,7 @@ Optional
 - [External Redis](#external-redis)
 - [Google Maps](#google-maps)
 - [Custom Buckets](#custom-buckets)
+- [Enable BigQuery Oauth connections](#enable-bigquery-oauth-connections)
 
 > :warning: Anytime you edit the `customer.env` file to change the CARTO configuration you will need to run the `install.sh` script to updathe the `.env` file used by Docker compose
 
@@ -288,6 +290,29 @@ If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_A
 #### Custom buckets
 
 In case you want to use your own cloud buckets, read the information in `customer.env` and uncomment the supported provider (AWS S3, GCP Buckets or Azure Buckets). Fill in the [credentials](doc/buckets.md).
+
+#### Enable BigQuery Oauth connections
+
+This feature allows users to create a BigQuery connection using `Sign in with Google` instead of providing a service account key. Note that connections created with Oauth cannot be shared with other organization users.
+
+1. Create an oauth consent screen inside the desired GCP project. URL: https://console.cloud.google.com/apis/credentials/consent?referrer=search&project={project_id}
+   - Introduce an app name and a user support email.
+   - Add an authorized domain (the one used in your email).
+   - Add another email as dev contact info (it can be the same).
+   - Add the following scopes: `./auth/userinfo.email`, `./auth/userinfo.profile` & `./auth/bigquery`.
+
+2. Create an Oauth credentials. URL: https://console.cloud.google.com/apis/credentials?project={project_id}
+   - Type: Web application.
+   - Authorized JavaScript origins: `https://<your_selfhosted_domain>`.
+   - Authorized redirect URIs: `https://<your_selfhosted_domain>/connections/bigquery/oauth`.
+   - Download the credentials file.
+
+3. In your selfhosted's env file, set the following vars with the values from the credentials file:
+```
+REACT_APP_BIGQUERY_OAUTH=true
+BIGQUERY_OAUTH2_CLIENT_ID=<value_from_credentials_web_client_id>
+BIGQUERY_OAUTH2_CLIENT_SECRET=<value_from_credentials_web_client_secret>
+```
 
 ## Update
 
