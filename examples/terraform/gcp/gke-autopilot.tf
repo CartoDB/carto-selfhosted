@@ -14,7 +14,7 @@ resource "google_compute_subnetwork" "gke_autopilot_subnet" {
   network       = google_compute_network.gke_autopilot_network.id
 }
 
-# GKE cluster
+# GKE Autopilot private cluster
 resource "google_container_cluster" "default" {
   name     = "gke-autopilot"
   project  = local.project_id
