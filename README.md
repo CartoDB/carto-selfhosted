@@ -169,22 +169,25 @@ Open with an editor the `customer.env` file and modify the next variables
 
 ##### Configure SSL
 
-By default CARTO will try to connect to your Postgresql without SSL. In case you want to connect via SSL, you can configure it via the next env vars
+By default CARTO will try to connect to your external Postgresql using SSL.
 
-```
-WORKSPACE_POSTGRES_SSL_ENABLED=true
-WORKSPACE_POSTGRES_SSL_MODE=require
-```
-
-> :warning: In case you are connecting to a Postgresql where the SSL certificate is selfsigned or from a custom CA you will need to configure the `WORKSPACE_POSTGRES_SSL_CA` variable
-
-1. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `postgresql-ssl-ca.crt`
-2. Uncomment the `WORKSPACE_POSTGRES_SSL_CA` env var in the `customer.env` file
+> :warning: In case the SSL certificate is selfsigned or from a custom CA you will need to configure the `WORKSPACE_POSTGRES_SSL_CA` variable
+>
+> 1. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `postgresql-ssl-ca.crt`
+> 2. Uncomment the `WORKSPACE_POSTGRES_SSL_CA` env var in the `customer.env` file
 
 ```diff
 # Only applies if Postgres SSL certificate is selfsigned, read the documentation
 - # WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
 + WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
+```
+
+To connect to your external Postgresql without SSL, you'll need to configure the following variables:
+```diff
+- WORKSPACE_POSTGRES_SSL_ENABLED=true
+- WORKSPACE_POSTGRES_SSL_MODE=require
++ WORKSPACE_POSTGRES_SSL_ENABLED=false
++ WORKSPACE_POSTGRES_SSL_MODE=disable
 ```
 
 ##### Azure Postgresql
