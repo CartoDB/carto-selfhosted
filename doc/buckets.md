@@ -75,38 +75,6 @@ IMPORT_PROJECTID=<gcp_project_id>
 
 > If `<BUCKET>_PROJECTID` is not defined  env `GOOGLE_CLOUD_PROJECT` is used as default value
 
-## Azure Blob Storage
-
-In order to use Azure Storage buckets (aka containers) you need to:
-
-1. Create an storage account if you don't have one already.
-
-2. Create the storage buckets. If you set the `Public Access Mode` to `private` in the bucket properties, make sure you set `appConfigValues.workspaceThumbnailsPublic` to `false`.
-
-3. Generate an Access Key, from the storage account's Security properties.
-
-4. Set the following variables in your customer.env file:
-
-```bash
-# Thumbnails bucket
-WORKSPACE_THUMBNAILS_PROVIDER='azure-blob'
-WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
-WORKSPACE_THUMBNAILS_STORAGE_ACCOUNT=<storage_account_name>
-WORKSPACE_THUMBNAILS_STORAGE_ACCESSKEY=<access_key>
-
-# Client bucket
-WORKSPACE_IMPORTS_PROVIDER='azure-blob'
-WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
-WORKSPACE_IMPORTS_STORAGE_ACCOUNT=<storage_account_name>
-WORKSPACE_IMPORTS_STORAGE_ACCESSKEY=<access_key>
-
-# Import bucket
-IMPORT_PROVIDER='azure-blob'
-IMPORT_BUCKET=<import_bucket_name>
-IMPORT_STORAGE_ACCOUNT=<storage_account_name>
-IMPORT_STORAGE_ACCESSKEY=<access_key>
-```
-
 ## AWS S3
 
 In order to use AWS S3 custom buckets you need to:
@@ -141,6 +109,38 @@ IMPORT_BUCKET=<import_bucket_name>
 IMPORT_ACCESSKEYID=<aws_access_key_id>
 IMPORT_SECRETACCESSKEY=<aws_access_key_secret>
 IMPORT_REGION=<aws_s3_region>
+```
+
+## Azure Blob Storage
+
+In order to use Azure Storage buckets (aka containers) you need to:
+
+1. Create an storage account if you don't have one already.
+
+2. Create the storage buckets. If you set the `Public Access Mode` to `private` in the bucket properties, make sure you set `appConfigValues.workspaceThumbnailsPublic` to `false`.
+
+3. Generate an Access Key, from the storage account's Security properties.
+
+4. Set the following variables in your customer.env file:
+
+```bash
+# Thumbnails bucket
+WORKSPACE_THUMBNAILS_PROVIDER='azure-blob'
+WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
+WORKSPACE_THUMBNAILS_STORAGE_ACCOUNT=<storage_account_name>
+WORKSPACE_THUMBNAILS_STORAGE_ACCESSKEY=<access_key>
+
+# Client bucket
+WORKSPACE_IMPORTS_PROVIDER='azure-blob'
+WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
+WORKSPACE_IMPORTS_STORAGE_ACCOUNT=<storage_account_name>
+WORKSPACE_IMPORTS_STORAGE_ACCESSKEY=<access_key>
+
+# Import bucket
+IMPORT_PROVIDER='azure-blob'
+IMPORT_BUCKET=<import_bucket_name>
+IMPORT_STORAGE_ACCOUNT=<storage_account_name>
+IMPORT_STORAGE_ACCESSKEY=<access_key>
 ```
 
 ### Notes
