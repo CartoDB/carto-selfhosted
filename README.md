@@ -1,12 +1,16 @@
 # CARTO Self Hosted [Docker]
 
-- [Carto Self Hosted](#carto-self-hosted-docker)
+- [CARTO Self Hosted [Docker]](#carto-self-hosted-docker)
   - [Installation](#installation)
     - [Prerequisites](#prerequisites)
     - [Installation Steps](#installation-steps)
     - [Production Ready](#production-ready)
+      - [Custom Service Account](#custom-service-account)
       - [External Database](#external-database)
+        - [Configure SSL](#configure-ssl)
+        - [Azure Postgresql](#azure-postgresql)
       - [External Redis](#external-redis)
+        - [Configure TLS](#configure-tls)
       - [External Domain](#external-domain)
       - [Google Maps](#google-maps)
       - [Custom buckets](#custom-buckets)
@@ -14,6 +18,7 @@
   - [Update](#update)
   - [Migrate to Kubernetes](#migrate-to-kubernetes)
   - [Troubleshooting](#troubleshooting)
+    - [Cloud SQL Connection configuration](#cloud-sql-connection-configuration)
 
 Deploy CARTO in a Self Hosted environment. It's provided in two flavours
 
@@ -98,6 +103,14 @@ Optional
 - [Enable BigQuery Oauth connections](#enable-bigquery-oauth-connections)
 
 > :warning: Anytime you edit the `customer.env` file to change the CARTO configuration you will need to run the `install.sh` script to updathe the `.env` file used by Docker compose
+
+#### Custom Service Account
+
+For each CARTO self hosted installation, we create and provide a Google Cloud Platform Service Account key that the CARTO backend uses to authenticate requests to Google APIs. 
+
+If you prefer using your own GCP Service Account, please do the following prior to the Self Hosted installation:
+1. Create a dedicated Service Account for the CARTO Self Hosted.
+2. Contact CARTO support team and provide them the service account email.
 
 #### External Database
 
