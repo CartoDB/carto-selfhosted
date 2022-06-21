@@ -55,7 +55,7 @@ cd carto-selfhosted
 - `customer.env`
 - `key.json`
 
-4. Configure the CARTO domain. The env var `SELFHOSTD_DOMAIN` defines the domain used by CARTO, by default this domain will point to `carto3-onprem.lan`. In order to access CARTO yo should modify your `/etc/hosts` to point `localhost` to this domain
+4. Configure the CARTO domain. The env var `SELFHOSTED_DOMAIN` defines the domain used by CARTO, by default this domain will point to `carto3-onprem.lan`. In order to access CARTO yo should modify your `/etc/hosts` to point `localhost` to this domain
 
 ```bash
 sudo vi /etc/hosts
