@@ -1,56 +1,79 @@
-# Cloud Bucket configuration
-
-Supported Cloud Providers:
-
-* **gcp**: [Google Storage](#google-storage) _default_
-* **azure-blob**: [Azure Blob Storage](#azure-blob-storage)
-* **s3**: [AWS S3](#aws-s3)
-
-Three different buckets are needed for CARTO Self Hosted: two for imports and one to store maps thumbnails.
-
-Map thumbnails can be configured in two ways. Public (thumbnails are public) or private and signed URLs are generated for them. In order to control it you need to change the variable: `WORKSPACE_THUMBNAILS_PUBLIC='true'`.
-
-## Google Storage
-
-You need 3 buckets and a Service Account that can read/write to them.
-
-**NOTE:** For imports and thumbnails to work, the service account needs to create `signedURLs`. In order to do that, the service account must be granted with the role `roles/iam.serviceAccountTokenCreator` (or a custom role with `iam.serviceAccounts.signBlob`) inside the service account permissions (IAM > Service Accounts > `your_service_account` > Permissions).
+# Custom buckets
 
 
-### Thumbnails
+For every CARTO Self Hosted installation, we create GCS buckets in our side as part of the required infrastructure for importing data, map thumbnails and other internal data. 
+
+You can create and use your own storage buckets in any of the following supported storage providers:
+
+- Google Cloud Storage
+- AWS S3
+- Azure Storage
+
+> :warning: You can only set one provider at a time.
+
+<!--
+TODO: Add the code related to Terraform
+-->
+
+## Requirements
+
+- You need to create 3 buckets in your preferred Cloud provider:
+  - Import Bucket
+  - Client Bucket
+  - Thumbnails Bucket
+
+> There's no name constraints
+
+> :warning: Map thumbnails can be configured in two different ways: public (map thumbnails storage objects are public) or private (map thumbnails storage objects are private). In order to control it, change the value of `appConfigValues.workspaceThumbnailsPublic` (boolean). Depending on this, the bucket properties (public access) may be different.
+
+- Generate credentials to access those buckets, our supported authentication methods are:
+  - GCS: Service Account Key
+  - AWS: Access Key ID and Secret Access Key
+  - Azure: Access Key
+
+- Grant Read/Write permissions over the buckets to the credentials mentioned above.
+
+## Google Cloud Storage
+
+In order to use Google Cloud Storage custom buckets you need to:
+
+1. Create the buckets.
+   
+2. Create a [custom Service account](#custom-service-account).
+   
+3. Grant this service account with the following role (in addition to the buckets access): `roles/iam.serviceAccountTokenCreator`. 
+
+   > :warning: We don't recommend grating this role at project IAM level, but instead at the Service Account permissions level (IAM > Service Accounts > `your_service_account` > Permissions).
+
+   <!--
+   TODO: Add the code related to Terraform
+   -->
+
+4. Set the following variables in your customer.env file:
 
 ```bash
+# Thumbnails bucket
 WORKSPACE_THUMBNAILS_PROVIDER='gcp'
-WORKSPACE_THUMBNAILS_BUCKET='bucket-name1'
-WORKSPACE_THUMBNAILS_KEYFILENAME='route_to_json'
-WORKSPACE_THUMBNAILS_PROJECTID='myproject'
-```
+WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
+WORKSPACE_THUMBNAILS_KEYFILENAME=<path_to_service_account_key_file>
+WORKSPACE_THUMBNAILS_PROJECTID=<gcp_project_id>
 
-
-
-### Imports
-
-```bash
+# Client bucket
 WORKSPACE_IMPORTS_PROVIDER='gcp'
-WORKSPACE_IMPORTS_BUCKET='bucket-name2'
-WORKSPACE_IMPORTS_KEYFILENAME='route_to_json'
-WORKSPACE_IMPORTS_PROJECTID='myproject'
-```
+WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
+WORKSPACE_IMPORTS_KEYFILENAME=<path_to_service_account_key_file>
+WORKSPACE_IMPORTS_PROJECTID=<gcp_project_id>
 
-```bash
+# Import bucket
 IMPORT_PROVIDER='gcp'
-IMPORT_BUCKET='bucket-name3'
-IMPORT_KEYFILENAME='route_to_json'
-IMPORT_PROJECTID='myproject'
+IMPORT_BUCKET=<import_bucket_name>
+IMPORT_KEYFILENAME=<path_to_service_account_key_file>
+IMPORT_PROJECTID=<gcp_project_id>
 ```
 
-### Notes
+> If `<BUCKET>_KEYFILENAME` is not defined  env `GOOGLE_APPLICATION_CREDENTIALS` is used as default value. When the selfhosted service account is setup in a Compute Engine instance as the default service account, there's no need to set any of these, as the containers will inherit the instance default credentials.
 
-* If `_KEYFILENAME` is not defined  env `GOOGLE_APPLICATION_CREDENTIALS` is used as default value
-
-* If `_PROJECTID` is not defined  env `GOOGLE_CLOUD_PROJECT` is used as default value
-
-* If neither _KEYFILENAME nor GOOGLE_APPLICATION_CREDENTIALS variables are provided (meaning the container is inheriting default credentials from an instance), the service account needs one additional permission: iam.serviceAccounts.signBlob (contained by the role roles/iam.serviceAccountTokenCreator). See the instructions above.
+> If `<BUCKET>_PROJECTID` is not defined  env `GOOGLE_CLOUD_PROJECT` is used as default value
 
 ## Azure Blob Storage
 
