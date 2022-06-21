@@ -77,69 +77,70 @@ IMPORT_PROJECTID=<gcp_project_id>
 
 ## Azure Blob Storage
 
-Requires the Storage Account (name), and the Storage Access Key
+In order to use Azure Storage buckets (aka containers) you need to:
 
-### Thumbnails
+1. Create an storage account if you don't have one already.
+
+2. Create the storage buckets. If you set the `Public Access Mode` to `private` in the bucket properties, make sure you set `appConfigValues.workspaceThumbnailsPublic` to `false`.
+
+3. Generate an Access Key, from the storage account's Security properties.
+
+4. Set the following variables in your customer.env file:
 
 ```bash
+# Thumbnails bucket
 WORKSPACE_THUMBNAILS_PROVIDER='azure-blob'
-WORKSPACE_THUMBNAILS_BUCKET='bucket-name1'
-WORKSPACE_THUMBNAILS_STORAGE_ACCOUNT='storageName'
-WORKSPACE_THUMBNAILS_STORAGE_ACCESSKEY='**AccessKey**'
-```
+WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
+WORKSPACE_THUMBNAILS_STORAGE_ACCOUNT=<storage_account_name>
+WORKSPACE_THUMBNAILS_STORAGE_ACCESSKEY=<access_key>
 
-### Imports
-
-```bash
+# Client bucket
 WORKSPACE_IMPORTS_PROVIDER='azure-blob'
-WORKSPACE_IMPORTS_BUCKET='bucket-name2'
-WORKSPACE_IMPORTS_STORAGE_ACCOUNT='storageName'
-WORKSPACE_IMPORTS_STORAGE_ACCESSKEY='**AccessKey**'
-```
+WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
+WORKSPACE_IMPORTS_STORAGE_ACCOUNT=<storage_account_name>
+WORKSPACE_IMPORTS_STORAGE_ACCESSKEY=<access_key>
 
-```bash
+# Import bucket
 IMPORT_PROVIDER='azure-blob'
-IMPORT_BUCKET='bucket-name3'
-IMPORT_STORAGE_ACCOUNT='storageName'
-IMPORT_STORAGE_ACCESSKEY='**AccessKey**'
+IMPORT_BUCKET=<import_bucket_name>
+IMPORT_STORAGE_ACCOUNT=<storage_account_name>
+IMPORT_STORAGE_ACCESSKEY=<access_key>
 ```
-
-### Notes
-
-The buckets need the permissions:
-
-![Azure Permission](images/azure-blob-permissions.png)
 
 ## AWS S3
 
-Requires the accessKeyId, secretAccessKey and region
+In order to use AWS S3 custom buckets you need to:
 
-### Thumbnails
+1. Create the buckets. If you enable `Block public access` in the bucket properties, make sure you set `appConfigValues.workspaceThumbnailsPublic` to `false`.
+
+2. Create an IAM user and generate a programmatic key id and secret.
+   
+3. Grant this user with read/write access permissions over the buckets.
+
+4. Set the following variables in your customer.env file:
+
 
 ```bash
+# Thumbnails bucket
 WORKSPACE_THUMBNAILS_PROVIDER='s3'
-WORKSPACE_THUMBNAILS_BUCKET='bucketName1'
-WORKSPACE_THUMBNAILS_ACCESSKEYID='***'
-WORKSPACE_THUMBNAILS_SECRETACCESSKEY='****'
-WORKSPACE_THUMBNAILS_REGION='us-west-1'
-```
+WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
+WORKSPACE_THUMBNAILS_ACCESSKEYID=<aws_access_key_id>
+WORKSPACE_THUMBNAILS_SECRETACCESSKEY=<aws_access_key_secret>
+WORKSPACE_THUMBNAILS_REGION=<aws_s3_region>
 
-### Imports
-
-```bash
+# Client bucket
 WORKSPACE_IMPORTS_PROVIDER='s3'
-WORKSPACE_IMPORTS_BUCKET='bucketName2'
-WORKSPACE_IMPORTS_ACCESSKEYID='***'
-WORKSPACE_IMPORTS_SECRETACCESSKEY='***'
-WORKSPACE_IMPORTS_REGION='us-west-1'
-```
+WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
+WORKSPACE_IMPORTS_ACCESSKEYID=<aws_access_key_id>
+WORKSPACE_IMPORTS_SECRETACCESSKEY=<aws_access_key_secret>
+WORKSPACE_IMPORTS_REGION=<aws_s3_region>
 
-```bash
+# Import bucket
 IMPORT_PROVIDER='s3'
-IMPORT_BUCKET='bucket-name3'
-IMPORT_ACCESSKEYID='***'
-IMPORT_SECRETACCESSKEY='***'
-IMPORT_REGION='us-west-1'
+IMPORT_BUCKET=<import_bucket_name>
+IMPORT_ACCESSKEYID=<aws_access_key_id>
+IMPORT_SECRETACCESSKEY=<aws_access_key_secret>
+IMPORT_REGION=<aws_s3_region>
 ```
 
 ### Notes

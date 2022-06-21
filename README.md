@@ -302,7 +302,7 @@ If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_A
 
 #### Custom buckets
 
-In case you want to use your own cloud buckets, read the information in `customer.env` and uncomment the supported provider (AWS S3, GCP Buckets or Azure Buckets). Fill in the [credentials](doc/buckets.md).
+In case you want to use your own cloud buckets, follow [these instructions](doc/buckets.md).
 
 #### Enable BigQuery Oauth connections
 
