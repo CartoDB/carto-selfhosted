@@ -41,8 +41,8 @@ jobs:
         with:
           secrets: |-
             NGROK_TOKEN:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/carto3-ngrok-token
-            CUSTOMER_ENV:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-package
-            KEY_JSON:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/onprem-customer-service-account
+            CUSTOMER_ENV:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/selfhosted-docker-customer-package
+            KEY_JSON:projects/${{ env.GOOGLE_PROJECT_ID }}/secrets/selfhosted-docker-customer-service-account
 
       # NOTE: Only 1 tunnel can be opened at the same time
       - name: Ngrok tunnel
