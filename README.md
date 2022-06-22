@@ -10,12 +10,12 @@
       - [External Domain](#external-domain)
       - [Google Maps](#google-maps)
       - [Custom buckets](#custom-buckets)
-      - [Enable BigQuery Oauth connections](#enable-bigquery-oauth-connections)
+      - [Enable BigQuery OAuth connections](#enable-bigquery-oauth-connections)
   - [Update](#update)
   - [Migrate to Kubernetes](#migrate-to-kubernetes)
   - [Troubleshooting](#troubleshooting)
 
-Deploy CARTO in a Self Hosted environment. It's provided in two flavours
+Deploy CARTO in a Self Hosted environment. It's provided in two flavors
 
 - [Kubernetes Helm](https://github.com/CartoDB/carto-selfhosted-helm)
 - [Docker compose](https://github.com/CartoDB/carto-selfhosted)
@@ -62,7 +62,7 @@ sudo vi /etc/hosts
 ```
 
 ```
-# Carto selfhosted
+# Carto self hosted
 127.0.0.1 carto3-onprem.lan
 ```
 
@@ -78,7 +78,7 @@ bash install.sh
 docker-compose up -d
 ```
 
-7. Open a browser and go to http://carto3-onprem.lan
+7. Open a browser and go to <http://carto3-onprem.lan>
 
 ### Production Ready
 
@@ -222,12 +222,12 @@ CARTO comes with an embedded Redis that is not recommended for production instal
 
 ```diff
 # Your custom configuration for a external redis (comment when local redis)
-- # LOCAL_REDIS_SCALE=0
-- # REDIS_HOST=<FILL_ME>
-- # REDIS_PORT=<FILL_ME>
-- # REDIS_PASSWORD=<FILL_ME>
-- # REDIS_TLS_ENABLED=true
-# Only applies if Redis TLS certificate it's selfsigned, read the documentation
+- # LOCAL_REDIS_SCALE=0
+- # REDIS_HOST=<FILL_ME>
+- # REDIS_PORT=<FILL_ME>
+- # REDIS_PASSWORD=<FILL_ME>
+- # REDIS_TLS_ENABLED=true
+# Only applies if Redis TLS certificate it's self-signed, read the documentation
 # REDIS_TLS_CA=<FILL_ME>
 + LOCAL_REDIS_SCALE=0
 + REDIS_HOST=<FILL_ME>
@@ -246,7 +246,7 @@ By default CARTO will try to connect to your Redis without TLS, in case you want
 REDIS_TLS_ENABLED=true
 ```
 
-> :warning: In case you are connection to a Redis where the TLS certificate is selfsigned or from a custom CA you will need to configure the `REDIS_TLS_CA` variable
+> :warning: In case you are connection to a Redis where the TLS certificate is self-signed or from a custom CA you will need to configure the `REDIS_TLS_CA` variable
 
 1. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `redis-tls-ca.crt`
 2. Uncomment the `REDIS_TLS_CA` env var in the `customer.env` file
@@ -269,7 +269,7 @@ The value defined at `SELFHOSTED_DOMAIN` should be the domain that points to the
 **Configuration**
 
 1. Create a `certs` folder in the current directory (`carto-selfhosted`)
-2. Copy your `<cert>.crt` and `<cert>.key` files in the `certs` folders (the files must be directly accesible from the server, i.e.: not protected with password and with the proper permissions)
+2. Copy your `<cert>.crt` and `<cert>.key` files in the `certs` folders (the files must be directly accessible from the server, i.e.: not protected with password and with the proper permissions)
 3. Modify the next vars in the `customer.env` file
 
 ```diff
@@ -291,23 +291,24 @@ If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_A
 
 In case you want to use your own cloud buckets, read the information in `customer.env` and uncomment the supported provider (AWS S3, GCP Buckets or Azure Buckets). Fill in the [credentials](doc/buckets.md).
 
-#### Enable BigQuery Oauth connections
+#### Enable BigQuery OAuth connections
 
-This feature allows users to create a BigQuery connection using `Sign in with Google` instead of providing a service account key. Note that connections created with Oauth cannot be shared with other organization users.
+This feature allows users to create a BigQuery connection using `Sign in with Google` instead of providing a service account key. Note that connections created with OAuth cannot be shared with other organization users.
 
-1. Create an oauth consent screen inside the desired GCP project.
+1. Create an OAuth consent screen inside the desired GCP project.
    - Introduce an app name and a user support email.
    - Add an authorized domain (the one used in your email).
    - Add another email as dev contact info (it can be the same).
    - Add the following scopes: `./auth/userinfo.email`, `./auth/userinfo.profile` & `./auth/bigquery`.
 
-2. Create an Oauth credentials.
+2. Create an OAuth credentials.
    - Type: Web application.
    - Authorized JavaScript origins: `https://<your_selfhosted_domain>`.
    - Authorized redirect URIs: `https://<your_selfhosted_domain>/connections/bigquery/oauth`.
    - Download the credentials file.
 
-3. In your selfhosted's customer.env file, set the following vars with the values from the credentials file:
+3. In your self hosted's customer.env file, set the following vars with the values from the credentials file:
+
 ```
 REACT_APP_BIGQUERY_OAUTH=true
 BIGQUERY_OAUTH2_CLIENT_ID=<value_from_credentials_web_client_id>
@@ -347,9 +348,9 @@ To migrate your CARTO Self Hosted from Docker Compose installation to
     have them, please contact Support.
 
 - Steps to migrate
-  1.  [Update](#update) Docker installation to the latest release with the customer package received
-  2.  Allow network connectivity from k8s nodes to your pre-existing databases. [i.e (Cloud SQL connection notes](https://github.com/CartoDB/carto-selfhosted/README.md#cloud-sql-connection-configuration))
-  3.  Create a `customizations.yaml` following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
+  1. [Update](#update) Docker installation to the latest release with the customer package received
+  2. Allow network connectivity from k8s nodes to your pre-existing databases. [i.e (Cloud SQL connection notes](https://github.com/CartoDB/carto-selfhosted/README.md#cloud-sql-connection-configuration))
+  3. Create a `customizations.yaml` following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
 
 > ⚠️ NOTE: Do not trust the default values and fill all variables related to database connections, example:
 
@@ -377,13 +378,13 @@ externalRedis:
 
 > Read also the instructions on how to [expose the Kubernetes](https://github.com/CartoDB/carto-selfhosted-helm/blob/main/customizations/README.md#access-to-carto-from-outside-the-cluster) installation to outside the cluster.
 
-4.  Create a `customizations.yaml` following [these instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
+4. Create a `customizations.yaml` following [these instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
 
-5.  Shut down you CARTO for Docker installation: `docker-compose down` ⚠️ From this point, the service is down.
-6.  Deploy to your cluster. Follow the [installation steps](https://github.com/CartoDB/carto-selfhosted-helm#installation)
-7.  Check pods are running and stable with `kubectl get pods <-n your_namespace>`
-8.  Change DNS records to point to the new service (`helm install` will point how to get the IP or DNS), it will take some time to propagate.
-9.  Test your CARTO Self Hosted for Kubernetes installation. Service is restored.
+5. Shut down you CARTO for Docker installation: `docker-compose down` ⚠️ From this point, the service is down.
+6. Deploy to your cluster. Follow the [installation steps](https://github.com/CartoDB/carto-selfhosted-helm#installation)
+7. Check pods are running and stable with `kubectl get pods <-n your_namespace>`
+8. Change DNS records to point to the new service (`helm install` will point how to get the IP or DNS), it will take some time to propagate.
+9. Test your CARTO Self Hosted for Kubernetes installation. Service is restored.
 
 If for whatever reason the installation did not go as planned. You can bring back the docker installation and point back your DNS to it.
 
