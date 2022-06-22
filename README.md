@@ -12,9 +12,9 @@
       - [External Redis](#external-redis)
         - [Configure TLS](#configure-tls)
       - [External Domain](#external-domain)
-      - [Google Maps](#google-maps)
       - [Custom buckets](#custom-buckets)
       - [Enable BigQuery Oauth connections](#enable-bigquery-oauth-connections)
+      - [Google Maps](#google-maps)
   - [Update](#update)
   - [Migrate to Kubernetes](#migrate-to-kubernetes)
   - [Troubleshooting](#troubleshooting)
@@ -296,10 +296,6 @@ The value defined at `SELFHOSTED_DOMAIN` should be the domain that points to the
 
 > Remember to change the `<cert>` value with the correct file name
 
-#### Google Maps
-
-If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_API_KEY` (optional)
-
 #### Custom buckets
 
 In case you want to use your own cloud buckets, follow [these instructions](doc/buckets.md).
@@ -326,6 +322,10 @@ REACT_APP_BIGQUERY_OAUTH=true
 BIGQUERY_OAUTH2_CLIENT_ID=<value_from_credentials_web_client_id>
 BIGQUERY_OAUTH2_CLIENT_SECRET=<value_from_credentials_web_client_secret>
 ```
+
+#### Google Maps
+
+In order to enable Google Maps basemaps inside CARTO Self Hosted (optional), you need to own a Google Maps API key and set it via `REACT_APP_GOOGLE_MAPS_API_KEY` in your customer.env file.
 
 ## Update
 
