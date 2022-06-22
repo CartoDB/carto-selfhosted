@@ -327,7 +327,7 @@ BIGQUERY_OAUTH2_CLIENT_SECRET=<value_from_credentials_web_client_secret>
 
 #### Google Maps
 
-In order to enable Google Maps basemaps inside CARTO Self Hosted (optional), you need to own a Google Maps API key and set it via `REACT_APP_GOOGLE_MAPS_API_KEY` in your customer.env file.
+In order to enable Google Maps basemaps inside CARTO Self Hosted, you need to own a Google Maps API key and set it via `REACT_APP_GOOGLE_MAPS_API_KEY` in your customer.env file.
 
 ## Update
 

@@ -6,7 +6,7 @@ You can create and use your own storage buckets in any of the following supporte
 
 - Google Cloud Storage. [Terraform code example](../examples/terraform/gcp/storage.tf).
 - AWS S3.
-- Azure Storage.
+- Azure Storage. [Terraform code example](../examples/terraform/azure/storage.tf).
 
 > :warning: You can only set one provider at a time.
 
