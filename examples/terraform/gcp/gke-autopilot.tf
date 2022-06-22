@@ -52,8 +52,8 @@ resource "google_container_cluster" "default" {
   }
 
   # At this point, these are the only IP addresses that have access to the control plane:
-  #   - The primary range of the subnet (google_compute_subnetwork.gke_autopilot_subnet)
-  #   - The Autopilot's pods secondary range (google_container_cluster.default.ip_allocation_policy.cluster_ipv4_cidr_block)
+  #   - The primary range for the subnet: google_compute_subnetwork.gke_autopilot_subnet
+  #   - The secondary range for the pods: google_container_cluster.default.ip_allocation_policy.cluster_ipv4_cidr_block
   # If you need to allow external networks to access Kubernetes master through HTTPS, please see:
   # https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/container_cluster#master_authorized_networks_config
 
