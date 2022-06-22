@@ -95,9 +95,9 @@ Optional
 - [External Redis](#external-redis)
 - [Google Maps](#google-maps)
 - [Custom Buckets](#custom-buckets)
-- [Enable BigQuery Oauth connections](#enable-bigquery-oauth-connections)
+- [Enable BigQuery OAuth connections](#enable-bigquery-oauth-connections)
 
-> :warning: Anytime you edit the `customer.env` file to change the CARTO configuration you will need to run the `install.sh` script to updathe the `.env` file used by Docker compose
+> :warning: Anytime you edit the `customer.env` file to change the CARTO configuration you will need to run the `install.sh` script to update the `.env` file used by Docker compose
 
 #### External Database
 
@@ -149,7 +149,7 @@ Open with an editor the `customer.env` file and modify the next variables
 - # WORKSPACE_POSTGRES_DB=workspace
 - # WORKSPACE_POSTGRES_SSL_ENABLED=true
 - # WORKSPACE_POSTGRES_SSL_MODE=require
-# Only applies if Postgres SSL certificate is selfsigned, read the documentation
+# Only applies if Postgres SSL certificate is self signed, read the documentation
 # WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
 - # POSTGRES_ADMIN_USER=<FILL_ME>
 - # POSTGRES_ADMIN_PASSWORD=<FILL_ME>
@@ -176,13 +176,13 @@ WORKSPACE_POSTGRES_SSL_ENABLED=true
 WORKSPACE_POSTGRES_SSL_MODE=require
 ```
 
-> :warning: In case you are connecting to a Postgresql where the SSL certificate is selfsigned or from a custom CA you will need to configure the `WORKSPACE_POSTGRES_SSL_CA` variable
+> :warning: In case you are connecting to a Postgresql where the SSL certificate is self signed or from a custom CA you will need to configure the `WORKSPACE_POSTGRES_SSL_CA` variable
 
 1. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `postgresql-ssl-ca.crt`
 2. Uncomment the `WORKSPACE_POSTGRES_SSL_CA` env var in the `customer.env` file
 
 ```diff
-# Only applies if Postgres SSL certificate is selfsigned, read the documentation
+# Only applies if Postgres SSL certificate is self signed, read the documentation
 - # WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
 + WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
 ```
@@ -242,7 +242,7 @@ CARTO comes with an embedded Redis that is not recommended for production instal
 
 By default CARTO will try to connect to your Redis without TLS, in case you want to connect via TLS ,you can configure it via `REDIS_TLS_ENABLED` env vars in the `customer.env`file
 
-```
+```bash
 REDIS_TLS_ENABLED=true
 ```
 
