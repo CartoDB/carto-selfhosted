@@ -74,7 +74,7 @@ resource "google_service_account_iam_binding" "gke_iam_binding" {
   role               = "roles/iam.workloadIdentityUser"
 
   members = [
-    # "serviceAccount:<PROJECT_ID>.svc.id.goog[<KUBERNETES_NAMESPACE>/<HELM_PACKAGE_INSTALLED_NAME>-gcp-api]"
-    "serviceAccount:${local.project_id}.svc.id.goog[carto/carto-gcp-api]",
+    # "serviceAccount:<PROJECT_ID>.svc.id.goog[<KUBERNETES_NAMESPACE>/<HELM_PACKAGE_INSTALLED_NAME>-common-backend]"
+    "serviceAccount:${local.project_id}.svc.id.goog[carto/carto-common-backend]",
   ]
 }
