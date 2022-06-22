@@ -26,6 +26,18 @@ TODO: Add the code related to Terraform
 
 > :warning: Map thumbnails can be configured in two different ways: public (map thumbnails storage objects are public) or private (map thumbnails storage objects are private). In order to control it, change the value of `appConfigValues.workspaceThumbnailsPublic` (boolean). Depending on this, the bucket properties (public access) may be different.
 
+- Thumbnails and Import buckets require having the following CORS headers configuration:
+  - Allowed origins: `*`
+  - Allowed methods: `GET`, `PUT`, `POST`
+  - Allowed headers (common): `Content-Type`, `Content-MD5`, `Content-Disposition`, `Cache-Control`
+    - GCS: `x-goog-content-length-range`, `x-goog-meta-filename`
+    - Azure: `Access-Control-Request-Headers`, `X-MS-Blob-Type`
+  - Max age: `3600`
+
+> CORS is configured at bucket level for GCS and S3, and at storage account level for Azure.
+
+> How do I setup CORS configuration? Check the provider docs: [GCS](https://cloud.google.com/storage/docs/configuring-cors), [AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/enabling-cors-examples.html), [Azure Storage](https://docs.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services#enabling-cors-for-azure-storage).
+
 - Generate credentials to access those buckets, our supported authentication methods are:
   - GCS: Service Account Key
   - AWS: Access Key ID and Secret Access Key
