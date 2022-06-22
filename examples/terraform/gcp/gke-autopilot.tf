@@ -60,3 +60,21 @@ resource "google_container_cluster" "default" {
   # Enabling Autopilot for this cluster
   enable_autopilot = true
 }
+
+# ServiceAccount to be using in workload identity
+resource "google_service_account" "workload_identity_sa" {
+  project      = local.project_id
+  account_id   = "workload-identity-iam-sa"
+  display_name = "A service account to be used by GKE Workload Identity"
+}
+
+# Binding between IAM SA and Kubernetes SA
+resource "google_service_account_iam_binding" "gke_iam_binding" {
+  service_account_id = google_service_account.workload_identity_sa.name
+  role               = "roles/iam.workloadIdentityUser"
+
+  members = [
+    # "serviceAccount:<PROJECT_ID>.svc.id.goog[<KUBERNETES_NAMESPACE>/<HELM_PACKAGE_INSTALLED_NAME>-gcp-api]"
+    "serviceAccount:${local.project_id}.svc.id.goog[carto/carto-gcp-api]",
+  ]
+}
