@@ -5,15 +5,16 @@
     - [Prerequisites](#prerequisites)
     - [Installation Steps](#installation-steps)
     - [Production Ready](#production-ready)
+      - [Custom Service Account](#custom-service-account)
       - [External Database](#external-database)
         - [Configure SSL](#configure-ssl)
         - [Azure Postgresql](#azure-postgresql)
       - [External Redis](#external-redis)
         - [Configure TLS](#configure-tls)
       - [External Domain](#external-domain)
-      - [Google Maps](#google-maps)
       - [Custom buckets](#custom-buckets)
-      - [Enable BigQuery OAuth connections](#enable-bigquery-oauth-connections)
+      - [Enable BigQuery Oauth connections](#enable-bigquery-oauth-connections)
+      - [Google Maps](#google-maps)
   - [Update](#update)
   - [Migrate to Kubernetes](#migrate-to-kubernetes)
   - [Troubleshooting](#troubleshooting)
@@ -102,6 +103,14 @@ Optional
 - [Enable BigQuery OAuth connections](#enable-bigquery-oauth-connections)
 
 > :warning: Anytime you edit the `customer.env` file to change the CARTO configuration you will need to run the `install.sh` script to updathe the `.env` file used by Docker compose
+
+#### Custom Service Account
+
+CARTO deploys a dedicated infrastructure for every self hosted installation, including a Service Account key that is required to use some of the services deployed. 
+
+If you prefer using your own GCP Service Account, please do the following prior to the Self Hosted installation:
+1. Create a dedicated Service Account for the CARTO Self Hosted.
+2. Contact CARTO support team and provide them the service account email.
 
 #### External Database
 
@@ -287,13 +296,9 @@ The value defined at `SELFHOSTED_DOMAIN` should be the domain that points to the
 
 > Remember to change the `<cert>` value with the correct file name
 
-#### Google Maps
-
-If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_API_KEY` (optional)
-
 #### Custom buckets
 
-In case you want to use your own cloud buckets, read the information in `customer.env` and uncomment the supported provider (AWS S3, GCP Buckets or Azure Buckets). Fill in the [credentials](doc/buckets.md).
+In case you want to use your own cloud buckets, follow [these instructions](doc/buckets.md).
 
 #### Enable BigQuery OAuth connections
 
@@ -319,6 +324,10 @@ REACT_APP_BIGQUERY_OAUTH=true
 BIGQUERY_OAUTH2_CLIENT_ID=<value_from_credentials_web_client_id>
 BIGQUERY_OAUTH2_CLIENT_SECRET=<value_from_credentials_web_client_secret>
 ```
+
+#### Google Maps
+
+In order to enable Google Maps basemaps inside CARTO Self Hosted, you need to own a Google Maps API key and set it via `REACT_APP_GOOGLE_MAPS_API_KEY` in your customer.env file.
 
 ## Update
 
