@@ -24,7 +24,7 @@ TODO: Add the code related to Terraform
 
 > There's no name constraints
 
-> :warning: Map thumbnails can be configured in two different ways: public (map thumbnails storage objects are public) or private (map thumbnails storage objects are private). In order to control it, change the value of `appConfigValues.workspaceThumbnailsPublic` (boolean). Depending on this, the bucket properties (public access) may be different.
+> :warning: Map thumbnails storage objects (.png files) can be configured to be `public` (default) or `private`. In order to change this, set `WORKSPACE_THUMBNAILS_PUBLIC="false"` (see the examples below). For the default configuration to work, the bucket must allow public objects/blobs.
 
 - CORS configuration: Thumbnails and Import buckets require having the following CORS headers.
   - Allowed origins: `*`
@@ -68,6 +68,7 @@ In order to use Google Cloud Storage custom buckets you need to:
 ```bash
 # Thumbnails bucket
 WORKSPACE_THUMBNAILS_PROVIDER='gcp'
+WORKSPACE_THUMBNAILS_PUBLIC=<true|false>
 WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
 WORKSPACE_THUMBNAILS_KEYFILENAME=<path_to_service_account_key_file>
 WORKSPACE_THUMBNAILS_PROJECTID=<gcp_project_id>
@@ -87,13 +88,13 @@ IMPORT_PROJECTID=<gcp_project_id>
 
 > If `<BUCKET>_KEYFILENAME` is not defined  env `GOOGLE_APPLICATION_CREDENTIALS` is used as default value. When the selfhosted service account is setup in a Compute Engine instance as the default service account, there's no need to set any of these, as the containers will inherit the instance default credentials.
 
-> If `<BUCKET>_PROJECTID` is not defined  env `GOOGLE_CLOUD_PROJECT` is used as default value
+> If `<BUCKET>_PROJECTID` is not defined  env `GOOGLE_CLOUD_PROJECT` is used as default value.
 
 ## AWS S3
 
 In order to use AWS S3 custom buckets you need to:
 
-1. Create the buckets. If you enable `Block public access` in the bucket properties, make sure you set `appConfigValues.workspaceThumbnailsPublic` to `false`.
+1. Create the buckets. If you enable `Block public access` in the bucket properties, make sure you set `WORKSPACE_THUMBNAILS_PUBLIC` to `false`.
 
 2. Configure the required CORS [settings](#requirements).
 
@@ -107,6 +108,7 @@ In order to use AWS S3 custom buckets you need to:
 ```bash
 # Thumbnails bucket
 WORKSPACE_THUMBNAILS_PROVIDER='s3'
+WORKSPACE_THUMBNAILS_PUBLIC=<true|false>
 WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
 WORKSPACE_THUMBNAILS_ACCESSKEYID=<aws_access_key_id>
 WORKSPACE_THUMBNAILS_SECRETACCESSKEY=<aws_access_key_secret>
@@ -135,7 +137,7 @@ In order to use Azure Storage buckets (aka containers) you need to:
 
 2. Configure the required CORS [settings](#requirements).
 
-3. Create the storage buckets. If you set the `Public Access Mode` to `private` in the bucket properties, make sure you set `appConfigValues.workspaceThumbnailsPublic` to `false`.
+3. Create the storage buckets. If you set the `Public Access Mode` to `private` in the bucket properties, make sure you set `WORKSPACE_THUMBNAILS_PUBLIC` to `false`.
 
 4. Generate an Access Key, from the storage account's Security properties.
 
@@ -144,6 +146,7 @@ In order to use Azure Storage buckets (aka containers) you need to:
 ```bash
 # Thumbnails bucket
 WORKSPACE_THUMBNAILS_PROVIDER='azure-blob'
+WORKSPACE_THUMBNAILS_PUBLIC=<true|false>
 WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
 WORKSPACE_THUMBNAILS_STORAGE_ACCOUNT=<storage_account_name>
 WORKSPACE_THUMBNAILS_STORAGE_ACCESSKEY=<access_key>
