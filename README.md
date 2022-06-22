@@ -106,7 +106,7 @@ Optional
 
 #### Custom Service Account
 
-For each CARTO self hosted installation, we create and provide a Google Cloud Platform Service Account key that the CARTO backend uses to authenticate requests to Google APIs. 
+CARTO deploys a dedicated infrastructure for every self hosted installation, including a Service Account key that is required to use some of the services deployed. 
 
 If you prefer using your own GCP Service Account, please do the following prior to the Self Hosted installation:
 1. Create a dedicated Service Account for the CARTO Self Hosted.

@@ -5,15 +5,11 @@ For every CARTO Self Hosted installation, we create GCS buckets in our side as p
 
 You can create and use your own storage buckets in any of the following supported storage providers:
 
-- Google Cloud Storage
-- AWS S3
-- Azure Storage
+- Google Cloud Storage. [Terraform code example](../examples/terraform/gcp/storage.tf).
+- AWS S3.
+- Azure Storage.
 
 > :warning: You can only set one provider at a time.
-
-<!--
-TODO: Add the code related to Terraform
--->
 
 ## Requirements
 
