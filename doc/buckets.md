@@ -34,7 +34,7 @@ TODO: Add the code related to Terraform
     - Azure (extra): `Access-Control-Request-Headers`, `X-MS-Blob-Type`
   - Max age: `3600`
 
-> CORS is configured at bucket level for GCS and S3, and at storage account level for Azure.
+> CORS is configured at bucket level in GCS and S3, and at storage account level in Azure.
 
 > How do I setup CORS configuration? Check the provider docs: [GCS](https://cloud.google.com/storage/docs/configuring-cors), [AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/enabling-cors-examples.html), [Azure Storage](https://docs.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services#enabling-cors-for-azure-storage).
 
@@ -97,7 +97,7 @@ In order to use AWS S3 custom buckets you need to:
 
 2. Configure the required CORS [settings](#requirements).
 
-3. Create an IAM user and generate a programmatic key id and secret.
+3. Create an IAM user and generate a programmatic key ID and secret.
    
 4. Grant this user with read/write access permissions over the buckets.
 
