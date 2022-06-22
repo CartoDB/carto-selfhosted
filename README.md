@@ -1,19 +1,23 @@
 # CARTO Self Hosted [Docker]
 
-- [Carto Self Hosted](#carto-self-hosted-docker)
+- [CARTO Self Hosted [Docker]](#carto-self-hosted-docker)
   - [Installation](#installation)
     - [Prerequisites](#prerequisites)
     - [Installation Steps](#installation-steps)
     - [Production Ready](#production-ready)
       - [External Database](#external-database)
+        - [Configure SSL](#configure-ssl)
+        - [Azure Postgresql](#azure-postgresql)
       - [External Redis](#external-redis)
+        - [Configure TLS](#configure-tls)
       - [External Domain](#external-domain)
       - [Google Maps](#google-maps)
       - [Custom buckets](#custom-buckets)
-      - [Enable BigQuery Oauth connections](#enable-bigquery-oauth-connections)
+      - [Enable BigQuery OAuth connections](#enable-bigquery-oauth-connections)
   - [Update](#update)
   - [Migrate to Kubernetes](#migrate-to-kubernetes)
   - [Troubleshooting](#troubleshooting)
+    - [Cloud SQL Connection configuration](#cloud-sql-connection-configuration)
 
 Deploy CARTO in a Self Hosted environment. It's provided in two flavours
 
@@ -95,7 +99,7 @@ Optional
 - [External Redis](#external-redis)
 - [Google Maps](#google-maps)
 - [Custom Buckets](#custom-buckets)
-- [Enable BigQuery Oauth connections](#enable-bigquery-oauth-connections)
+- [Enable BigQuery OAuth connections](#enable-bigquery-oauth-connections)
 
 > :warning: Anytime you edit the `customer.env` file to change the CARTO configuration you will need to run the `install.sh` script to updathe the `.env` file used by Docker compose
 
@@ -291,17 +295,19 @@ If you have a API KEY for Google Maps you can set it on `REACT_APP_GOOGLE_MAPS_A
 
 In case you want to use your own cloud buckets, read the information in `customer.env` and uncomment the supported provider (AWS S3, GCP Buckets or Azure Buckets). Fill in the [credentials](doc/buckets.md).
 
-#### Enable BigQuery Oauth connections
+#### Enable BigQuery OAuth connections
 
-This feature allows users to create a BigQuery connection using `Sign in with Google` instead of providing a service account key. Note that connections created with Oauth cannot be shared with other organization users.
+This feature allows users to create a BigQuery connection using `Sign in with Google` instead of providing a service account key. 
 
-1. Create an oauth consent screen inside the desired GCP project.
+> :warning: Connections created with OAuth cannot be shared with other organization users.
+
+1. Create an OAuth consent screen inside the desired GCP project.
    - Introduce an app name and a user support email.
    - Add an authorized domain (the one used in your email).
    - Add another email as dev contact info (it can be the same).
    - Add the following scopes: `./auth/userinfo.email`, `./auth/userinfo.profile` & `./auth/bigquery`.
 
-2. Create an Oauth credentials.
+2. Create an OAuth credentials.
    - Type: Web application.
    - Authorized JavaScript origins: `https://<your_selfhosted_domain>`.
    - Authorized redirect URIs: `https://<your_selfhosted_domain>/connections/bigquery/oauth`.
