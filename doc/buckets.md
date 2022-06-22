@@ -1,6 +1,5 @@
 # Custom buckets
 
-
 For every CARTO Self Hosted installation, we create GCS buckets in our side as part of the required infrastructure for importing data, map thumbnails and other internal data. 
 
 You can create and use your own storage buckets in any of the following supported storage providers:
@@ -54,10 +53,6 @@ In order to use Google Cloud Storage custom buckets you need to:
 4. Grant this service account with the following role (in addition to the buckets access): `roles/iam.serviceAccountTokenCreator`. 
 
    > :warning: We don't recommend grating this role at project IAM level, but instead at the Service Account permissions level (IAM > Service Accounts > `your_service_account` > Permissions).
-
-   <!--
-   TODO: Add the code related to Terraform
-   -->
 
 5. Set the following variables in your customer.env file:
 
@@ -158,32 +153,4 @@ IMPORT_PROVIDER='azure-blob'
 IMPORT_BUCKET=<import_bucket_name>
 IMPORT_STORAGE_ACCOUNT=<storage_account_name>
 IMPORT_STORAGE_ACCESSKEY=<access_key>
-```
-
-### Notes
-
-To enable use in thumbnails and imports the bucket must have CORS configured in AWS:
-
-Permissions > Cross-origin resource sharing (CORS)
-
-example:
-
-```json
-[
-    {
-        "AllowedHeaders": [
-            "*"
-        ],
-        "AllowedMethods": [
-            "PUT",
-            "POST",
-            "DELETE"
-        ],
-        "AllowedOrigins": [
-            "*"
-        ],
-        "ExposeHeaders": []
-    }
-]
-
 ```
