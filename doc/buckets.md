@@ -26,12 +26,12 @@ TODO: Add the code related to Terraform
 
 > :warning: Map thumbnails can be configured in two different ways: public (map thumbnails storage objects are public) or private (map thumbnails storage objects are private). In order to control it, change the value of `appConfigValues.workspaceThumbnailsPublic` (boolean). Depending on this, the bucket properties (public access) may be different.
 
-- Thumbnails and Import buckets require having the following CORS headers configuration:
+- CORS configuration: Thumbnails and Import buckets require having the following CORS headers.
   - Allowed origins: `*`
   - Allowed methods: `GET`, `PUT`, `POST`
   - Allowed headers (common): `Content-Type`, `Content-MD5`, `Content-Disposition`, `Cache-Control`
-    - GCS: `x-goog-content-length-range`, `x-goog-meta-filename`
-    - Azure: `Access-Control-Request-Headers`, `X-MS-Blob-Type`
+    - GCS (extra): `x-goog-content-length-range`, `x-goog-meta-filename`
+    - Azure (extra): `Access-Control-Request-Headers`, `X-MS-Blob-Type`
   - Max age: `3600`
 
 > CORS is configured at bucket level for GCS and S3, and at storage account level for Azure.
@@ -51,9 +51,11 @@ In order to use Google Cloud Storage custom buckets you need to:
 
 1. Create the buckets.
    
-2. Create a [custom Service account](#custom-service-account).
+2. Configure the required CORS [settings](#requirements).
    
-3. Grant this service account with the following role (in addition to the buckets access): `roles/iam.serviceAccountTokenCreator`. 
+3. Create a [custom Service account](#custom-service-account).
+   
+4. Grant this service account with the following role (in addition to the buckets access): `roles/iam.serviceAccountTokenCreator`. 
 
    > :warning: We don't recommend grating this role at project IAM level, but instead at the Service Account permissions level (IAM > Service Accounts > `your_service_account` > Permissions).
 
@@ -61,7 +63,7 @@ In order to use Google Cloud Storage custom buckets you need to:
    TODO: Add the code related to Terraform
    -->
 
-4. Set the following variables in your customer.env file:
+5. Set the following variables in your customer.env file:
 
 ```bash
 # Thumbnails bucket
@@ -93,11 +95,13 @@ In order to use AWS S3 custom buckets you need to:
 
 1. Create the buckets. If you enable `Block public access` in the bucket properties, make sure you set `appConfigValues.workspaceThumbnailsPublic` to `false`.
 
-2. Create an IAM user and generate a programmatic key id and secret.
-   
-3. Grant this user with read/write access permissions over the buckets.
+2. Configure the required CORS [settings](#requirements).
 
-4. Set the following variables in your customer.env file:
+3. Create an IAM user and generate a programmatic key id and secret.
+   
+4. Grant this user with read/write access permissions over the buckets.
+
+5. Set the following variables in your customer.env file:
 
 
 ```bash
@@ -129,11 +133,13 @@ In order to use Azure Storage buckets (aka containers) you need to:
 
 1. Create an storage account if you don't have one already.
 
-2. Create the storage buckets. If you set the `Public Access Mode` to `private` in the bucket properties, make sure you set `appConfigValues.workspaceThumbnailsPublic` to `false`.
+2. Configure the required CORS [settings](#requirements).
 
-3. Generate an Access Key, from the storage account's Security properties.
+3. Create the storage buckets. If you set the `Public Access Mode` to `private` in the bucket properties, make sure you set `appConfigValues.workspaceThumbnailsPublic` to `false`.
 
-4. Set the following variables in your customer.env file:
+4. Generate an Access Key, from the storage account's Security properties.
+
+5. Set the following variables in your customer.env file:
 
 ```bash
 # Thumbnails bucket
