@@ -46,7 +46,7 @@ Optional:
 
 ## Custom Service Account
 
-CARTO deploys a dedicated infrastructure for every self hosted installation, including a Service Account key that is required to use some of the services deployed. 
+CARTO deploys a dedicated infrastructure for every self hosted installation, including a Service Account key that is required to use some of the services deployed.
 
 If you prefer using your own GCP Service Account, please do the following prior to the Self Hosted installation:
 1. Create a dedicated Service Account for the CARTO Self Hosted.
@@ -59,6 +59,8 @@ Make your changes to the `customer.env` file before starting the installation st
 > :warning: Anytime you edit the `customer.env` file to change the CARTO configuration you will need to run the `install.sh` script to update the `.env` file used by Docker compose.
 
 ## Available configurations
+
+Here you will find the supported custom configurations you can apply to your CARTO Self Hosted deployment.
 
 ### Self Hosted domain
 
@@ -169,7 +171,7 @@ Open with an editor the `customer.env` file and modify the following variables:
 
 By default CARTO Self Hosted will try to connect to your PostgreSQL without SSL. In case you want to connect via SSL, you can configure it via the following env vars:
 
-```
+```bash
 WORKSPACE_POSTGRES_SSL_ENABLED=true
 WORKSPACE_POSTGRES_SSL_MODE=require
 ```
@@ -287,7 +289,7 @@ Here are some Terraform examples of Redis instances created in different provide
 
 By default CARTO will try to connect to your Redis without TLS, in case you want to connect via TLS ,you can configure it via `REDIS_TLS_ENABLED` env vars in the `customer.env`file
 
-```
+```bash
 REDIS_TLS_ENABLED=true
 ```
 
@@ -304,7 +306,7 @@ REDIS_TLS_ENABLED=true
 
 ### Custom buckets
 
-For every CARTO Self Hosted installation, we create GCS buckets in our side as part of the required infrastructure for importing data, map thumbnails and other internal data. 
+For every CARTO Self Hosted installation, we create GCS buckets in our side as part of the required infrastructure for importing data, map thumbnails and other internal data.
 
 You can create and use your own storage buckets in any of the following supported storage providers:
 
@@ -349,11 +351,11 @@ You can create and use your own storage buckets in any of the following supporte
 In order to use Google Cloud Storage custom buckets you need to:
 
 1. Create the buckets.
-   
+
 2. Configure the required [CORS settings](#requirements).
-   
+
 3. Create a [custom Service account](#custom-service-account).
-   
+
 4. Grant this service account with the following role (in addition to the buckets access): `roles/iam.serviceAccountTokenCreator`. 
 
    > :warning: We don't recommend grating this role at project IAM level, but instead at the Service Account permissions level (IAM > Service Accounts > `your_service_account` > Permissions).
@@ -394,7 +396,7 @@ In order to use AWS S3 custom buckets you need to:
 2. Configure the required [CORS settings](#requirements).
 
 3. Create an IAM user and generate a programmatic key ID and secret.
-   
+
 4. Grant this user with read/write access permissions over the buckets.
 
 5. Set the following variables in your customer.env file:
@@ -461,7 +463,7 @@ IMPORT_STORAGE_ACCESSKEY=<access_key>
 
 ### Enable BigQuery Oauth connections
 
-This feature allows users to create a BigQuery connection using `Sign in with Google` instead of providing a service account key. 
+This feature allows users to create a BigQuery connection using `Sign in with Google` instead of providing a service account key.
 
 > :warning: Connections created with OAuth cannot be shared with other organization users.
 
@@ -478,7 +480,8 @@ This feature allows users to create a BigQuery connection using `Sign in with Go
    - Download the credentials file.
 
 3. In your selfhosted's customer.env file, set the following vars with the values from the credentials file:
-```
+
+```bash
 REACT_APP_BIGQUERY_OAUTH=true
 BIGQUERY_OAUTH2_CLIENT_ID=<value_from_credentials_web_client_id>
 BIGQUERY_OAUTH2_CLIENT_SECRET=<value_from_credentials_web_client_secret>
