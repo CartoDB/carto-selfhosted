@@ -68,6 +68,8 @@ The value defined at `SELFHOSTED_DOMAIN` should be the domain that points to the
 
 #### Custom SSL certificate
 
+By default CARTO Self Hosted will generate and use a self-signed certificate if you don't provide it with your own certificate.
+
 **Prerequisites**
 
 - A `.crt` file with your custom domain x509 certificate
