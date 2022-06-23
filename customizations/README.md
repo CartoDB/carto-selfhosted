@@ -239,6 +239,11 @@ Or in the web console:
 
 CARTO comes with an embedded Redis that is not recommended for production installations, we recommend to use your own Redis that lives outside the Docker ecosystem.
 
+Here are some Terraform examples of Redis instances created in different providers:
+- [GCP Redis](../examples/terraform/gcp/redis.tf).
+- [AWS Redis](../examples/terraform/aws/redis.tf).
+- [Azure Redis](../examples/terraform/azure/redis.tf).
+
 **Prerequisites**
 
 - Redis 6 or above.
