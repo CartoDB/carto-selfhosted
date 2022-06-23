@@ -10,7 +10,7 @@
       - [Custom SSL certificate](#custom-ssl-certificate)
     - [External database](#external-database)
       - [Configure SSL](#configure-ssl)
-      - [Azure Postgresql](#azure-postgresql)
+      - [Azure PostgreSQL](#azure-postgresql)
       - [Troubleshooting](#troubleshooting)
     - [External Redis](#external-redis)
       - [Configure TLS](#configure-tls)
@@ -37,7 +37,6 @@ Recommended:
 
 - [Custom SSL Certificate](#custom-ssl-certificate)
 - [External Database](#external-database)
-- [External Domain](#external-domain)
 
 Optional:
 
@@ -45,8 +44,6 @@ Optional:
 - [Google Maps](#google-maps)
 - [Custom Buckets](#custom-buckets)
 - [Enable BigQuery OAuth connections](#enable-bigquery-oauth-connections)
-
-> :warning: Anytime you edit the `customer.env` file to change the CARTO configuration you will need to run the `install.sh` script to updathe the `.env` file used by Docker compose
 
 ## Custom Service Account
 
@@ -60,11 +57,13 @@ If you prefer using your own GCP Service Account, please do the following prior 
 
 Make your changes to the `customer.env` file before starting the installation steps.
 
+> :warning: Anytime you edit the `customer.env` file to change the CARTO configuration you will need to run the `install.sh` script to update the `.env` file used by Docker compose.
+
 ## Available configurations
 
 ### Self Hosted domain
 
-The value defined at `SELFHOSTED_DOMAIN` should be the domain that points to the CARTO installation. By default this domain points to `carto3-onprem.lan` but you can configure a custom one.
+Configure your CARTO Self Hosted domain by updating the env var `SELFHOSTED_DOMAIN` value, which defaults to `carto3-onprem.lan`.
 
 #### Custom SSL certificate
 
@@ -72,14 +71,16 @@ By default CARTO Self Hosted will generate and use a self-signed certificate if 
 
 **Prerequisites**
 
-- A `.crt` file with your custom domain x509 certificate
-- A `.key` file with your custom domain private key
+- A `.crt` file with your custom domain x509 certificate.
+- A `.key` file with your custom domain private key.
 
 **Configuration**
 
-1. Create a `certs` folder in the current directory (`carto-selfhosted`)
-2. Copy your `<cert>.crt` and `<cert>.key` files in the `certs` folders (the files must be directly accesible from the server, i.e.: not protected with password and with the proper permissions)
-3. Modify the next vars in the `customer.env` file
+1. Create a `certs` folder in the current directory (`carto-selfhosted`).
+
+2. Copy your `<cert>.crt` and `<cert>.key` files in the `certs` folders (the files must be directly accesible from the server, i.e.: not protected with password and with the proper permissions).
+
+3. Modify the following vars in the `customer.env` file:
 
 ```diff
 - # ROUTER_SSL_AUTOGENERATE= <1 to enable | 0 to disable>
@@ -90,21 +91,21 @@ By default CARTO Self Hosted will generate and use a self-signed certificate if 
 + ROUTER_SSL_CERTIFICATE_KEY_PATH=/etc/nginx/ssl/<cert>.key
 ```
 
-> Remember to change the `<cert>` value with the correct file name
+> Remember to replace the `<cert>` value above with the correct file name.
 
 ### External database
 
-CARTO comes with an embedded Postgresql database that is not recommended for production installations, we recommend to use your own Postgresql database that lives outside the Docker ecosystem
+CARTO Self Hosted comes with an embedded PostgreSQL database that is not recommended for production installations, we recommend to use your own PostgreSQL database that lives outside the Docker ecosystem.
 
 **Prerequisites**
 
-- Postgresql 11 or above
+- PostgreSQL 11 or above
 
 **Configuration**
 
-Open with an editor the `customer.env` file and modify the next variables
+Open with an editor the `customer.env` file and modify the following variables:
 
-1. Comment the local Postgres configuration
+1. Comment the local Postgres configuration:
 
 ```diff
 # Configuration for using a local postgres, instead of an external one (comment when external postgres)
@@ -130,7 +131,7 @@ Open with an editor the `customer.env` file and modify the next variables
 + # POSTGRES_ADMIN_PASSWORD=<verySecureRandomPassword>
 ```
 
-2. Uncomment the external postgres configuration
+2. Uncomment the external postgres configuration:
 
 ```diff
 # Your custom configuration for an external postgres database (comment when local postgres)
@@ -158,21 +159,22 @@ Open with an editor the `customer.env` file and modify the next variables
 + POSTGRES_ADMIN_PASSWORD=<FILL_ME>
 ```
 
-3. Fill the `<FILL_ME>` parameters
+3. Replace the `<FILL_ME>` placeholders with the right values.
 
 #### Configure SSL
 
-By default CARTO will try to connect to your Postgresql without SSL. In case you want to connect via SSL, you can configure it via the next env vars
+By default CARTO Self Hosted will try to connect to your PostgreSQL without SSL. In case you want to connect via SSL, you can configure it via the following env vars:
 
 ```
 WORKSPACE_POSTGRES_SSL_ENABLED=true
 WORKSPACE_POSTGRES_SSL_MODE=require
 ```
 
-> :warning: In case you are connecting to a Postgresql where the SSL certificate is selfsigned or from a custom CA you will need to configure the `WORKSPACE_POSTGRES_SSL_CA` variable
+> :warning: In case you are connecting to a PostgreSQL where the SSL certificate is selfsigned or from a custom CA you will need to configure the `WORKSPACE_POSTGRES_SSL_CA` variable.
 
-1. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `postgresql-ssl-ca.crt`
-2. Uncomment the `WORKSPACE_POSTGRES_SSL_CA` env var in the `customer.env` file
+1. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `postgresql-ssl-ca.crt`.
+
+2. Uncomment the `WORKSPACE_POSTGRES_SSL_CA` env var in the `customer.env` file:
 
 ```diff
 # Only applies if Postgres SSL certificate is selfsigned, read the documentation
@@ -180,7 +182,7 @@ WORKSPACE_POSTGRES_SSL_MODE=require
 + WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
 ```
 
-#### Azure Postgresql
+#### Azure PostgreSQL
 
 In case you are connection to an Azure hosted Postgres you will need to uncomment the `WORKSPACE_POSTGRES_INTERNAL_USER` and `POSTGRES_LOGIN_USER` env vars where:
 
