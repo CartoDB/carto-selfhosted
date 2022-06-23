@@ -3,7 +3,9 @@
 - [CARTO Self Hosted [Docker]](#carto-self-hosted-docker)
   - [Installation](#installation)
     - [Prerequisites](#prerequisites)
+    - [Deployment Customizations](#deployment-customizations)
     - [Installation Steps](#installation-steps)
+    - [Post-installation Checks](#post-installation-checks)
   - [Update](#update)
   - [Uninstall](#uninstall)
   - [Migrate to Kubernetes](#migrate-to-kubernetes)
@@ -37,6 +39,10 @@ You will need a Linux machine with at least:
 - Docker compose version 1.29 or above
 - A TLS certificate for the domain/subdomain (if not provided a self-signed one will be generated)
 - Configuration and license files received from CARTO
+
+### Deployment Customizations
+
+Please, read the available [customization](customizations/README.md) options.
 
 ### Installation Steps
 
@@ -78,39 +84,18 @@ You will need a Linux machine with at least:
    docker-compose up -d
    ```
 
-8. Open a browser and go to `https://carto3-onprem.lan` (or the custom domain configured)
+8. Open a browser and go to `https://carto3-onprem.lan` (or the custom domain configured).
 
-## Update
-
-To update you CARTO Self Hosted to the newest version you will need run the following commands:
-
-```bash
-# Go to CARTO installation directory
-cd carto-selfhosted
-# Pull last changes
-git pull
-# Apply the changes from the old customer.env to the new customer.env
-cp customer.env customer.env.bak
-# Generate the .env file
-bash install.sh
-# Recreate the containers
-docker-compose up -d
-```
-
-### Deployment customizations
-
-Please, read the available [customization](customizations/README.md) options.
-
-### Post installation checks
+### Post-installation Checks
 
 In order to verify CARTO Self Hosted was correctly installed and it's functional, we recommend performing the following checks:
 
-1. Check all the containers are up and running (except for the container `workspace-migrations` with state `Exit 0`):
+1. Check all the containers are up and running:
    ```bash
    docker-compose ps
    ```
 
-   > All containers should show state `Up`, except for `workspace-migrations` which should have show `Exit 0`, meaning the database migrations finished correctly.
+   > All containers should be in state `Up`, except for `workspace-migrations` which state should be `Exit 0`, meaning the database migrations finished correctly.
 
 2. Sign in to your Self Hosted, create a user and a new organization.
 
@@ -131,7 +116,24 @@ In order to verify CARTO Self Hosted was correctly installed and it's functional
 
 9. Make the map public, copy the sharing URL and open it in a new incognito window.
 
-10. Go back to the `Maps` page, and verify your map appears there and the map thumbnail represents the latest changes you made on the map.
+10. Go back to the `Maps` page, and verify your map appears there and the map thumbnail represents the latest changes you made to the map.
+
+## Update
+
+To update you CARTO Self Hosted to the newest version you will need run the following commands:
+
+```bash
+# Go to CARTO installation directory
+cd carto-selfhosted
+# Pull last changes
+git pull
+# Apply the changes from the old customer.env to the new customer.env
+cp customer.env customer.env.bak
+# Generate the .env file
+bash install.sh
+# Recreate the containers
+docker-compose up -d
+```
 
 ## Uninstall
 
