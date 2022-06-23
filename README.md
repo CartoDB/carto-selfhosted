@@ -167,6 +167,6 @@ externalRedis:
 
 3. Change DNS records to point to the new service (`helm install` will point how to get the IP or DNS), it will take some time to propagate.
 
-4.  Test your CARTO Self Hosted for Kubernetes installation. Service is restored.
+4. Test your CARTO Self Hosted for Kubernetes installation. Service is restored.
 
 > If for whatever reason the installation did not go as planned. You can bring back the docker installation and point back your DNS to it.
