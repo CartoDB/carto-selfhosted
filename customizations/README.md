@@ -1,5 +1,5 @@
+<!-- omit in toc -->
 # Table of Contents
-
 - [Customizations](#customizations)
   - [Production Ready](#production-ready)
   - [Custom Service Account](#custom-service-account)

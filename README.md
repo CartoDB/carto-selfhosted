@@ -1,7 +1,5 @@
+<!-- omit in toc -->
 # Table of Contents
-
-
-- [Table of Contents](#table-of-contents)
 - [CARTO Self Hosted [Docker]](#carto-self-hosted-docker)
   - [Installation](#installation)
     - [Prerequisites](#prerequisites)
