@@ -129,7 +129,7 @@ In order to verify CARTO Self Hosted was correctly installed and it's functional
 
 8. Create a new layer from the dataset imported in step 4.
 
-9. Make the map public, copy the sharing url and open it in a new incognito window.
+9. Make the map public, copy the sharing URL and open it in a new incognito window.
 
 10. Go back to the `Maps` page, and verify your map appears there and the map thumbnail represents the latest changes you made on the map.
 
