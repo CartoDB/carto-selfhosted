@@ -232,15 +232,15 @@ Or in the web console:
 
 ### External Redis
 
-CARTO comes with an embedded Redis that is not recommended for production installations, we recommend to use your own Redis that lives outside the Docker ecosystem
+CARTO comes with an embedded Redis that is not recommended for production installations, we recommend to use your own Redis that lives outside the Docker ecosystem.
 
 **Prerequisites**
 
-- Redis 6 or above
+- Redis 6 or above.
 
 **Configuration**
 
-1. Comment the local Redis configuration
+1. Comment the local Redis configuration:
 
 ```diff
 # Configuration for using a local redis, instead of a external one (comment when external redis)
@@ -254,7 +254,7 @@ CARTO comes with an embedded Redis that is not recommended for production instal
 + # REDIS_TLS_ENABLED=false
 ```
 
-2. Uncomment the external Redis configuration
+2. Uncomment the external Redis configuration:
 
 ```diff
 # Your custom configuration for a external redis (comment when local redis)
@@ -272,7 +272,7 @@ CARTO comes with an embedded Redis that is not recommended for production instal
 + REDIS_TLS_ENABLED=true
 ```
 
-3. Fill the `<FILL_ME>` parameters.
+3. Replace the `<FILL_ME>` placeholders with the right values.
 
 #### Configure TLS
 
