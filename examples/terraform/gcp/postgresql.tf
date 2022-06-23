@@ -1,20 +1,16 @@
-#tfsec:ignore:google-sql-enable-backup
-#tfsec:ignore:google-sql-enable-pg-temp-file-logging
+#####################################################################################
+# Terraform Examples:
+# These are pieces of code added as configuration examples for guidance,
+# therefore they may require additional resources and variable or local declarations.
+#####################################################################################
+
+# Cloud SQL instance
 resource "google_sql_database_instance" "default" {
   name                = var.postgresl_name
   project             = local.project_id
   database_version    = var.postgresql_version
   deletion_protection = local.postgresql_deletion_protection
   region              = var.region
-
-  # ! Warning
-  # The next TFSEC issues are not ignored, just added here as tfsec are not able
-  # to check they are enabled because of the dynamic database_flags block
-  #
-  #tfsec:ignore:google-sql-pg-log-checkpoints
-  #tfsec:ignore:google-sql-pg-log-connections
-  #tfsec:ignore:google-sql-pg-log-disconnections
-  #tfsec:ignore:google-sql-pg-log-lock-waits
   settings {
     disk_autoresize   = var.postgresql_disk_autoresize
     disk_size         = var.postgresql_disk_size_gb
@@ -45,11 +41,9 @@ resource "google_sql_database_instance" "default" {
     ip_configuration {
       # Necessary to connect via Unix sockets
       # https://cloud.google.com/sql/docs/mysql/connect-run#connecting_to
-      #tfsec:ignore:google-sql-no-public-access
       ipv4_enabled    = true
       private_network = google_compute_network.carto_selfhosted_network.id
-      #tfsec:ignore:google-sql-encrypt-in-transit-data
-      require_ssl = false
+      require_ssl     = false
     }
 
     location_preference {

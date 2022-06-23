@@ -97,6 +97,11 @@ By default CARTO Self Hosted will generate and use a self-signed certificate if 
 
 CARTO Self Hosted comes with an embedded PostgreSQL database that is not recommended for production installations, we recommend to use your own PostgreSQL database that lives outside the Docker ecosystem.
 
+Here are some Terraform examples of databases created in different providers:
+- [GCP Cloud SQL](../examples/terraform/gcp/postgresql.tf).
+- [AWS RDS](../examples/terraform/aws/postgresql-rds.tf).
+- [Azure Database](../examples/terraform/azure/postgresql.tf).
+
 **Prerequisites**
 
 - PostgreSQL 11 or above
@@ -300,7 +305,7 @@ For every CARTO Self Hosted installation, we create GCS buckets in our side as p
 You can create and use your own storage buckets in any of the following supported storage providers:
 
 - Google Cloud Storage. [Terraform code example](../examples/terraform/gcp/storage.tf).
-- AWS S3.
+- AWS S3. [Terraform code example](../examples/terraform/aws/storage.tf).
 - Azure Storage. [Terraform code example](../examples/terraform/azure/storage.tf).
 
 > :warning: You can only set one provider at a time.

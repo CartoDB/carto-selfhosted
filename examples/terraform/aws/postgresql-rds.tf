@@ -1,16 +1,15 @@
+#####################################################################################
+# Terraform Examples:
+# These are pieces of code added as configuration examples for guidance,
+# therefore they may require additional resources and variable or local declarations.
+#####################################################################################
+
 locals {
   name   = "carto-postgresql"
   region = "us-east-1"
-  tags = {
-    Product     = "carto"
-    Environment = "dev"
-  }
 }
 
-################################################################################
-# RDS Module
-################################################################################
-
+# RDS PostgreSQL instance, using the official RDS module
 module "db_default" {
   source     = "terraform-aws-modules/rds/aws"
   version    = "4.2.0"
@@ -41,6 +40,4 @@ module "db_default" {
   maintenance_window      = "Mon:00:00-Mon:03:00"
   backup_window           = "03:00-06:00"
   backup_retention_period = 0
-
-  tags = local.tags
 }
