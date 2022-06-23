@@ -1,7 +1,23 @@
-# Redis instance
+#####################################################################################
+# Terraform Examples:
+# These are pieces of code added as configuration examples for guidance,
+# therefore they may require additional resources and variable or local declarations.
+#####################################################################################
 
+locals {
+  # Instance name
+  redis_instance_name = "${var.redis_name}-${random_integer.random_redis.id}"
+}
+
+# Name suffix
+resource "random_integer" "random_redis" {
+  min = 1000
+  max = 9999
+}
+
+# Redis instance
 resource "google_redis_instance" "default" {
-  name               = "${var.redis_name}-${random_integer.random_redis.id}"
+  name               = local.redis_instance_name
   project            = local.project_id
   region             = var.region
   location_id        = var.zone
@@ -23,12 +39,7 @@ resource "google_redis_instance" "default" {
   }
 }
 
-resource "random_integer" "random_redis" {
-  min = 1000
-  max = 9999
-}
-
-# Credentials
+# Credentials stored in Google Secret Manager
 
 resource "google_secret_manager_secret" "redis_password" {
   secret_id = "redis-auth-string-${google_redis_instance.default.name}"
