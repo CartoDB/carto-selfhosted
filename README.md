@@ -9,6 +9,8 @@
   - [Update](#update)
   - [Uninstall](#uninstall)
   - [Migrate to Kubernetes](#migrate-to-kubernetes)
+    - [Preconditions](#preconditions)
+    - [Steps](#steps)
 
 # CARTO Self Hosted [Docker]
 
@@ -112,21 +114,24 @@ docker-compose down -V
 To migrate your CARTO Self Hosted from Docker Compose installation to
 [Kubernetes/Helm](https://github.com/CartoDB/carto-selfhosted-helm) you need to follow these steps:
 
-⚠️ Migration incurs in downtime. To minimize it, reduce the DNS TTL before starting the process
+> :warning: Migration incurs in downtime. To minimize it, reduce the DNS TTL before starting the process
 
-- Preconditions:
+### Preconditions
 
   - You have a running Self Hosted deployed with Docker Compose i.e using a Google Compute engine instance.
   - You have configured external databases (Redis and PostgreSQL).
   - You have a K8s cluster to deploy the new self hosted and credentials to deploy.
   - You have received a new customer package from CARTO (with files for Kubernetes and for Docker). If you do not have them, please contact Support.
 
-- Steps to migrate
-  1.  [Update](#update) Docker installation to the latest release with the customer package received
-  2.  Allow network connectivity from k8s nodes to your pre-existing databases. [i.e (Cloud SQL connection notes](https://github.com/CartoDB/carto-selfhosted/README.md#cloud-sql-connection-configuration))
-  3.  Create a `customizations.yaml` following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
+### Steps
 
-> ⚠️ NOTE: Do not trust the default values and fill all variables related to database connections, example:
+1.  [Update](#update) Docker installation to the latest release with the customer package received.
+
+2.  Allow network connectivity from k8s nodes to your pre-existing databases. [i.e (Cloud SQL connection notes](https://github.com/CartoDB/carto-selfhosted/README.md#cloud-sql-connection-configuration)).
+
+3.  Create a `customizations.yaml` following [this instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
+
+> :warning: NOTE: Do not trust the default values and fill all variables related to database connections, example:
 
 ```yaml
 externalPostgresql:
@@ -155,9 +160,13 @@ externalRedis:
 4.  Create a `customizations.yaml` following [these instructions](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations). Keep the same external database connection settings you are using in CARTO for Docker. [Postgres](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-postgres) and [Redis](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#configure-external-redis).
 
 5.  Shut down you CARTO for Docker installation: `docker-compose down` ⚠️ From this point, the service is down.
-6.  Deploy to your cluster. Follow the [installation steps](https://github.com/CartoDB/carto-selfhosted-helm#installation)
-7.  Check pods are running and stable with `kubectl get pods <-n your_namespace>`
+
+6.  Deploy to your cluster. Follow the [installation steps](https://github.com/CartoDB/carto-selfhosted-helm#installation).
+   
+7.  Check pods are running and stable with `kubectl get pods <-n your_namespace>`.
+   
 8.  Change DNS records to point to the new service (`helm install` will point how to get the IP or DNS), it will take some time to propagate.
+   
 9.  Test your CARTO Self Hosted for Kubernetes installation. Service is restored.
 
-If for whatever reason the installation did not go as planned. You can bring back the docker installation and point back your DNS to it.
+> If for whatever reason the installation did not go as planned. You can bring back the docker installation and point back your DNS to it.
