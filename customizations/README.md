@@ -49,7 +49,9 @@ Optional:
 CARTO deploys a dedicated infrastructure for every self hosted installation, including a Service Account key that is required to use some of the services deployed.
 
 If you prefer using your own GCP Service Account, please do the following prior to the Self Hosted installation:
+
 1. Create a dedicated Service Account for the CARTO Self Hosted.
+
 2. Contact CARTO support team and provide them the service account email.
 
 ## How to apply the configurations
@@ -83,16 +85,16 @@ By default CARTO Self Hosted will generate and use a self-signed certificate if 
 
 3. Modify the following vars in the `customer.env` file:
 
-```diff
-- # ROUTER_SSL_AUTOGENERATE= <1 to enable | 0 to disable>
-- # ROUTER_SSL_CERTIFICATE_PATH=/etc/nginx/ssl/<cert>.crt
-- # ROUTER_SSL_CERTIFICATE_KEY_PATH=/etc/nginx/ssl/<cert>.key
-+ ROUTER_SSL_AUTOGENERATE=0
-+ ROUTER_SSL_CERTIFICATE_PATH=/etc/nginx/ssl/<cert>.crt
-+ ROUTER_SSL_CERTIFICATE_KEY_PATH=/etc/nginx/ssl/<cert>.key
-```
+   ```diff
+   - # ROUTER_SSL_AUTOGENERATE= <1 to enable | 0 to disable>
+   - # ROUTER_SSL_CERTIFICATE_PATH=/etc/nginx/ssl/<cert>.crt
+   - # ROUTER_SSL_CERTIFICATE_KEY_PATH=/etc/nginx/ssl/<cert>.key
+   + ROUTER_SSL_AUTOGENERATE=0
+   + ROUTER_SSL_CERTIFICATE_PATH=/etc/nginx/ssl/<cert>.crt
+   + ROUTER_SSL_CERTIFICATE_KEY_PATH=/etc/nginx/ssl/<cert>.key
+   ```
 
-> Remember to replace the `<cert>` value above with the correct file name.
+   > Remember to replace the `<cert>` value above with the correct file name.
 
 ### External database
 
@@ -113,57 +115,57 @@ Open with an editor the `customer.env` file and modify the following variables:
 
 1. Comment the local Postgres configuration:
 
-```diff
-# Configuration for using a local postgres, instead of an external one (comment when external postgres)
-- LOCAL_POSTGRES_SCALE=1
-- WORKSPACE_POSTGRES_HOST=workspace-postgres
-- WORKSPACE_POSTGRES_PORT=5432
-- WORKSPACE_POSTGRES_USER=workspace_admin
-- WORKSPACE_POSTGRES_PASSWORD=<verySecureRandomPassword>
-- WORKSPACE_POSTGRES_DB=workspace
-- WORKSPACE_POSTGRES_SSL_ENABLED=false
-- WORKSPACE_POSTGRES_SSL_MODE=disable
-- POSTGRES_ADMIN_USER=postgres
-- POSTGRES_ADMIN_PASSWORD=<verySecureRandomPassword>
-+ # LOCAL_POSTGRES_SCALE=1
-+ # WORKSPACE_POSTGRES_HOST=workspace-postgres
-+ # WORKSPACE_POSTGRES_PORT=5432
-+ # WORKSPACE_POSTGRES_USER=workspace_admin
-+ # WORKSPACE_POSTGRES_PASSWORD=<verySecureRandomPassword>
-+ # WORKSPACE_POSTGRES_DB=workspace
-+ # WORKSPACE_POSTGRES_SSL_ENABLED=false
-+ # WORKSPACE_POSTGRES_SSL_MODE=disable
-+ # POSTGRES_ADMIN_USER=postgres
-+ # POSTGRES_ADMIN_PASSWORD=<verySecureRandomPassword>
-```
+   ```diff
+   # Configuration for using a local postgres, instead of an external one (comment when external postgres)
+   - LOCAL_POSTGRES_SCALE=1
+   - WORKSPACE_POSTGRES_HOST=workspace-postgres
+   - WORKSPACE_POSTGRES_PORT=5432
+   - WORKSPACE_POSTGRES_USER=workspace_admin
+   - WORKSPACE_POSTGRES_PASSWORD=<verySecureRandomPassword>
+   - WORKSPACE_POSTGRES_DB=workspace
+   - WORKSPACE_POSTGRES_SSL_ENABLED=false
+   - WORKSPACE_POSTGRES_SSL_MODE=disable
+   - POSTGRES_ADMIN_USER=postgres
+   - POSTGRES_ADMIN_PASSWORD=<verySecureRandomPassword>
+   + # LOCAL_POSTGRES_SCALE=1
+   + # WORKSPACE_POSTGRES_HOST=workspace-postgres
+   + # WORKSPACE_POSTGRES_PORT=5432
+   + # WORKSPACE_POSTGRES_USER=workspace_admin
+   + # WORKSPACE_POSTGRES_PASSWORD=<verySecureRandomPassword>
+   + # WORKSPACE_POSTGRES_DB=workspace
+   + # WORKSPACE_POSTGRES_SSL_ENABLED=false
+   + # WORKSPACE_POSTGRES_SSL_MODE=disable
+   + # POSTGRES_ADMIN_USER=postgres
+   + # POSTGRES_ADMIN_PASSWORD=<verySecureRandomPassword>
+   ```
 
 2. Uncomment the external postgres configuration:
 
-```diff
-# Your custom configuration for an external postgres database (comment when local postgres)
-- # LOCAL_POSTGRES_SCALE=0
-- # WORKSPACE_POSTGRES_HOST=<FILL_ME>
-- # WORKSPACE_POSTGRES_PORT=<FILL_ME>
-- # WORKSPACE_POSTGRES_USER=workspace_admin
-- # WORKSPACE_POSTGRES_PASSWORD=<FILL_ME>
-- # WORKSPACE_POSTGRES_DB=workspace
-- # WORKSPACE_POSTGRES_SSL_ENABLED=true
-- # WORKSPACE_POSTGRES_SSL_MODE=require
-# Only applies if Postgres SSL certificate is selfsigned, read the documentation
-# WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
-- # POSTGRES_ADMIN_USER=<FILL_ME>
-- # POSTGRES_ADMIN_PASSWORD=<FILL_ME>
-+ LOCAL_POSTGRES_SCALE=0
-+ WORKSPACE_POSTGRES_HOST=<FILL_ME>
-+ WORKSPACE_POSTGRES_PORT=<FILL_ME>
-+ WORKSPACE_POSTGRES_USER=workspace_admin
-+ WORKSPACE_POSTGRES_PASSWORD=<FILL_ME>
-+ WORKSPACE_POSTGRES_SSL_ENABLED=true
-+ WORKSPACE_POSTGRES_SSL_MODE=require
-+ WORKSPACE_POSTGRES_DB=workspace
-+ POSTGRES_ADMIN_USER=<FILL_ME>
-+ POSTGRES_ADMIN_PASSWORD=<FILL_ME>
-```
+   ```diff
+   # Your custom configuration for an external postgres database (comment when local postgres)
+   - # LOCAL_POSTGRES_SCALE=0
+   - # WORKSPACE_POSTGRES_HOST=<FILL_ME>
+   - # WORKSPACE_POSTGRES_PORT=<FILL_ME>
+   - # WORKSPACE_POSTGRES_USER=workspace_admin
+   - # WORKSPACE_POSTGRES_PASSWORD=<FILL_ME>
+   - # WORKSPACE_POSTGRES_DB=workspace
+   - # WORKSPACE_POSTGRES_SSL_ENABLED=true
+   - # WORKSPACE_POSTGRES_SSL_MODE=require
+   # Only applies if Postgres SSL certificate is selfsigned, read the documentation
+   # WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
+   - # POSTGRES_ADMIN_USER=<FILL_ME>
+   - # POSTGRES_ADMIN_PASSWORD=<FILL_ME>
+   + LOCAL_POSTGRES_SCALE=0
+   + WORKSPACE_POSTGRES_HOST=<FILL_ME>
+   + WORKSPACE_POSTGRES_PORT=<FILL_ME>
+   + WORKSPACE_POSTGRES_USER=workspace_admin
+   + WORKSPACE_POSTGRES_PASSWORD=<FILL_ME>
+   + WORKSPACE_POSTGRES_SSL_ENABLED=true
+   + WORKSPACE_POSTGRES_SSL_MODE=require
+   + WORKSPACE_POSTGRES_DB=workspace
+   + POSTGRES_ADMIN_USER=<FILL_ME>
+   + POSTGRES_ADMIN_PASSWORD=<FILL_ME>
+   ```
 
 3. Replace the `<FILL_ME>` placeholders with the right values.
 
@@ -182,11 +184,11 @@ WORKSPACE_POSTGRES_SSL_MODE=require
 
 2. Uncomment the `WORKSPACE_POSTGRES_SSL_CA` env var in the `customer.env` file:
 
-```diff
-# Only applies if Postgres SSL certificate is selfsigned, read the documentation
-- # WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
-+ WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
-```
+   ```diff
+   # Only applies if Postgres SSL certificate is selfsigned, read the documentation
+   - # WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
+   + WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
+   ```
 
 #### Azure PostgreSQL
 
@@ -253,35 +255,35 @@ Here are some Terraform examples of Redis instances created in different provide
 
 1. Comment the local Redis configuration:
 
-```diff
-# Configuration for using a local redis, instead of a external one (comment when external redis)
-- LOCAL_REDIS_SCALE=1
-- REDIS_HOST=redis
-- REDIS_PORT=6379
-- REDIS_TLS_ENABLED=false
-+ # LOCAL_REDIS_SCALE=1
-+ # REDIS_HOST=redis
-+ # REDIS_PORT=6379
-+ # REDIS_TLS_ENABLED=false
-```
+   ```diff
+   # Configuration for using a local redis, instead of a external one (comment when external redis)
+   - LOCAL_REDIS_SCALE=1
+   - REDIS_HOST=redis
+   - REDIS_PORT=6379
+   - REDIS_TLS_ENABLED=false
+   + # LOCAL_REDIS_SCALE=1
+   + # REDIS_HOST=redis
+   + # REDIS_PORT=6379
+   + # REDIS_TLS_ENABLED=false
+   ```
 
 2. Uncomment the external Redis configuration:
 
-```diff
-# Your custom configuration for a external redis (comment when local redis)
-- # LOCAL_REDIS_SCALE=0
-- # REDIS_HOST=<FILL_ME>
-- # REDIS_PORT=<FILL_ME>
-- # REDIS_PASSWORD=<FILL_ME>
-- # REDIS_TLS_ENABLED=true
-# Only applies if Redis TLS certificate it's selfsigned, read the documentation
-# REDIS_TLS_CA=<FILL_ME>
-+ LOCAL_REDIS_SCALE=0
-+ REDIS_HOST=<FILL_ME>
-+ REDIS_PORT=<FILL_ME>
-+ REDIS_PASSWORD=<FILL_ME>
-+ REDIS_TLS_ENABLED=true
-```
+   ```diff
+   # Your custom configuration for a external redis (comment when local redis)
+   - # LOCAL_REDIS_SCALE=0
+   - # REDIS_HOST=<FILL_ME>
+   - # REDIS_PORT=<FILL_ME>
+   - # REDIS_PASSWORD=<FILL_ME>
+   - # REDIS_TLS_ENABLED=true
+   # Only applies if Redis TLS certificate it's selfsigned, read the documentation
+   # REDIS_TLS_CA=<FILL_ME>
+   + LOCAL_REDIS_SCALE=0
+   + REDIS_HOST=<FILL_ME>
+   + REDIS_PORT=<FILL_ME>
+   + REDIS_PASSWORD=<FILL_ME>
+   + REDIS_TLS_ENABLED=true
+   ```
 
 3. Replace the `<FILL_ME>` placeholders with the right values.
 
@@ -295,14 +297,15 @@ REDIS_TLS_ENABLED=true
 
 > :warning: In case you are connection to a Redis where the TLS certificate is selfsigned or from a custom CA you will need to configure the `REDIS_TLS_CA` variable
 
-1. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `redis-tls-ca.crt`
-2. Uncomment the `REDIS_TLS_CA` env var in the `customer.env` file
+1. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `redis-tls-ca.crt`.
 
-```diff
-# Only applies if Redis TLS certificate it's selfsigned, read the documentation
-- # REDIS_TLS_CA=/usr/src/certs/redis-tls-ca.crt
-+ REDIS_TLS_CA=/usr/src/certs/redis-tls-ca.crt
-```
+2. Uncomment the `REDIS_TLS_CA` env var in the `customer.env` file.
+
+   ```diff
+   # Only applies if Redis TLS certificate it's selfsigned, read the documentation
+   - # REDIS_TLS_CA=/usr/src/certs/redis-tls-ca.crt
+   + REDIS_TLS_CA=/usr/src/certs/redis-tls-ca.crt
+   ```
 
 ### Custom buckets
 
@@ -362,30 +365,30 @@ In order to use Google Cloud Storage custom buckets you need to:
 
 5. Set the following variables in your customer.env file:
 
-```bash
-# Thumbnails bucket
-WORKSPACE_THUMBNAILS_PROVIDER='gcp'
-WORKSPACE_THUMBNAILS_PUBLIC=<true|false>
-WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
-WORKSPACE_THUMBNAILS_KEYFILENAME=<path_to_service_account_key_file>
-WORKSPACE_THUMBNAILS_PROJECTID=<gcp_project_id>
+   ```bash
+   # Thumbnails bucket
+   WORKSPACE_THUMBNAILS_PROVIDER='gcp'
+   WORKSPACE_THUMBNAILS_PUBLIC=<true|false>
+   WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
+   WORKSPACE_THUMBNAILS_KEYFILENAME=<path_to_service_account_key_file>
+   WORKSPACE_THUMBNAILS_PROJECTID=<gcp_project_id>
+   
+   # Client bucket
+   WORKSPACE_IMPORTS_PROVIDER='gcp'
+   WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
+   WORKSPACE_IMPORTS_KEYFILENAME=<path_to_service_account_key_file>
+   WORKSPACE_IMPORTS_PROJECTID=<gcp_project_id>
+   
+   # Import bucket
+   IMPORT_PROVIDER='gcp'
+   IMPORT_BUCKET=<import_bucket_name>
+   IMPORT_KEYFILENAME=<path_to_service_account_key_file>
+   IMPORT_PROJECTID=<gcp_project_id>
+   ```
 
-# Client bucket
-WORKSPACE_IMPORTS_PROVIDER='gcp'
-WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
-WORKSPACE_IMPORTS_KEYFILENAME=<path_to_service_account_key_file>
-WORKSPACE_IMPORTS_PROJECTID=<gcp_project_id>
+   > If `<BUCKET>_KEYFILENAME` is not defined  env `GOOGLE_APPLICATION_CREDENTIALS` is used as default value. When the selfhosted service account is setup in a Compute Engine instance as the default service account, there's no need to set any of these, as the containers will inherit the instance default credentials.
 
-# Import bucket
-IMPORT_PROVIDER='gcp'
-IMPORT_BUCKET=<import_bucket_name>
-IMPORT_KEYFILENAME=<path_to_service_account_key_file>
-IMPORT_PROJECTID=<gcp_project_id>
-```
-
-> If `<BUCKET>_KEYFILENAME` is not defined  env `GOOGLE_APPLICATION_CREDENTIALS` is used as default value. When the selfhosted service account is setup in a Compute Engine instance as the default service account, there's no need to set any of these, as the containers will inherit the instance default credentials.
-
-> If `<BUCKET>_PROJECTID` is not defined  env `GOOGLE_CLOUD_PROJECT` is used as default value.
+   > If `<BUCKET>_PROJECTID` is not defined  env `GOOGLE_CLOUD_PROJECT` is used as default value.
 
 #### AWS S3
 
@@ -401,30 +404,29 @@ In order to use AWS S3 custom buckets you need to:
 
 5. Set the following variables in your customer.env file:
 
-
-```bash
-# Thumbnails bucket
-WORKSPACE_THUMBNAILS_PROVIDER='s3'
-WORKSPACE_THUMBNAILS_PUBLIC=<true|false>
-WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
-WORKSPACE_THUMBNAILS_ACCESSKEYID=<aws_access_key_id>
-WORKSPACE_THUMBNAILS_SECRETACCESSKEY=<aws_access_key_secret>
-WORKSPACE_THUMBNAILS_REGION=<aws_s3_region>
-
-# Client bucket
-WORKSPACE_IMPORTS_PROVIDER='s3'
-WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
-WORKSPACE_IMPORTS_ACCESSKEYID=<aws_access_key_id>
-WORKSPACE_IMPORTS_SECRETACCESSKEY=<aws_access_key_secret>
-WORKSPACE_IMPORTS_REGION=<aws_s3_region>
-
-# Import bucket
-IMPORT_PROVIDER='s3'
-IMPORT_BUCKET=<import_bucket_name>
-IMPORT_ACCESSKEYID=<aws_access_key_id>
-IMPORT_SECRETACCESSKEY=<aws_access_key_secret>
-IMPORT_REGION=<aws_s3_region>
-```
+   ```bash
+   # Thumbnails bucket
+   WORKSPACE_THUMBNAILS_PROVIDER='s3'
+   WORKSPACE_THUMBNAILS_PUBLIC=<true|false>
+   WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
+   WORKSPACE_THUMBNAILS_ACCESSKEYID=<aws_access_key_id>
+   WORKSPACE_THUMBNAILS_SECRETACCESSKEY=<aws_access_key_secret>
+   WORKSPACE_THUMBNAILS_REGION=<aws_s3_region>
+   
+   # Client bucket
+   WORKSPACE_IMPORTS_PROVIDER='s3'
+   WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
+   WORKSPACE_IMPORTS_ACCESSKEYID=<aws_access_key_id>
+   WORKSPACE_IMPORTS_SECRETACCESSKEY=<aws_access_key_secret>
+   WORKSPACE_IMPORTS_REGION=<aws_s3_region>
+   
+   # Import bucket
+   IMPORT_PROVIDER='s3'
+   IMPORT_BUCKET=<import_bucket_name>
+   IMPORT_ACCESSKEYID=<aws_access_key_id>
+   IMPORT_SECRETACCESSKEY=<aws_access_key_secret>
+   IMPORT_REGION=<aws_s3_region>
+   ```
 
 #### Azure Blob Storage
 
@@ -440,26 +442,26 @@ In order to use Azure Storage buckets (aka containers) you need to:
 
 5. Set the following variables in your customer.env file:
 
-```bash
-# Thumbnails bucket
-WORKSPACE_THUMBNAILS_PROVIDER='azure-blob'
-WORKSPACE_THUMBNAILS_PUBLIC=<true|false>
-WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
-WORKSPACE_THUMBNAILS_STORAGE_ACCOUNT=<storage_account_name>
-WORKSPACE_THUMBNAILS_STORAGE_ACCESSKEY=<access_key>
-
-# Client bucket
-WORKSPACE_IMPORTS_PROVIDER='azure-blob'
-WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
-WORKSPACE_IMPORTS_STORAGE_ACCOUNT=<storage_account_name>
-WORKSPACE_IMPORTS_STORAGE_ACCESSKEY=<access_key>
-
-# Import bucket
-IMPORT_PROVIDER='azure-blob'
-IMPORT_BUCKET=<import_bucket_name>
-IMPORT_STORAGE_ACCOUNT=<storage_account_name>
-IMPORT_STORAGE_ACCESSKEY=<access_key>
-```
+   ```bash
+   # Thumbnails bucket
+   WORKSPACE_THUMBNAILS_PROVIDER='azure-blob'
+   WORKSPACE_THUMBNAILS_PUBLIC=<true|false>
+   WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
+   WORKSPACE_THUMBNAILS_STORAGE_ACCOUNT=<storage_account_name>
+   WORKSPACE_THUMBNAILS_STORAGE_ACCESSKEY=<access_key>
+   
+   # Client bucket
+   WORKSPACE_IMPORTS_PROVIDER='azure-blob'
+   WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
+   WORKSPACE_IMPORTS_STORAGE_ACCOUNT=<storage_account_name>
+   WORKSPACE_IMPORTS_STORAGE_ACCESSKEY=<access_key>
+   
+   # Import bucket
+   IMPORT_PROVIDER='azure-blob'
+   IMPORT_BUCKET=<import_bucket_name>
+   IMPORT_STORAGE_ACCOUNT=<storage_account_name>
+   IMPORT_STORAGE_ACCESSKEY=<access_key>
+   ```
 
 ### Enable BigQuery Oauth connections
 
@@ -481,11 +483,11 @@ This feature allows users to create a BigQuery connection using `Sign in with Go
 
 3. In your selfhosted's customer.env file, set the following vars with the values from the credentials file:
 
-```bash
-REACT_APP_BIGQUERY_OAUTH=true
-BIGQUERY_OAUTH2_CLIENT_ID=<value_from_credentials_web_client_id>
-BIGQUERY_OAUTH2_CLIENT_SECRET=<value_from_credentials_web_client_secret>
-```
+   ```bash
+   REACT_APP_BIGQUERY_OAUTH=true
+   BIGQUERY_OAUTH2_CLIENT_ID=<value_from_credentials_web_client_id>
+   BIGQUERY_OAUTH2_CLIENT_SECRET=<value_from_credentials_web_client_secret>
+   ```
 
 ### Google Maps
 
