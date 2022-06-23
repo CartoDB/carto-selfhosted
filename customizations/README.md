@@ -1,6 +1,5 @@
 # Table of Contents
 
-- [Table of Contents](#table-of-contents)
 - [Customizations](#customizations)
   - [Production Ready](#production-ready)
   - [Custom Service Account](#custom-service-account)
