@@ -105,10 +105,12 @@ Please, read the available [customization](customizations/README.md) options.
 
 In order to verify CARTO Self Hosted was correctly installed and it's functional, we recommend performing the following checks:
 
-1. Check all the containers are up and running:
+1. Check all the containers are up and running (except for the container `workspace-migrations` with state `Exit 0`):
    ```bash
    docker-compose ps
    ```
+
+   > All containers should show state `Up`, except for `workspace-migrations` which should have show `Exit 0`, meaning the database migrations finished correctly.
 
 2. Sign in to your Self Hosted, create a user and a new organization.
 
