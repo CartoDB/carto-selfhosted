@@ -78,3 +78,10 @@ resource "google_service_account_iam_binding" "gke_iam_binding" {
     "serviceAccount:${local.project_id}.svc.id.goog[carto/carto-common-backend]",
   ]
 }
+
+# This role enables impersonation of service accounts to create OAuth2 access tokens, sign blobs, or sign JWTs
+resource "google_service_account_iam_member" "workload_identity_sa_sign_urls" {
+  service_account_id = google_service_account.workload_identity_sa.name
+  role               = "roles/iam.serviceAccountTokenCreator"
+  member             = "serviceAccount:${google_service_account.workload_identity_sa.email}"
+}
