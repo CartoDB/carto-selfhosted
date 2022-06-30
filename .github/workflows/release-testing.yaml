@@ -84,6 +84,10 @@ jobs:
           CUSTOMER_ENV: ${{ steps.secrets.outputs.CUSTOMER_ENV }}
           KEY_JSON: ${{ steps.secrets.outputs.KEY_JSON }}
           NGROK_URL: ${{ steps.ngrok-tunnel.outputs.ngrok-url-without-protocol }}
+        with:
+          honeycomb-enabled: true
+          honeycomb-dataset: "integration-tests-${{ github.repository }}"
+          honeycomb-api-key: ${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}
         run: |
           set -xeu
           echo Testing Selfhosted version: $(cat VERSION)
@@ -152,9 +156,6 @@ jobs:
         with:
           registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
           docker-tag: ${{ steps.info.outputs.release-version }}
-          honeycomb-enabled: true
-          honeycomb-dataset: "integration-tests-${{ github.repository }}"
-          honeycomb-api-key: ${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}
           environment: production
           mount-local-env: false
           carto3-tenant-id: ${{ env.TENANT_ID }}
