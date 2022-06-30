@@ -84,10 +84,6 @@ jobs:
           CUSTOMER_ENV: ${{ steps.secrets.outputs.CUSTOMER_ENV }}
           KEY_JSON: ${{ steps.secrets.outputs.KEY_JSON }}
           NGROK_URL: ${{ steps.ngrok-tunnel.outputs.ngrok-url-without-protocol }}
-        with:
-          honeycomb-enabled: true
-          honeycomb-dataset: "integration-tests-${{ github.repository }}"
-          honeycomb-api-key: ${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}
         run: |
           set -xeu
           echo Testing Selfhosted version: $(cat VERSION)
@@ -103,21 +99,21 @@ jobs:
           echo "::endgroup::"
 
           echo Adding Honeycomb variables to .env file
-          echo "ACCOUNTS_HONEYCOMB_DATASET=${{ inputs.honeycomb-dataset }}" >> .env
-          echo "ACCOUNTS_HONEYCOMB_API_KEY=${{ inputs.honeycomb-api-key }}" >> .env
-          echo "ACCOUNTS_HONEYCOMB_UPLOAD_EVENTS=${honeycomb-enabled}" >> .env
-          echo "MAPS_API_V3_HONEYCOMB_DATASET=${{ inputs.honeycomb-dataset }}" >> .env
-          echo "MAPS_API_V3_HONEYCOMB_API_KEY=${{ inputs.honeycomb-api-key }}" >> .env
-          echo "MAPS_API_V3_HONEYCOMB_UPLOAD_EVENTS=${honeycomb-enabled}" >> .env
-          echo "WORKSPACE_HONEYCOMB_DATASET=${{ inputs.honeycomb-dataset }}" >> .env
-          echo "WORKSPACE_HONEYCOMB_API_KEY=${{ inputs.honeycomb-api-key }}" >> .env
-          echo "WORKSPACE_HONEYCOMB_UPLOAD_EVENTS=${honeycomb-enabled}" >> .env
-          echo "IMPORT_HONEYCOMB_DATASET=${{ inputs.honeycomb-dataset }}" >> .env
-          echo "IMPORT_HONEYCOMB_API_KEY=${{ inputs.honeycomb-api-key }}" >> .env
-          echo "IMPORT_HONEYCOMB_UPLOAD_EVENTS=${honeycomb-enabled}" >> .env
-          echo "LDS_HONEYCOMB_DATASET=${{ inputs.honeycomb-dataset }}" >> .env
-          echo "LDS_HONEYCOMB_API_KEY=${{ inputs.honeycomb-api-key }}" >> .env
-          echo "LDS_HONEYCOMB_UPLOAD_EVENTS=${honeycomb-enabled}" >> .env
+          echo "ACCOUNTS_HONEYCOMB_DATASET=honeycombintegration-tests-${{ github.repository }}-enabled" >> .env
+          echo "ACCOUNTS_HONEYCOMB_API_KEY=${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}" >> .env
+          echo "ACCOUNTS_HONEYCOMB_UPLOAD_EVENTS=true" >> .env
+          echo "MAPS_API_V3_HONEYCOMB_DATASET=honeycombintegration-tests-${{ github.repository }}-enabled" >> .env
+          echo "MAPS_API_V3_HONEYCOMB_API_KEY=${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}" >> .env
+          echo "MAPS_API_V3_HONEYCOMB_UPLOAD_EVENTS=true" >> .env
+          echo "WORKSPACE_HONEYCOMB_DATASET=honeycombintegration-tests-${{ github.repository }}-enabled" >> .env
+          echo "WORKSPACE_HONEYCOMB_API_KEY=${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}" >> .env
+          echo "WORKSPACE_HONEYCOMB_UPLOAD_EVENTS=true" >> .env
+          echo "IMPORT_HONEYCOMB_DATASET=honeycombintegration-tests-${{ github.repository }}-enabled" >> .env
+          echo "IMPORT_HONEYCOMB_API_KEY=${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}" >> .env
+          echo "IMPORT_HONEYCOMB_UPLOAD_EVENTS=true" >> .env
+          echo "LDS_HONEYCOMB_DATASET=honeycombintegration-tests-${{ github.repository }}-enabled" >> .env
+          echo "LDS_HONEYCOMB_API_KEY=${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}" >> .env
+          echo "LDS_HONEYCOMB_UPLOAD_EVENTS=true" >> .env
 
       - name: Bring up Docker environment
         run: |
