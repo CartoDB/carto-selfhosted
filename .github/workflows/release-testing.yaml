@@ -145,6 +145,8 @@ jobs:
         with:
           registry-service-account-base64: ${{ secrets.SELFHOSTED_RELEASE_SERVICE_ACCOUNT_BASE64 }}
           docker-tag: ${{ steps.info.outputs.release-version }}
+          honeycomb-dataset: "integration-tests-${{ github.repository }}"
+          honeycomb-api-key: ${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}
           environment: production
           mount-local-env: false
           carto3-tenant-id: ${{ env.TENANT_ID }}
