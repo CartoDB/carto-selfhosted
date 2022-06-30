@@ -98,6 +98,23 @@ jobs:
           bash install.sh
           echo "::endgroup::"
 
+          echo Adding Honeycomb variables to .env file
+          echo "ACCOUNTS_HONEYCOMB_DATASET=integration-tests-${GITHUB_REPOSITORY#CartoDB/}" >> .env
+          echo "ACCOUNTS_HONEYCOMB_API_KEY=${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}" >> .env
+          echo "ACCOUNTS_HONEYCOMB_UPLOAD_EVENTS=true" >> .env
+          echo "MAPS_API_V3_HONEYCOMB_DATASET=integration-tests-${GITHUB_REPOSITORY#CartoDB/}" >> .env
+          echo "MAPS_API_V3_HONEYCOMB_API_KEY=${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}" >> .env
+          echo "MAPS_API_V3_HONEYCOMB_UPLOAD_EVENTS=true" >> .env
+          echo "WORKSPACE_HONEYCOMB_DATASET=integration-tests-${GITHUB_REPOSITORY#CartoDB/}" >> .env
+          echo "WORKSPACE_HONEYCOMB_API_KEY=${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}" >> .env
+          echo "WORKSPACE_HONEYCOMB_UPLOAD_EVENTS=true" >> .env
+          echo "IMPORT_HONEYCOMB_DATASET=integration-tests-${GITHUB_REPOSITORY#CartoDB/}" >> .env
+          echo "IMPORT_HONEYCOMB_API_KEY=${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}" >> .env
+          echo "IMPORT_HONEYCOMB_UPLOAD_EVENTS=true" >> .env
+          echo "LDS_HONEYCOMB_DATASET=integration-tests-${GITHUB_REPOSITORY#CartoDB/}" >> .env
+          echo "LDS_HONEYCOMB_API_KEY=${{ secrets.CARTO_INTEGRATION_TESTS_HONEYCOMB_APIKEY }}" >> .env
+          echo "LDS_HONEYCOMB_UPLOAD_EVENTS=true" >> .env
+
       - name: Bring up Docker environment
         run: |
           set -eu

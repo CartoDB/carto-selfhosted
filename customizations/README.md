@@ -355,6 +355,8 @@ In order to use Google Cloud Storage custom buckets you need to:
 
 1. Create the buckets.
 
+   > :warning: If you enable `Prevent public access` in the bucket properties, then set `appConfigValues.workspaceThumbnailsPublic` and `appConfigValues.workspaceImportsPublic` to `false`.
+
 2. Configure the required [CORS settings](#requirements).
 
 3. Create a [custom Service account](#custom-service-account).
@@ -394,7 +396,9 @@ In order to use Google Cloud Storage custom buckets you need to:
 
 In order to use AWS S3 custom buckets you need to:
 
-1. Create the buckets. If you enable `Block public access` in the bucket properties, make sure you set `WORKSPACE_THUMBNAILS_PUBLIC` to `false`.
+1. Create the buckets.
+
+   > :warning: If you enable `Block public access` in the bucket properties, then set `appConfigValues.workspaceThumbnailsPublic` and `appConfigValues.workspaceImportsPublic` to `false`.
 
 2. Configure the required [CORS settings](#requirements).
 
@@ -436,7 +440,9 @@ In order to use Azure Storage buckets (aka containers) you need to:
 
 2. Configure the required [CORS settings](#requirements).
 
-3. Create the storage buckets. If you set the `Public Access Mode` to `private` in the bucket properties, make sure you set `WORKSPACE_THUMBNAILS_PUBLIC` to `false`.
+3. Create the storage buckets.
+
+   > :warning:  If you set the `Public Access Mode` to `private` in the bucket properties, then set `appConfigValues.workspaceThumbnailsPublic` and `appConfigValues.workspaceImportsPublic` to `false`.
 
 4. Generate an Access Key, from the storage account's Security properties.
 
