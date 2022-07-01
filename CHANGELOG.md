@@ -1,3 +1,13 @@
+## 2022.7.1 (July 01, 2022)
+IMPROVEMENTS
++ Dynamic Tilling Queries
++ Bugs Fixing and minor improvements
+
+## 2022.6.30 (June 30, 2022)
+IMPROVEMENTS
++ Bugs Fixing and minor improvements
++ New Pop-ups in Builder
+
 ## 2022.6.29 (June 29, 2022)
 IMPROVEMENTS
 + Bugs Fixing and minor improvements
