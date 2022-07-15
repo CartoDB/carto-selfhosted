@@ -1,3 +1,10 @@
+## 2022.7.15 (July 15, 2022)
+IMPROVEMENTS
++ New Data Explorer section
++ CARTOColors available in Builder
++ Custom HTML Popups
++ Bugs Fixing and minor improvements
+
 ## 2022.7.5-1 (July 05, 2022)
 IMPROVEMENTS
 + Bugs Fixing and minor improvements
