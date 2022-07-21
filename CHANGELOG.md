@@ -1,3 +1,7 @@
+## 2022.7.20 (July 20, 2022)
+IMPROVEMENTS
++ Bugs Fixing and minor improvements
+
 ## 2022.7.15-2 (July 15, 2022)
 IMPROVEMENTS
 + New Data Explorer section
