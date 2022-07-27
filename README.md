@@ -40,6 +40,8 @@ You will need a Linux machine with at least:
 - A TLS certificate for the domain/subdomain (if not provided a self-signed one will be generated)
 - Configuration and license files received from CARTO
 
+> :warning: We do not support Docker Compose as [a CLI plugin for docker](https://docs.docker.com/compose/install/compose-plugin/#installing-compose-on-linux-systems). You can use [install_docker.sh](scripts/install_docker.sh) and [install_docker-compose.sh](scripts/install_docker-compose.sh) to install the recommended software versions.
+
 ### Deployment Customizations
 
 Please, read the available [customization](customizations/README.md) options.
