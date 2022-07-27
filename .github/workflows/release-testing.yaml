@@ -16,7 +16,7 @@ env:
   TENANT_ID: onp-infra-release
 jobs:
   release-testing:
-    runs-on: ubuntu-20.04
+    runs-on: buildjet-4vcpu-ubuntu-2204
     name: "Release - Testing"
     timeout-minutes: 90
     outputs:
