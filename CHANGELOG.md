@@ -1,3 +1,11 @@
+## 2022.8.1 (August 01, 2022)
+IMPROVEMENTS
++ New Range widget in Builder
++ Renaming of data sources in Builder
++ Maps API support for parameterized queries
++ Import API support for GeoParquet files
++ Bugs Fixing and minor improvements
+
 ## 2022.7.20 (July 20, 2022)
 IMPROVEMENTS
 + Bugs Fixing and minor improvements
