@@ -1,3 +1,23 @@
+## 2022.8.11-8 (August 11, 2022)
+IMPROVEMENTS
++ Bugs Fixing and minor improvements
+
+## 2022.8.11-7 (August 11, 2022)
+IMPROVEMENTS
++ Bugs Fixing and minor improvements
+
+## 2022.8.11-6 (August 11, 2022)
+IMPROVEMENTS
++ Bugs Fixing and minor improvements
+
+## 2022.8.10 (August 10, 2022)
+IMPROVEMENTS
++ Bugs Fixing and minor improvements
+
+## 2022.8.9 (August 09, 2022)
+IMPROVEMENTS
++ Bugs Fixing and minor improvements
+
 ## 2022.8.1 (August 01, 2022)
 IMPROVEMENTS
 + New Range widget in Builder
