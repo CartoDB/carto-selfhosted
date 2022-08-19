@@ -1,3 +1,11 @@
+## 2022.8.19 (August 19, 2022)
+IMPROVEMENTS
++ Bugs Fixing and minor improvements
+
+## 2022.8.15 (August 15, 2022)
+IMPROVEMENTS
++ Bugs Fixing and minor improvements
+
 ## 2022.8.11-8 (August 11, 2022)
 IMPROVEMENTS
 + Bugs Fixing and minor improvements
