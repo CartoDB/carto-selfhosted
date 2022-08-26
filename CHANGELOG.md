@@ -1,3 +1,7 @@
+## 2022.8.19-2 (August 19, 2022)
+IMPROVEMENTS
++ Bugs Fixing and minor improvements
+
 ## 2022.8.19-1 (August 19, 2022)
 IMPROVEMENTS
 + Support for Databricks SQL Warehouse connections
