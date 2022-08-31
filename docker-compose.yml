@@ -52,7 +52,7 @@ services:
         max-file: "20"
 
   workspace-api:
-    image: "${WORKSPACE_API_DOCKER_IMAGE}" 
+    image: "${WORKSPACE_API_DOCKER_IMAGE}"
     env_file:
       - .env
     depends_on:
