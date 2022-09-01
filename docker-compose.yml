@@ -57,7 +57,7 @@ services:
       - .env
     depends_on:
       - workspace-migrations
-    command: bash -c "npm run ready-to-run:built && npm run start:built"
+    command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: &default-volumes
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
     restart: unless-stopped
@@ -69,7 +69,7 @@ services:
 
   workspace-subscriber:
     image: "${WORKSPACE_API_DOCKER_IMAGE}"
-    command: bash -c "npm run ready-to-run:built && npm run start:built:subscriber"
+    command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js"
     volumes: *default-volumes
     env_file:
       - .env
@@ -97,7 +97,7 @@ services:
     image: "${MAPS_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    command: bash -c "npm run ready-to-run:built && npm run start:built"
+    command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
@@ -107,11 +107,12 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+
   sql-worker:
     image: "${MAPS_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    command: bash -c "npm run ready-to-run:built && npm run start:built:subscriber"
+    command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js"
     volumes: *default-volumes
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
@@ -124,7 +125,7 @@ services:
 
   cdn-invalidator-sub:
     image: "${CDN_INVALIDATOR_SUB_DOCKER_IMAGE}"
-    command: npm run start:built
+    command: node -r /usr/src/app/cdn-invalidator-sub/tsconfig-paths-bootstrap.js /usr/src/app/cdn-invalidator-sub/dist/app/cdn-invalidator-sub/index.js
     volumes: &default-volumes-double-level
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/app/certs/:ro"
     env_file:
@@ -135,11 +136,12 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+
   import-api:
     image: "${IMPORT_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    command: bash -c "npm run ready-to-run:built && npm run start:built"
+    command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     restart: unless-stopped
     logging:
@@ -153,7 +155,7 @@ services:
     volumes: *default-volumes
     env_file:
       - .env
-    command: npm run start:built:subscriber
+    command: node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js
     restart: unless-stopped
     logging:
       driver: "local"
@@ -165,7 +167,7 @@ services:
     image: "${LDS_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    command: bash -c "npm run ready-to-run:built && npm run start:built"
+    command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     restart: unless-stopped
     logging:
