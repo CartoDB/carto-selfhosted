@@ -1,15 +1,17 @@
+## 2022.9.2 (September 02, 2022)
+IMPROVEMENTS
++ Bugs Fixing and minor improvements
+
 ## 2022.8.19-2 (August 19, 2022)
 IMPROVEMENTS
-+ Bugs Fixing and minor improvements
-
-## 2022.8.19-1 (August 19, 2022)
-IMPROVEMENTS
 + Support for Databricks SQL Warehouse connections
++ Support for views in PostgreSQL
 + Bugs Fixing and minor improvements
 
-## 2022.8.19 (August 19, 2022)
-IMPROVEMENTS
-+ Bugs Fixing and minor improvements
+KNOWN ISSUES
++ GeoParquet import for uploaded files not working
++ Legends in published maps not working
++ Unexpected hover pop-up appears in public maps
 
 ## 2022.8.15 (August 15, 2022)
 IMPROVEMENTS
