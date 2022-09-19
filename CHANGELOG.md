@@ -1,3 +1,25 @@
+## 2022.9.19 (September 19, 2022)
+IMPROVEMENTS
++ Support for Maki icons and custom markers in Builder
++ Improvements to caching strategy
++ Improvements to point data tiles
++ Added unique Id property selector for widgets on tiled sources
++ Fixed incorrect counting on widgets from tiled sources
++ Spatial index tiles in binary format by default
++ Support for Databricks SQL Warehouses connections
++ Other bugs fixes and minor improvements
+
+## 2022.9.16 (September 16, 2022)
+IMPROVEMENTS
++ Support for Maki icons and custom markers in Builder
++ Improvements to caching strategy
++ Improvements to point data tiles
++ Added unique Id property selector for widgets on tiled sources
++ Fixed incorrect counting on widgets from tiled sources
++ Spatial index tiles in binary format by default
++ Support for Databricks SQL Warehouses connections
++ Other bugs fixes and minor improvements
+
 ## 2022.9.2 (September 02, 2022)
 IMPROVEMENTS
 + Bugs Fixing and minor improvements
