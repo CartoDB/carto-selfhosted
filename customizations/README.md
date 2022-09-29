@@ -14,7 +14,7 @@
     - [External Redis](#external-redis)
       - [Configure TLS](#configure-tls)
     - [Custom buckets](#custom-buckets)
-      - [General Requirements](#requirements)
+      - [General Requirements](#general-requirements)
       - [Google Cloud Storage](#google-cloud-storage)
       - [AWS S3](#aws-s3)
       - [Azure Blob Storage](#azure-blob-storage)
