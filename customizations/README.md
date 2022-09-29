@@ -319,7 +319,7 @@ You can create and use your own storage buckets in any of the following supporte
 
 > :warning: You can only set one provider at a time.
 
-#### Requirements
+#### General Requirements
 
 - You need to create 3 buckets in your preferred Cloud provider:
   - Import Bucket
