@@ -14,10 +14,10 @@
     - [External Redis](#external-redis)
       - [Configure TLS](#configure-tls)
     - [Custom buckets](#custom-buckets)
-      - [Requirements](#requirements)
-        - [Google Cloud Storage](#google-cloud-storage)
-        - [AWS S3](#aws-s3)
-        - [Azure Blob Storage](#azure-blob-storage)
+      - [General Requirements](#requirements)
+      - [Google Cloud Storage](#google-cloud-storage)
+      - [AWS S3](#aws-s3)
+      - [Azure Blob Storage](#azure-blob-storage)
     - [Enable BigQuery Oauth connections](#enable-bigquery-oauth-connections)
     - [Google Maps](#google-maps)
 
@@ -349,7 +349,7 @@ You can create and use your own storage buckets in any of the following supporte
 
 - Grant Read/Write permissions over the buckets to the credentials mentioned above.
 
-##### Google Cloud Storage
+#### Google Cloud Storage
 
 In order to use Google Cloud Storage custom buckets you need to:
 
@@ -392,7 +392,7 @@ In order to use Google Cloud Storage custom buckets you need to:
 
    > If `<BUCKET>_PROJECTID` is not defined  env `GOOGLE_CLOUD_PROJECT` is used as default value.
 
-##### AWS S3
+#### AWS S3
 
 In order to use AWS S3 custom buckets you need to:
 
@@ -432,7 +432,7 @@ In order to use AWS S3 custom buckets you need to:
    IMPORT_REGION=<aws_s3_region>
    ```
 
-##### Azure Blob Storage
+#### Azure Blob Storage
 
 In order to use Azure Storage buckets (aka containers) you need to:
 
