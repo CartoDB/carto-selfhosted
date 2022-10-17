@@ -55,6 +55,8 @@ services:
     image: "${WORKSPACE_API_DOCKER_IMAGE}"
     env_file:
       - .env
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=768
     depends_on:
       - workspace-migrations
     command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
@@ -73,6 +75,8 @@ services:
     volumes: *default-volumes
     env_file:
       - .env
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=384
     restart: unless-stopped
     logging:
       driver: "local"
@@ -101,6 +105,7 @@ services:
     volumes: *default-volumes
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
+      - NODE_OPTIONS=--max-old-space-size=1536
     restart: unless-stopped
     logging:
       driver: "local"
@@ -116,6 +121,7 @@ services:
     volumes: *default-volumes
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
+      - NODE_OPTIONS=--max-old-space-size=3072
     restart: unless-stopped
     logging:
       driver: "local"
@@ -130,6 +136,8 @@ services:
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/app/certs/:ro"
     env_file:
       - .env
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=384
     restart: unless-stopped
     logging:
       driver: "local"
@@ -141,6 +149,8 @@ services:
     image: "${IMPORT_API_DOCKER_IMAGE}"
     env_file:
       - .env
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=384
     command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     restart: unless-stopped
@@ -155,6 +165,8 @@ services:
     volumes: *default-volumes
     env_file:
       - .env
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=3072
     command: node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js
     restart: unless-stopped
     logging:
@@ -167,6 +179,8 @@ services:
     image: "${LDS_API_DOCKER_IMAGE}"
     env_file:
       - .env
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=768
     command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     restart: unless-stopped
