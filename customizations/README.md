@@ -14,7 +14,7 @@
     - [External Redis](#external-redis)
       - [Configure TLS](#configure-tls)
     - [Custom buckets](#custom-buckets)
-    - [Requirements](#requirements)
+      - [General Requirements](#general-requirements)
       - [Google Cloud Storage](#google-cloud-storage)
       - [AWS S3](#aws-s3)
       - [Azure Blob Storage](#azure-blob-storage)
@@ -309,7 +309,7 @@ REDIS_TLS_ENABLED=true
 
 ### Custom buckets
 
-For every CARTO Self Hosted installation, we create GCS buckets in our side as part of the required infrastructure for importing data, map thumbnails and other internal data.
+For every CARTO Self Hosted installation, we create GCS buckets on our side as part of the required infrastructure for importing data, map thumbnails and customization assets (custom logos and markers) and other internal data.
 
 You can create and use your own storage buckets in any of the following supported storage providers:
 
@@ -319,16 +319,16 @@ You can create and use your own storage buckets in any of the following supporte
 
 > :warning: You can only set one provider at a time.
 
-### Requirements
+#### General Requirements
 
 - You need to create 3 buckets in your preferred Cloud provider:
   - Import Bucket
   - Client Bucket
-  - Thumbnails Bucket
+  - Thumbnails Bucket. ℹ️**NOTE:** This bucket needs to be public for some features to work correctly. Custom branding logo and custom images for markers won't work properly unless this bucket is public ℹ️
 
 > There's no name constraints
 
-> :warning: Map thumbnails storage objects (.png files) can be configured to be `public` (default) or `private`. In order to change this, set `WORKSPACE_THUMBNAILS_PUBLIC="false"` (see the examples below). For the default configuration to work, the bucket must allow public objects/blobs.
+> :warning: Map thumbnails storage objects (.png files) can be configured to be `public` (default) or `private`. In order to change this, set `WORKSPACE_THUMBNAILS_PUBLIC="false"` (see the examples below). For the default configuration to work, the bucket must allow public objects/blobs. Remember that customization assets, like logos or custom markers will only work if the bucket is public.
 
 - CORS configuration: Thumbnails and Import buckets require having the following CORS headers.
   - Allowed origins: `*`
