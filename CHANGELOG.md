@@ -1,10 +1,6 @@
-## 2022.10.7-1 (October 07, 2022)
+## 2022.10.18 (October 18, 2022)
 IMPROVEMENTS
-+ Bugs Fixing and minor improvements
-
-## 2022.10.7 (October 07, 2022)
-
-IMPROVEMENTS
++ New and improved login and signup
 + Improvements to caching strategy
 + Improvements to point data tiles
 + Added unique ID property selector for widgets on tiled sources
@@ -15,6 +11,7 @@ IMPROVEMENTS
 + Updated base Docker images with security fixes
 + Use a connection pool for Postgres
 + K8: TLS offload in AWS LoadBalancer
++ K8: Increase min instances of workspace-api and maps-api
 + Create tileset options: Spatial Index and aggragations
 + Other bugs fixes and minor improvements
 
