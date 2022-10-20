@@ -11,7 +11,7 @@ IMPROVEMENTS
 + Updated base Docker images with security fixes
 + Use a connection pool for Postgres
 + K8: TLS offload in AWS LoadBalancer
-+ K8: Increase min instances of workspace-api and maps-api
++ K8: Increase min instances of workspace-api, maps-api and import-api
 + Create tileset options: Spatial Index and aggragations
 + Other bugs fixes and minor improvements
 
