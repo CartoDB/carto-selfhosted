@@ -122,18 +122,37 @@ In order to verify CARTO Self Hosted was correctly installed and it's functional
 
 To update you CARTO Self Hosted to the newest version you will need run the following commands:
 
-```bash
-# Go to CARTO installation directory
-cd carto-selfhosted
-# Pull last changes
-git pull
-# Apply the changes from the old customer.env to the new customer.env
-cp customer.env customer.env.bak
-# Generate the .env file
-bash install.sh
-# Recreate the containers
-docker-compose up -d
-```
+1. Go to the CARTO installation directory:
+   ```bash
+   cd carto-selfhosted
+   ```
+
+2. Pull last changes from the origin repo:
+   ```bash
+   git pull
+   ```
+
+3. Save a backup copy of your current `customer.env`:
+   ```bash
+   mv customer.env customer.env.bak
+   ```
+
+4. Copy the new customer.env provided by CARTO in the installation directory:
+   ```bash
+   cp /new_file_location/customer.env .
+   ```
+
+5. Open side by side `customer.env` and `customer.env.bak` and apply the customizations from `customer.env.bak` in the new `customer.env`
+
+6. Generate the `.env` file
+   ```bash
+   bash install.sh
+   ```
+
+7. Recreate the containers
+   ```bash
+   docker-compose up -d
+   ```
 
 ## Uninstall
 
