@@ -105,7 +105,7 @@ services:
     volumes: *default-volumes
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
-      - NODE_OPTIONS=--max-old-space-size=1536
+      - NODE_OPTIONS=--max-old-space-size=1875
     restart: unless-stopped
     logging:
       driver: "local"
