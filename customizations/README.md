@@ -377,6 +377,7 @@ In order to use Google Cloud Storage custom buckets you need to:
    
    # Client bucket
    WORKSPACE_IMPORTS_PROVIDER='gcp'
+   WORKSPACE_IMPORTS_PUBLIC=<true|false>
    WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
    WORKSPACE_IMPORTS_KEYFILENAME=<path_to_service_account_key_file>
    WORKSPACE_IMPORTS_PROJECTID=<gcp_project_id>
@@ -459,6 +460,7 @@ In order to use Azure Storage buckets (aka containers) you need to:
    
    # Client bucket
    WORKSPACE_IMPORTS_PROVIDER='azure-blob'
+   WORKSPACE_IMPORTS_PUBLIC=<true|false>
    WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
    WORKSPACE_IMPORTS_STORAGE_ACCOUNT=<storage_account_name>
    WORKSPACE_IMPORTS_STORAGE_ACCESSKEY=<access_key>
