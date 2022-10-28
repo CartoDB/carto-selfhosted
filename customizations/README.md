@@ -398,7 +398,7 @@ In order to use AWS S3 custom buckets you need to:
 
 1. Create the buckets.
 
-   > :warning: If you enable `Block public access` in the bucket properties, then set `appConfigValues.workspaceThumbnailsPublic` and `appConfigValues.workspaceImportsPublic` to `false`.
+   > :warning: If you enable `Block public access` in the bucket properties, then set `WORKSPACE_THUMBNAILS_PUBLIC` and `WORKSPACE_IMPORTS_PUBLIC` to `false`.
 
 2. Configure the required [CORS settings](#requirements).
 
@@ -419,6 +419,7 @@ In order to use AWS S3 custom buckets you need to:
    
    # Client bucket
    WORKSPACE_IMPORTS_PROVIDER='s3'
+   WORKSPACE_IMPORTS_PUBLIC=<true|false>
    WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
    WORKSPACE_IMPORTS_ACCESSKEYID=<aws_access_key_id>
    WORKSPACE_IMPORTS_SECRETACCESSKEY=<aws_access_key_secret>
