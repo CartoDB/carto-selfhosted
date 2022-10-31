@@ -1,0 +1,25 @@
+######################
+# Whitelisted domains
+######################
+
+# global
+api.tomtom.com
+auth.carto.com
+bigquery.googleapis.com
+iamcredentials.googleapis.com
+isoline.router.hereapi.com
+logging.googleapis.com
+pubsub.googleapis.com
+registry.npmjs.org
+sqladmin.googleapis.com
+storage.googleapis.com
+tools.google.com 
+www.googleapis.com
+# only for Mapbox geocoding
+api.mapbox.com
+# only for Google Maps geocoding
+maps.googleapis.com
+# only for AWS S3 buckets
+*.amazonaws.com
+# only for Azure Blob Storage
+*.blob.core.windows.net
