@@ -6,11 +6,11 @@
 api.tomtom.com
 auth.carto.com
 bigquery.googleapis.com
+gcr.io
 iamcredentials.googleapis.com
 isoline.router.hereapi.com
 logging.googleapis.com
 pubsub.googleapis.com
-registry.npmjs.org
 sqladmin.googleapis.com
 storage.googleapis.com
 tools.google.com 
