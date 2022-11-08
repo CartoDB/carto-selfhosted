@@ -18,7 +18,7 @@ This tool can be used to download a newer version of the Carto selfhosted custom
    - `-d | --dir` Directory containing the existing `customer.env` and `key.json` files.
    - `-s | --selfhosted-mode` Carto selfhosted installation mode. Use `docker`.
 
-   ```
+   ```bash
    $ ./carto-download-customer-package.sh -d /tmp/carto -s docker
    Activated service account credentials for: [serv-onp-xxx@carto-tnt-onp-xxx.iam.gserviceaccount.com]
    Copying gs://carto-tnt-onp-xxx-client-storage/customer-package/carto-selfhosted-docker-customer-package-xxx-2022-10-18.zip...
