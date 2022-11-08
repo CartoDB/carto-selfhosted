@@ -1,16 +1,18 @@
-# Download customer package tool
+# Tools
 
-## Purpose
+## Download customer package tool
+
+### Purpose
 
 This tool can be used to download a newer version of the Carto selfhosted customer package, allowing customers to update an existing installation to the Carto selfhosted latest release without having to contact support to provide the files.
 
-## Requirements
+### Requirements
 
 - Customer package files (`customer.env` and `key.json`) used for the existing installation.
 - Linux machine with bash terminal.
 - Packages installed: `yq`, `jq` and `gcloud`.
 
-## How to download the latest customer package
+### How to download the latest customer package
 
 1. Run the script passing the following arguments:
    - `-d | --dir` Directory containing the existing `customer.env` and `key.json` files.

@@ -15,6 +15,7 @@ CUSTOMER_PACKAGE_FOLDER="customer-package"
 function check_deps()
 {
   for DEP in ${DEPENDENCIES}; do
+    # shellcheck disable=SC2261
     command -v "${DEP}" 2&>1 > /dev/null || \
       { echo -e "\n[ERROR]: missing dependency <${DEP}>. Please, install it.\n"; exit 1;}
   done
