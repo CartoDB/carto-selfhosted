@@ -15,7 +15,7 @@ CUSTOMER_PACKAGE_FOLDER="customer-package"
 function check_deps()
 {
   for DEP in ${DEPENDENCIES}; do
-    # shellcheck disable=SC2261
+    # shellcheck disable=SC2261,SC2210
     command -v "${DEP}" 2&>1 > /dev/null || \
       { echo -e "\n[ERROR]: missing dependency <${DEP}>. Please, install it.\n"; exit 1;}
   done
@@ -60,6 +60,7 @@ PROGNAME="$(basename "$0")"
 OPTS=$(getopt -o "hd:s" --long "help,dir,selfhosted-mode" -n "$PROGNAME" -- "$@")
 
 # Check getopt errors
+# shellcheck disable=SC2166,SC2181
 if [ $? -ne 0 ] ; then
   echo -e "[ERROR]: please check input arguments."
   usage
@@ -124,6 +125,7 @@ if [ "${SELFHOSTED_MODE}" = "k8s" ]; then
   SELFHOSTED_VERSION_CURRENT=$(yq -r ".cartoConfigValues.customerPackageVersion" < "${CARTO_VALUES}") 
 fi
 
+# shellcheck disable=SC1090
 if [ "${SELFHOSTED_MODE}" = "docker" ]; then
   source "${CARTO_ENV}"
   cp "${CARTO_SA}" "${CARTO_SERVICE_ACCOUNT_FILE}"
