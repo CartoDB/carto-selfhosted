@@ -14,7 +14,7 @@
     - [External Redis](#external-redis)
       - [Configure TLS](#configure-tls)
     - [Custom buckets](#custom-buckets)
-      - [Pre-requisited](#pre-requisites)
+      - [Pre-requisites](#pre-requisites)
       - [Google Cloud Storage](#google-cloud-storage)
       - [AWS S3](#aws-s3)
       - [Azure Blob Storage](#azure-blob-storage)
@@ -322,32 +322,30 @@ You can create and use your own storage buckets in any of the following supporte
 #### Pre-requisites
 
 1. Create 3 buckets in your preferred Cloud provider:
-  - Import Bucket
-  - Client Bucket
-  - Thumbnails Bucket.
+   - Import Bucket
+   - Client Bucket
+   - Thumbnails Bucket.
 
-> There're no name constraints
+   > There're no name constraints
 
-> :warning: Map thumbnails storage objects (.png files) can be configured to be `public` (default) or `private`. In order to change this, set `WORKSPACE_THUMBNAILS_PUBLIC="false"`. For the default configuration to work, the bucket must allow public objects/blobs. Some features, such as branding and custom markers, won't work unless the bucket is public. However, there's a workaround to avoid making the whole bucket public, which requires allowing public objects, allowing ACLs (or non-uniform permissions) and disabling server-side encryption.
+   > :warning: Map thumbnails storage objects (.png files) can be configured to be `public` (default) or `private`. In order to change this, set `WORKSPACE_THUMBNAILS_PUBLIC="false"`. For the default configuration to work, the bucket must allow public objects/blobs. Some features, such as branding and custom markers, won't work unless the bucket is public. However, there's a workaround to avoid making the whole bucket public, which requires allowing public objects, allowing ACLs (or non-uniform permissions) and disabling server-side encryption.
 
 2. CORS configuration: Thumbnails and Import buckets require having the following CORS headers configured.
-  - Allowed origins: `*`
-  - Allowed methods: `GET`, `PUT`, `POST`
-  - Allowed headers (common): `Content-Type`, `Content-MD5`, `Content-Disposition`, `Cache-Control`
-    - GCS (extra): `x-goog-content-length-range`, `x-goog-meta-filename`
-    - Azure (extra): `Access-Control-Request-Headers`, `X-MS-Blob-Type`
-  - Max age: `3600`
+   - Allowed origins: `*`
+   - Allowed methods: `GET`, `PUT`, `POST`
+   - Allowed headers (common): `Content-Type`, `Content-MD5`, `Content-Disposition`, `Cache-Control`
+     - GCS (extra): `x-goog-content-length-range`, `x-goog-meta-filename`
+     - Azure (extra): `Access-Control-Request-Headers`, `X-MS-Blob-Type`
+   - Max age: `3600`
 
-> CORS is configured at bucket level in GCS and S3, and at storage account level in Azure.
+   > CORS is configured at bucket level in GCS and S3, and at storage account level in Azure.
 
-> How do I setup CORS configuration? Check the provider docs: [GCS](https://cloud.google.com/storage/docs/configuring-cors), [AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/enabling-cors-examples.html), [Azure Storage](https://docs.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services#enabling-cors-for-azure-storage).
+   > How do I setup CORS configuration? Check the provider docs: [GCS](https://cloud.google.com/storage/docs/configuring-cors), [AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/enabling-cors-examples.html), [Azure Storage](https://docs.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services#enabling-cors-for-azure-storage).
 
 3. Generate credentials with Read/Write permissions to access those buckets, our supported authentication methods are:
-  - GCS: Service Account Key
-  - AWS: Access Key ID and Secret Access Key
-  - Azure: Access Key
-
-- Grant Read/Write permissions over the buckets to the credentials mentioned above.
+   - GCS: Service Account Key
+   - AWS: Access Key ID and Secret Access Key
+   - Azure: Access Key
 
 #### Google Cloud Storage
 
