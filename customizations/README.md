@@ -14,7 +14,7 @@
     - [External Redis](#external-redis)
       - [Configure TLS](#configure-tls)
     - [Custom buckets](#custom-buckets)
-      - [General Requirements](#general-requirements)
+      - [Pre-requisited](#pre-requisites)
       - [Google Cloud Storage](#google-cloud-storage)
       - [AWS S3](#aws-s3)
       - [Azure Blob Storage](#azure-blob-storage)
@@ -319,18 +319,18 @@ You can create and use your own storage buckets in any of the following supporte
 
 > :warning: You can only set one provider at a time.
 
-#### General Requirements
+#### Pre-requisites
 
-- You need to create 3 buckets in your preferred Cloud provider:
+1. Create 3 buckets in your preferred Cloud provider:
   - Import Bucket
   - Client Bucket
-  - Thumbnails Bucket. ℹ️**NOTE:** This bucket needs to be public for some features to work correctly. Custom branding logo and custom images for markers won't work properly unless this bucket is public ℹ️
+  - Thumbnails Bucket.
 
-> There's no name constraints
+> There're no name constraints
 
-> :warning: Map thumbnails storage objects (.png files) can be configured to be `public` (default) or `private`. In order to change this, set `WORKSPACE_THUMBNAILS_PUBLIC="false"` (see the examples below). For the default configuration to work, the bucket must allow public objects/blobs. Remember that customization assets, like logos or custom markers will only work if the bucket is public.
+> :warning: Map thumbnails storage objects (.png files) can be configured to be `public` (default) or `private`. In order to change this, set `WORKSPACE_THUMBNAILS_PUBLIC="false"`. For the default configuration to work, the bucket must allow public objects/blobs. Some features, such as branding and custom markers, won't work unless the bucket is public. However, there's a workaround to avoid making the whole bucket public, which requires allowing public objects, allowing ACLs (or non-uniform permissions) and disabling server-side encryption.
 
-- CORS configuration: Thumbnails and Import buckets require having the following CORS headers.
+2. CORS configuration: Thumbnails and Import buckets require having the following CORS headers configured.
   - Allowed origins: `*`
   - Allowed methods: `GET`, `PUT`, `POST`
   - Allowed headers (common): `Content-Type`, `Content-MD5`, `Content-Disposition`, `Cache-Control`
@@ -342,7 +342,7 @@ You can create and use your own storage buckets in any of the following supporte
 
 > How do I setup CORS configuration? Check the provider docs: [GCS](https://cloud.google.com/storage/docs/configuring-cors), [AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/enabling-cors-examples.html), [Azure Storage](https://docs.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services#enabling-cors-for-azure-storage).
 
-- Generate credentials to access those buckets, our supported authentication methods are:
+3. Generate credentials with Read/Write permissions to access those buckets, our supported authentication methods are:
   - GCS: Service Account Key
   - AWS: Access Key ID and Secret Access Key
   - Azure: Access Key
