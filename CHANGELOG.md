@@ -1,3 +1,19 @@
+## 2022.11.8 (November 08, 2022)
+IMPROVEMENTS
++ Stability fixes
++ Critical security fixes (SQL injection)
++ Category aggregation for Spatial Indexes layers
++ Aggregation resolution selector for Spatial Indexes layers
++ Bugs Fixing and minor improvements
++ Show LDS quota consumption
++ Postgres connection stability fixes
++ Map collaboration on builder (added new component (notifier))
++ Show owner's email in Map & Connection cards
++ Google basemaps improvements
+
+FIXES
++ Fix dynamic tiling and columns with lower case letters in Snowflake 
+
 ## 2022.10.18 (October 18, 2022)
 IMPROVEMENTS
 + New and improved login and signup
@@ -11,7 +27,7 @@ IMPROVEMENTS
 + Updated base Docker images with security fixes
 + Use a connection pool for Postgres
 + K8: TLS offload in AWS LoadBalancer
-+ K8: Increase min instances of workspace-api, maps-api and import-api
++ K8: Increase min instances of workspace-api and maps-api
 + Create tileset options: Spatial Index and aggragations
 + Other bugs fixes and minor improvements
 
