@@ -496,6 +496,18 @@ This feature allows users to create a BigQuery connection using `Sign in with Go
    BIGQUERY_OAUTH2_CLIENT_SECRET=<value_from_credentials_web_client_secret>
    ```
 
+### External Data warehouse tuning
+
+CARTO Self Hosted connects to your data warehouse to perform the analysis with your data. When connecting it with Postgres
+or with Redshift it is important to understand and configure the connection pool.
+
+Each node will have a connection pool controlled by the environment variables `MAPS_API_V3_POSTGRES_POOL_SIZE` and
+`MAPS_API_V3_REDSHIFT_POOL_SIZE`. The pool is per connection created from CARTO Self Hosted. If each user creates a different
+connection, each one will have its own pool. The maximum connections can be calculated with the following formula:
+
+```javascript
+max_connections = pool_size * number_connections * number_nodes
+```
 ### Google Maps
 
 In order to enable Google Maps basemaps inside CARTO Self Hosted, you need to own a Google Maps API key and set it via `REACT_APP_GOOGLE_MAPS_API_KEY` in your customer.env file.
