@@ -20,6 +20,7 @@
       - [AWS S3](#aws-s3)
       - [Azure Blob Storage](#azure-blob-storage)
     - [Enable BigQuery OAuth connections](#enable-bigquery-oauth-connections)
+    - [External Data warehouse tuning](#external-data-warehouse-tuning)
     - [Google Maps](#google-maps)
 
 # Customizations
