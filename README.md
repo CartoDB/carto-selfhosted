@@ -19,7 +19,7 @@ This repository contains the necessary files for deploying a CARTO Self Hosted i
 
 To be able to run CARTO Self Hosted you need to have a license. [Contact CARTO](https://carto.com/request-live-demo/) to get one.
 
-If you are looking for another installation method, CARTO Self Hosted is provided in two flavours:
+If you are looking for another installation method, CARTO Self Hosted is provided in two flavors:
 
 - [Kubernetes Helm](https://github.com/CartoDB/carto-selfhosted-helm)
 - [Docker compose](https://github.com/CartoDB/carto-selfhosted)
