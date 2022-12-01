@@ -1,5 +1,6 @@
 <!-- omit in toc -->
 # Table of Contents
+
 - [Customizations](#customizations)
   - [Production Ready](#production-ready)
   - [Custom Service Account](#custom-service-account)
@@ -18,7 +19,8 @@
       - [Google Cloud Storage](#google-cloud-storage)
       - [AWS S3](#aws-s3)
       - [Azure Blob Storage](#azure-blob-storage)
-    - [Enable BigQuery Oauth connections](#enable-bigquery-oauth-connections)
+    - [Enable BigQuery OAuth connections](#enable-bigquery-oauth-connections)
+    - [External Data warehouse tuning](#external-data-warehouse-tuning)
     - [Google Maps](#google-maps)
 
 # Customizations
@@ -98,9 +100,10 @@ By default CARTO Self Hosted will generate and use a self-signed certificate if 
 
 ### External database
 
-CARTO Self Hosted comes with an embedded PostgreSQL database that is not recommended for production installations, we recommend to use your own PostgreSQL database that lives outside the Docker ecosystem.
+CARTO Self Hosted comes with an embedded PostgreSQL database that is not recommended for production installations, we recommend to use your own PostgreSQL database that lives outside the Docker ecosystem. This database is for internal data of the CARTO Self Hosted.
 
 Here are some Terraform examples of databases created in different providers:
+
 - [GCP Cloud SQL](../examples/terraform/gcp/postgresql.tf).
 - [AWS RDS](../examples/terraform/aws/postgresql-rds.tf).
 - [Azure Database](../examples/terraform/azure/postgresql.tf).
@@ -139,7 +142,7 @@ Open with an editor the `customer.env` file and modify the following variables:
    + # POSTGRES_ADMIN_PASSWORD=<verySecureRandomPassword>
    ```
 
-2. Uncomment the external postgres configuration:
+2. Uncomment the external Postgres configuration:
 
    ```diff
    # Your custom configuration for an external postgres database (comment when local postgres)
@@ -151,7 +154,7 @@ Open with an editor the `customer.env` file and modify the following variables:
    - # WORKSPACE_POSTGRES_DB=workspace
    - # WORKSPACE_POSTGRES_SSL_ENABLED=true
    - # WORKSPACE_POSTGRES_SSL_MODE=require
-   # Only applies if Postgres SSL certificate is selfsigned, read the documentation
+   # Only applies if Postgres SSL certificate is self signed, read the documentation
    # WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
    - # POSTGRES_ADMIN_USER=<FILL_ME>
    - # POSTGRES_ADMIN_PASSWORD=<FILL_ME>
@@ -178,7 +181,7 @@ WORKSPACE_POSTGRES_SSL_ENABLED=true
 WORKSPACE_POSTGRES_SSL_MODE=require
 ```
 
-> :warning: In case you are connecting to a PostgreSQL where the SSL certificate is selfsigned or from a custom CA you will need to configure the `WORKSPACE_POSTGRES_SSL_CA` variable.
+> :warning: In case you are connecting to a PostgreSQL where the SSL certificate is self signed or from a custom CA you will need to configure the `WORKSPACE_POSTGRES_SSL_CA` variable.
 
 1. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `postgresql-ssl-ca.crt`.
 
@@ -237,12 +240,12 @@ Or in the web console:
 
 <img width="605" alt="Captura de pantalla 2022-04-05 a las 11 11 11" src="https://user-images.githubusercontent.com/3384495/161965936-118dceab-75ba-4c5d-87de-8c433c046371.png">
 
-
 ### External Redis
 
 CARTO comes with an embedded Redis that is not recommended for production installations, we recommend to use your own Redis that lives outside the Docker ecosystem.
 
 Here are some Terraform examples of Redis instances created in different providers:
+
 - [GCP Redis](../examples/terraform/gcp/redis.tf).
 - [AWS Redis](../examples/terraform/aws/redis.tf).
 - [Azure Redis](../examples/terraform/azure/redis.tf).
@@ -276,7 +279,7 @@ Here are some Terraform examples of Redis instances created in different provide
    - # REDIS_PORT=<FILL_ME>
    - # REDIS_PASSWORD=<FILL_ME>
    - # REDIS_TLS_ENABLED=true
-   # Only applies if Redis TLS certificate it's selfsigned, read the documentation
+   # Only applies if Redis TLS certificate it's self signed, read the documentation
    # REDIS_TLS_CA=<FILL_ME>
    + LOCAL_REDIS_SCALE=0
    + REDIS_HOST=<FILL_ME>
@@ -295,7 +298,7 @@ By default CARTO will try to connect to your Redis without TLS, in case you want
 REDIS_TLS_ENABLED=true
 ```
 
-> :warning: In case you are connection to a Redis where the TLS certificate is selfsigned or from a custom CA you will need to configure the `REDIS_TLS_CA` variable
+> :warning: In case you are connection to a Redis where the TLS certificate is self signed or from a custom CA you will need to configure the `REDIS_TLS_CA` variable
 
 1. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `redis-tls-ca.crt`.
 
@@ -372,14 +375,14 @@ In order to use Google Cloud Storage custom buckets you need to:
    WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
    WORKSPACE_THUMBNAILS_KEYFILENAME=<path_to_service_account_key_file>
    WORKSPACE_THUMBNAILS_PROJECTID=<gcp_project_id>
-   
+
    # Client bucket
    WORKSPACE_IMPORTS_PROVIDER='gcp'
    WORKSPACE_IMPORTS_PUBLIC=<true|false>
    WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
    WORKSPACE_IMPORTS_KEYFILENAME=<path_to_service_account_key_file>
    WORKSPACE_IMPORTS_PROJECTID=<gcp_project_id>
-   
+
    # Import bucket
    IMPORT_PROVIDER='gcp'
    IMPORT_BUCKET=<import_bucket_name>
@@ -415,7 +418,7 @@ In order to use AWS S3 custom buckets you need to:
    WORKSPACE_THUMBNAILS_ACCESSKEYID=<aws_access_key_id>
    WORKSPACE_THUMBNAILS_SECRETACCESSKEY=<aws_access_key_secret>
    WORKSPACE_THUMBNAILS_REGION=<aws_s3_region>
-   
+
    # Client bucket
    WORKSPACE_IMPORTS_PROVIDER='s3'
    WORKSPACE_IMPORTS_PUBLIC=<true|false>
@@ -423,7 +426,7 @@ In order to use AWS S3 custom buckets you need to:
    WORKSPACE_IMPORTS_ACCESSKEYID=<aws_access_key_id>
    WORKSPACE_IMPORTS_SECRETACCESSKEY=<aws_access_key_secret>
    WORKSPACE_IMPORTS_REGION=<aws_s3_region>
-   
+
    # Import bucket
    IMPORT_PROVIDER='s3'
    IMPORT_BUCKET=<import_bucket_name>
@@ -455,14 +458,14 @@ In order to use Azure Storage buckets (aka containers) you need to:
    WORKSPACE_THUMBNAILS_BUCKET=<thumbnails_bucket_name>
    WORKSPACE_THUMBNAILS_STORAGE_ACCOUNT=<storage_account_name>
    WORKSPACE_THUMBNAILS_STORAGE_ACCESSKEY=<access_key>
-   
+
    # Client bucket
    WORKSPACE_IMPORTS_PROVIDER='azure-blob'
    WORKSPACE_IMPORTS_PUBLIC=<true|false>
    WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
    WORKSPACE_IMPORTS_STORAGE_ACCOUNT=<storage_account_name>
    WORKSPACE_IMPORTS_STORAGE_ACCESSKEY=<access_key>
-   
+
    # Import bucket
    IMPORT_PROVIDER='azure-blob'
    IMPORT_BUCKET=<import_bucket_name>
@@ -470,7 +473,7 @@ In order to use Azure Storage buckets (aka containers) you need to:
    IMPORT_STORAGE_ACCESSKEY=<access_key>
    ```
 
-### Enable BigQuery Oauth connections
+### Enable BigQuery OAuth connections
 
 This feature allows users to create a BigQuery connection using `Sign in with Google` instead of providing a service account key.
 
@@ -488,13 +491,26 @@ This feature allows users to create a BigQuery connection using `Sign in with Go
    - Authorized redirect URIs: `https://<your_selfhosted_domain>/connections/bigquery/oauth`.
    - Download the credentials file.
 
-3. In your selfhosted's customer.env file, set the following vars with the values from the credentials file:
+3. In your self hosted's customer.env file, set the following vars with the values from the credentials file:
 
    ```bash
    REACT_APP_BIGQUERY_OAUTH=true
    BIGQUERY_OAUTH2_CLIENT_ID=<value_from_credentials_web_client_id>
    BIGQUERY_OAUTH2_CLIENT_SECRET=<value_from_credentials_web_client_secret>
    ```
+
+### External Data warehouse tuning
+
+CARTO Self Hosted connects to your data warehouse to perform the analysis with your data. When connecting it with Postgres
+or with Redshift it is important to understand and configure the connection pool.
+
+Each node will have a connection pool controlled by the environment variables `MAPS_API_V3_POSTGRES_POOL_SIZE` and
+`MAPS_API_V3_REDSHIFT_POOL_SIZE`. The pool is per connection created from CARTO Self Hosted. If each user creates a different
+connection, each one will have its own pool. The maximum connections can be calculated with the following formula:
+
+```javascript
+max_connections = pool_size * number_connections * number_nodes
+```
 
 ### Google Maps
 
