@@ -1,5 +1,6 @@
 <!-- omit in toc -->
 # Table of Contents
+
 - [CARTO Self Hosted [Docker]](#carto-self-hosted-docker)
   - [Installation](#installation)
     - [Prerequisites](#prerequisites)
@@ -18,7 +19,7 @@ This repository contains the necessary files for deploying a CARTO Self Hosted i
 
 To be able to run CARTO Self Hosted you need to have a license. [Contact CARTO](https://carto.com/request-live-demo/) to get one.
 
-If you are looking for another installation method, CARTO Self Hosted is provided in two flavours:
+If you are looking for another installation method, CARTO Self Hosted is provided in two flavors:
 
 - [Kubernetes Helm](https://github.com/CartoDB/carto-selfhosted-helm)
 - [Docker compose](https://github.com/CartoDB/carto-selfhosted)
@@ -39,10 +40,9 @@ You will need a Linux machine with at least:
 - Docker compose version 1.29 or above
 - A TLS certificate for the domain/subdomain (if not provided a self-signed one will be generated)
 - Configuration and license files received from CARTO
-- Internet HTTP/HTTPS access from the machine to the [whitelisted domains list](doc/whitelisted_domains)
+- Internet HTTP/HTTPS access from the machine to the [whitelisted domains list](doc/whitelisted_domains.md)
 
 > Note that you should additionally allow access to any datawarehouse endpoint configured.
-
 
 ### Deployment Customizations
 
@@ -95,6 +95,7 @@ Please, read the available [customization](customizations/README.md) options.
 In order to verify CARTO Self Hosted was correctly installed and it's functional, we recommend performing the following checks:
 
 1. Check all the containers are up and running:
+
    ```bash
    docker-compose ps
    ```
@@ -112,6 +113,7 @@ In order to verify CARTO Self Hosted was correctly installed and it's functional
 6. In this new map, add a new layer from a table using the connection created in step 3.
 
 7. Create a new layer from a SQL Query to the same table. You can use a simple query like:
+
    ```bash
    SELECT * FROM <dataset_name.table_name> LIMIT 100;
    ```
@@ -127,16 +129,19 @@ In order to verify CARTO Self Hosted was correctly installed and it's functional
 To update you CARTO Self Hosted to the newest version you will need run the following commands:
 
 1. Go to the CARTO installation directory:
+
    ```bash
    cd carto-selfhosted
    ```
 
 2. Pull last changes from the origin repo:
+
    ```bash
    git pull
    ```
 
 3. Save a backup copy of your current `customer.env`:
+
    ```bash
    mv customer.env customer.env.bak
    ```
@@ -144,6 +149,7 @@ To update you CARTO Self Hosted to the newest version you will need run the foll
 4. Download the latest customer package (containing `customer.env` and `key.json` files) using [this tool](tools/carto-download-customer-package.sh). Then unzip the file.
 
 5. Copy the new customer.env file in the installation directory:
+
    ```bash
    cp /new_file_location/customer.env .
    ```
@@ -151,11 +157,13 @@ To update you CARTO Self Hosted to the newest version you will need run the foll
 6. Open side by side `customer.env` and `customer.env.bak` and apply the customizations from `customer.env.bak` in the new `customer.env`
 
 7. Generate the `.env` file
+
    ```bash
    bash install.sh
    ```
 
 8. Recreate the containers
+
    ```bash
    docker-compose up -d
    ```
@@ -205,7 +213,7 @@ To migrate your CARTO Self Hosted from Docker Compose installation to
      sslEnabled: true
    internalPostgresql:
      enabled: false
-   
+
    internalRedis:
      # Disable the internal Redis
      enabled: false
