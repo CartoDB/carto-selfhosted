@@ -8,7 +8,6 @@ IMPROVEMENTS
 + Map collaboration on builder (added new component (notifier))
 + Show owner's email in Map & Connection cards
 + Google basemaps improvements
-+ Automatic Analytics Toolbox installation for Snowflake  https://docs.carto.com/whats-new/analytics-toolbox-sf-installation-ui/
 + Dynamic aggregation of point layers
 + Logarithmit scales in Builder https://docs.carto.com/whats-new/logarithmic-scales-in-builder/
 
