@@ -28,6 +28,18 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+  notifier:
+    image: "${NOTIFIER_DOCKER_IMAGE}"
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - workspace-api
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
 
   accounts-www:
     image: "${ACCOUNTS_WWW_DOCKER_IMAGE}"
