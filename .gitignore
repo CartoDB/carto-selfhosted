@@ -1,5 +1,6 @@
-key.json
 .env
+.vscode/**
+certs/
 customer.env*
 docker-compose.yml
-certs/
+key.json
