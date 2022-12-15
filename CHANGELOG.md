@@ -18,6 +18,9 @@ FIXES
 + Critical security fixes (SQL injection)
 + Postgres connection pool handling
 
+NEW COMPONENT:
++ Notifier. The compose file adds a new container to the installation
+
 ## 2022.10.18 (October 18, 2022)
 IMPROVEMENTS
 
