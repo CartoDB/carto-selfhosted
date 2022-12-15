@@ -1,4 +1,4 @@
-## 2022.12.1-1 (December 01, 2022)
+## 2022.12.14 (December 14, 2022)
 IMPROVEMENTS
 
 + Category aggregation for Spatial Indexes layers
