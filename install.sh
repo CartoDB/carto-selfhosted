@@ -249,7 +249,7 @@ function _run_post_checks(){
         _err "There is no Postgres Admin password defined"
       fi
       if ! _check_min_cloud_version $MIN_VERSION $PACKAGE_VERSION  ; then
-        _err "Minimum cloud version version is $MIN_VERSION but your package was generated with $PACKAGE_VERSION Contact with support (support@carto.com) for further assistance."
+        _err "Minimum cloud version version is $MIN_VERSION but your package was generated with $PACKAGE_VERSION. Please follow the instructions to download a new version of your customer package: https://github.com/CartoDB/carto-selfhosted/tree/master/tools#download-customer-package-tool."
       fi
     )
   fi
