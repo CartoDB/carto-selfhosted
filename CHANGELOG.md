@@ -9,11 +9,11 @@ IMPROVEMENTS
 + Show owner's email in Map & Connection cards
 + Google basemaps improvements
 + Dynamic aggregation of point layers
-+ Logarithmit scales in Builder https://docs.carto.com/whats-new/logarithmic-scales-in-builder/
++ Logarithmic scales in Builder https://docs.carto.com/whats-new/logarithmic-scales-in-builder/
 
 FIXES
 + Fix dynamic tiling and columns with lower case letters in Snowflake 
-+ Statbility
++ Stability
 + Memory usage of containers
 + Critical security fixes (SQL injection)
 + Postgres connection pool handling
