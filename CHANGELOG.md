@@ -1,26 +1,32 @@
+## 2023.1.1 (January 01, 2023)
+
+IMPROVEMENTS
++ [Additional options to configure the creation of isolines in the Analytics Toolbox](https://docs.carto.com/whats-new/additional-options-isolines/)
++ [Importing geospatial files into PostgreSQL databases through CARTO Workspace](https://docs.carto.com/whats-new/imports-postgresql/)
++ [Improvements for Google BigQuery connections: re-connect and billing project](https://docs.carto.com/whats-new/fixes-for-bigquery-connections/)
+
 ## 2022.12.14 (December 14, 2022)
+
+NEW
+
++ [Resolution selector and aggregation methods for categorical data in spatial index layers](https://docs.carto.com/whats-new/resolution-selector-category-aggregation-spatial-index-layers/)
++ [Logarithmic scales in Builder](https://docs.carto.com/whats-new/logarithmic-scales-in-builder/)
+
 IMPROVEMENTS
 
-+ Category aggregation for Spatial Indexes layers
-+ Aggregation resolution selector for Spatial Indexes layers https://docs.carto.com/whats-new/resolution-selector-category-aggregation-spatial-index-layers/
-+ Bugs Fixing and minor improvements
-+ Show LDS quota consumption https://docs.carto.com/whats-new/2022-added-quotas-in-settings-section/
-+ Map collaboration on builder (added new component (notifier))
++ [Geocoding, Isolines and Tokens quotas now available for tracking in Workspace](https://docs.carto.com/whats-new/2022-added-quotas-in-settings-section/)
 + Show owner's email in Map & Connection cards
 + Google basemaps improvements
-+ Dynamic aggregation of point layers
-+ Logarithmic scales in Builder https://docs.carto.com/whats-new/logarithmic-scales-in-builder/
 
 FIXES
 + Fix dynamic tiling and columns with lower case letters in Snowflake 
-+ Stability
-+ Memory usage of containers
++ Container stability. Some containers were dying with unhandled exceptions.
++ Reduce memory usage of containers
 + Critical security fixes (SQL injection)
 + Postgres connection pool handling
 
 NEW COMPONENT:
 + Notifier. The compose file adds a new container to the installation
-
 ## 2022.10.18 (October 18, 2022)
 IMPROVEMENTS
 
