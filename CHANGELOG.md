@@ -1,4 +1,16 @@
+## 2023.1.17 (January 17, 2023)
+
+NEW
++ [Multiple editor users working on the same map](https://docs.carto.com/whats-new#multiple-editor-users-working-on-the-same-map)
++ [Builder SQL Analyses available for PostgreSQL connections](https://docs.carto.com/whats-new/q4-2022#builder-sql-analyses-available-for-postgresql-connections)
++ Auto provision workload identity connection [Docs](https://github.com/CartoDB/carto-selfhosted-helm/tree/main/customizations#workload-identity-bigquery-connection)
+
+IMPROVEMENTS
++ Redshift connection pool handling
++ Tileset instantiation cache
+
 ## 2023.1.3 (January 03, 2023)
+
 IMPROVEMENTS
 + [Additional options to configure the creation of isolines in the Analytics Toolbox](https://docs.carto.com/whats-new/additional-options-isolines/)
 + [Importing geospatial files into PostgreSQL databases through CARTO Workspace](https://docs.carto.com/whats-new/imports-postgresql/)
@@ -26,6 +38,7 @@ FIXES
 
 NEW COMPONENT:
 + Notifier. The compose file adds a new container to the installation
+
 ## 2022.10.18 (October 18, 2022)
 IMPROVEMENTS
 
