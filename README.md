@@ -76,19 +76,24 @@ Please, read the available [customization](customizations/README.md) options.
 
 5. Configure your deployment. Please, read the available [customization options](customizations/README.md).
 
-6. Run the `install.sh` script to generate the `.env` file out of the `customer.env` file:
+6. Checkout to the [latest stable release](https://github.com/CartoDB/carto-selfhosted/releases):
+   ```bash
+   git checkout tags/2022.12.14
+   ```
+
+7. Run the `install.sh` script to generate the `.env` file out of the `customer.env` file:
 
    ```bash
    bash install.sh
    ```
 
-7. Bring up the environment:
+8. Bring up the environment:
 
    ```bash
    docker-compose up -d
    ```
 
-8. Open a browser and go to `https://carto3-onprem.lan` (or the custom domain configured).
+9. Open a browser and go to `https://carto3-onprem.lan` (or the custom domain configured).
 
 ### Post-installation Checks
 
