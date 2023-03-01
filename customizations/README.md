@@ -201,7 +201,7 @@ WORKSPACE_POSTGRES_SSL_MODE=require
 >    ```
 
 To connect to your external Postgresql without SSL, you'll need to configure `WORKSPACE_POSTGRES_SSL` variables accordingly:
-```dif
+```diff
 - WORKSPACE_POSTGRES_SSL_ENABLED=true
 - WORKSPACE_POSTGRES_SSL_MODE=require
 + WORKSPACE_POSTGRES_SSL_ENABLED=false
