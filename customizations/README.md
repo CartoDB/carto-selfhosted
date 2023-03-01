@@ -189,11 +189,11 @@ WORKSPACE_POSTGRES_SSL_MODE=require
 ```
 
 > :warning: In case the SSL certificate is selfsigned or from a custom CA, you will need to configure the `WORKSPACE_POSTGRES_SSL_CA` variable.
-> 
+>
 > 1. Copy you CA `.crt` file inside `certs` folder. Rename the CA `.crt` file to `postgresql-ssl-ca.crt`.
-> 
+>
 > 2. Uncomment the `WORKSPACE_POSTGRES_SSL_CA` env var in the `customer.env` file:
-> 
+>
 >    ```diff
 >    # Only applies if Postgres SSL certificate is selfsigned, read the documentation
 >    - # WORKSPACE_POSTGRES_SSL_CA=/usr/src/certs/postgresql-ssl-ca.crt
