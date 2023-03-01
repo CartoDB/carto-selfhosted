@@ -515,7 +515,7 @@ max_connections = pool_size * number_connections * number_nodes
 
 ### Google Maps
 
-In order to enable Google Maps basemaps inside CARTO Self Hosted, you need to own a Google Maps API key and set it via `GOOGLE_MAPS_API_KEY` in your customer.env file.
+In order to enable Google Maps basemaps inside CARTO Self Hosted, you need to own a Google Maps API key enabled for the Maps Javascript API and set it via `GOOGLE_MAPS_API_KEY` in your customer.env file.
 
 ### Redshift imports
 
