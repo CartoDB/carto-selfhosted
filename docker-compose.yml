@@ -24,9 +24,9 @@ services:
     env_file:
       - .env
     environment:
-      - GOOGLE_APPLICATION_CREDENTIALS=/usr/share/certs/key.json
+      - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/certs/key.json
     volumes:
-      - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/share/certs:ro"
+      - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
     logging:
       driver: "local"
       options:
