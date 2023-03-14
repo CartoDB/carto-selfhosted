@@ -1,7 +1,7 @@
 version: "2.4"
 services:
-  router:
-    image: "${ROUTER_DOCKER_IMAGE}"
+  router-http:
+    image: "${ROUTER_HTTP_DOCKER_IMAGE}"
     ports:
       - 80:8080
       - 443:8443
@@ -10,6 +10,23 @@ services:
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/etc/nginx/ssl/:ro"
     env_file:
       - .env
+    logging:
+      driver: "local"
+      options:
+        max-size: "5M"
+        max-file: "20"
+
+  router-metrics:
+    image: "${ROUTER_METRICS_DOCKER_IMAGE}"
+    ports:
+      - 5447:5447
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/certs/key.json
+    volumes:
+      - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
     logging:
       driver: "local"
       options:
@@ -230,6 +247,8 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
+
+
 networks:
   default:
 
