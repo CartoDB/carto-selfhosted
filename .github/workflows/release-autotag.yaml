@@ -23,4 +23,4 @@ jobs:
           name: ${{ steps.info.outputs.release-version }}
           tag: ${{ steps.info.outputs.release-version }}
           prerelease: true
-          body: “Release notes for this version are available at https://docs.carto.com/get-help/deployment-options/self-hosted/release-notes#${{ steps.info.outputs.release-version }}”
+          body: "Release notes for this version are available at https://docs.carto.com/get-help/deployment-options/self-hosted/release-notes#${{ steps.info.outputs.release-version }}"
