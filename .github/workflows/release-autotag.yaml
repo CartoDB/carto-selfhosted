@@ -14,21 +14,7 @@ jobs:
 
       - name: Retrieve Release Version
         id: info
-        run: echo "::set-output name=release-version::$(cat VERSION)"
-
-      - name: Get CHANGELOG changes
-        run: |
-          set -eu
-
-          # YYYY.MM.DD[-modifier]
-          # EX: 2022.5.9
-          RELEASE_REGEX="(19|20)[0-9]{2}.([1-9]|1[012]).([1-9]|[12][0-9]|3[01])(-[a-z0-9]+)?"
-
-          grep -oE "${RELEASE_REGEX}" CHANGELOG.md > changelog-releases.list
-          CURRENT_RELEASE="$(sed -n '1p' changelog-releases.list)"
-          PREVIOUS_RELEASE="$(sed -n '2p' changelog-releases.list)"
-
-          awk "/${CURRENT_RELEASE}/{f=1;next} /${PREVIOUS_RELEASE}/{f=0} f" CHANGELOG.md > release-changes.md
+        run: echo "release-version=$(cat VERSION)" >> ${GITHUB_OUTPUT}
 
       - uses: ncipollo/release-action@v1
         with:
@@ -37,4 +23,4 @@ jobs:
           name: ${{ steps.info.outputs.release-version }}
           tag: ${{ steps.info.outputs.release-version }}
           prerelease: true
-          bodyFile: release-changes.md
+          body: "Release notes for this version are available at https://docs.carto.com/get-help/deployment-options/self-hosted/release-notes#${{ steps.info.outputs.release-version }}"
