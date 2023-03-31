@@ -33,6 +33,12 @@ jobs:
             echo "prerelease=false" >> ${GITHUB_OUTPUT}
           fi
 
+      - name: Get final release tag
+        id: tag
+        env:
+          RELEASE_VERSION: ${{ steps.info.outputs.release-version }}
+        run: echo "release-tag=$(echo ${RELEASE_VERSION} | sed 's/-rc.*//')" >> ${GITHUB_OUTPUT}
+
       - uses: ncipollo/release-action@v1
         with:
           token: ${{ secrets.X_GITHUB_CARTOFANTE }}
@@ -40,4 +46,4 @@ jobs:
           name: ${{ steps.info.outputs.release-version }}
           tag: ${{ steps.info.outputs.release-version }}
           prerelease: ${{ steps.version.outputs.prerelease }}
-          body: "Release notes for this version are available at https://docs.carto.com/get-help/deployment-options/self-hosted/release-notes#${{ steps.info.outputs.carto-release-version }}"
+          body: "Release notes for this version are available at https://docs.carto.com/get-help/deployment-options/self-hosted/release-notes#${{ steps.tag.outputs.release-tag }}"
