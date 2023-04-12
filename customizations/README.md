@@ -23,6 +23,7 @@
     - [External Data warehouse tuning](#external-data-warehouse-tuning)
     - [Google Maps](#google-maps)
     - [Redshift imports](#redshift-imports)
+    - [Enabling/Disabling TrackJS](#enabling-disabling-trackjs)
 
 # Customizations
 
@@ -602,3 +603,12 @@ IMPORT_AWS_ROLE_ARN=<aws_iam_role_arn>
 9. Go back to the CARTO Selfhosted (Redshift integration page) and check the `I have already added the S3 bucket policy` box and click on the `Validate and save button`.
 
 10. Go to `Data Exporer > Import data > Redshift connection` and you should be able to import a local dataset to Redshift.
+
+### Enabling-Disabling TrackJS
+
+- TrackJS is enabled by default in the www components, but you can disable it with these variables in your `customer.env` file:
+
+   ```bash
+   REACT_APP_ACCOUNTS_WWW_ENABLE_TRACKJS=false
+   REACT_APP_WORKSPACE_WWW_ENABLE_TRACKJS=false
+```
