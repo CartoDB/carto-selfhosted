@@ -25,7 +25,7 @@ services:
       - .env
     environment:
       - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/certs/key.json
-      - LS_JAVA_OPTS="-Xms512m -Xmx1024m"
+      - LS_JAVA_OPTS=-Xms512m -Xmx1024m
     volumes:
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
     logging:
@@ -248,7 +248,6 @@ services:
       options:
         max-size: "5M"
         max-file: "20"
-
 
 networks:
   default:
