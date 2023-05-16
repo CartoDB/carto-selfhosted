@@ -136,3 +136,16 @@ CDN_INVALIDATOR_SUBSCRIBER_ERROR_RESPONSE_STACK_TRACE=false
 ROUTER_METRICS_PUBSUB_TOPIC=data-updates
 ROUTER_METRICS_PUBSUB_PROJECT_ID=${SELFHOSTED_GCP_PROJECT_ID}
 ROUTER_METRICS_PUBSUB_SUBSCRIPTION_FILTER=aggregated-selfhosted-metrics
+
+# Configuration for using an external proxy (both lowercase and uppercase env vars are required)
+# HTTP_PROXY=<http|https>://<FILL_ME_HOST>:<FILL_ME_PORT>
+# http_proxy=<http|https>://<FILL_ME_HOST>:<FILL_ME_PORT>
+# HTTPS_PROXY=<http|https>://<FILL_ME_HOST>:<FILL_ME_PORT>
+# https_proxy=<http|https>://<FILL_ME_HOST>:<FILL_ME_PORT>
+# # Comma separated list of hosts that should not be proxied
+# NO_PROXY="www.example.com,www.another-example.com"
+# no_proxy="www.example.com,www.another-example.com"
+# # Disable SSL certificate verification for HTTPS proxies. 0 to disable, 1 to enable
+# NODE_TLS_REJECT_UNAUTHORIZED=1
+# # Only applies if proxy SSL certificate is self-signed
+# EXTRA_CA_CERTS=/usr/src/certs/proxy-ssl-ca.crt
