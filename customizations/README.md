@@ -346,16 +346,24 @@ REDIS_TLS_ENABLED=true
 
 CARTO self-hosted provides support for operating behind an **HTTP** proxy. The proxy acts as an HTTP gateway, enabling CARTO self-hosted components to establish connections with essential external services like Google APIs, Mapbox, and others.
 
-In order to enable this feature, set the following environment variables in your `customer.env` file:
+In order to enable this feature, set the following environment variables (both uppercase and lowercase variables) in your `.env` file:
 
-- `HTTP_PROXY`: Proxy connection string, consisting of `http://<hostname>:<port>`.
-- `NO_PROXY`: Comma-separated list of domains to exclude from proxying.
+- `HTTP_PROXY` (mandatory): Proxy connection string, consisting of `http://<hostname>:<port>`.
+- `HTTPS_PROXY` (mandatory): Same as `HTTP_PROXY`.
+- `GRPC_PROXY` (mandatory): Same as `HTTP_PROXY`.
+- `NO_PROXY` (optional): Comma-separated list of domains to exclude from proxying.
 
 Example:
 
 ```bash
 HTTP_PROXY="http://my-proxy:3128"
+http_proxy="http://my-proxy:3128"
+HTTPS_PROXY="http://my-proxy:3128"
+https_proxy="http://my-proxy:3128"
+GRPC_PROXY="http://my-proxy:3128"
+grpc_proxy="http://my-proxy:3128"
 NO_PROXY="mega.io,dropbox.com,filestack.com"
+no_proxy="mega.io,dropbox.com,filestack.com"
 ```
 
 A comprehensive list of domains that must be whitelisted by the proxy for the proper functioning of CARTO self-hosted can be found [here](../customizations/proxy/config/whitelisted_domains). The list includes domains for the essential core services of CARTO self-hosted, as well as additional optional domains that should be enabled to access specific features.
