@@ -14,6 +14,10 @@
       - [Troubleshooting](#troubleshooting)
     - [External Redis](#external-redis)
       - [Configure TLS](#configure-tls)
+    - [External proxy](#external-proxy)
+      - [Important notes](#important-notes)
+      - [Configuration](#configuration)
+      - [Supported datawarehouses](#supported-datawarehouses)
     - [Custom buckets](#custom-buckets)
       - [Pre-requisites](#pre-requisites)
       - [Google Cloud Storage](#google-cloud-storage)
@@ -23,7 +27,7 @@
     - [External Data warehouse tuning](#external-data-warehouse-tuning)
     - [Google Maps](#google-maps)
     - [Redshift imports](#redshift-imports)
-    - [Enabling/Disabling TrackJS](#enabling-disabling-trackjs)
+    - [Enabling-Disabling TrackJS](#enabling-disabling-trackjs)
 
 # Customizations
 
@@ -325,6 +329,51 @@ REDIS_TLS_ENABLED=true
    - # REDIS_TLS_CA=/usr/src/certs/redis-tls-ca.crt
    + REDIS_TLS_CA=/usr/src/certs/redis-tls-ca.crt
    ```
+
+### External proxy
+
+#### Important notes
+
+:warning: Please consider the following important notes regarding the proxy configuration:
+
+- CARTO self-hosted does not install any proxy component, instead it supports connecting to an existing proxy software deployed by the customer.
+
+- Currently, CARTO Self-hosted only supports the configuration of proxies using the **HTTP protocol**.
+
+- At the moment, password authentication is not supported for the proxy connection.
+
+#### Configuration
+
+CARTO self-hosted provides support for operating behind an **HTTP** proxy. The proxy acts as an HTTP gateway, enabling CARTO self-hosted components to establish connections with essential external services like Google APIs, Mapbox, and others.
+
+In order to enable this feature, set the following environment variables in your `customer.env` file:
+
+- `HTTP_PROXY`: Proxy connection string, consisting of `http://<hostname>:<port>`.
+- `NO_PROXY`: Comma-separated list of domains to exclude from proxying.
+
+Example:
+
+```bash
+HTTP_PROXY="http://my-proxy:3128"
+NO_PROXY="mega.io,dropbox.com,filestack.com"
+```
+
+A comprehensive list of domains that must be whitelisted by the proxy for the proper functioning of CARTO self-hosted can be found [here](../customizations/proxy/config/whitelisted_domains). The list includes domains for the essential core services of CARTO self-hosted, as well as additional optional domains that should be enabled to access specific features.
+
+#### Supported datawarehouses
+
+Note that while certain data warehouses can be configured to work with the proxy, there are others that will inherently bypass it. Therefore, if you have a restrictive network policy in place, you will need to explicitly allow this egress non-proxied traffic.
+
+ | Datawarehouse | Proxy support |
+ | ------------- | ------------- |
+ | BigQuery      | Yes           |
+ | Snowflake     | Yes           |
+ | Databricks    | No            |
+ | Postgres      | No            |
+ | Redshift      | No            |
+
+ > :warning: There's no need to include the non supported datawarehouses in the `NO_PROXY` environment variable list. CARTO self-hosted components will automatically attempt a direct connection to those datawarehouses.
+
 
 ### Custom buckets
 
