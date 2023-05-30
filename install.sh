@@ -168,7 +168,11 @@ _create_env_file() {
 	{
 		cat customer.env
 		echo
+		echo "# <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< CARTO VERSION <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"
+		echo
 		echo "CARTO_SELFHOSTED_VERSION=${version}"
+		echo
+		echo "# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"
 		echo
 		cat env.tpl
 	} >.env
