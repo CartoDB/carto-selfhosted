@@ -7,20 +7,31 @@ domains needs to be accepted:
 
 | URL |
 |---|
-| api.tomtom.com |
 | auth.carto.com |
 | bigquery.googleapis.com |
+| cloudresourcemanager.googleapis.com |
 | gcr.io |
 | iamcredentials.googleapis.com |
-| isoline.router.hereapi.com |
 | logging.googleapis.com |
 | pubsub.googleapis.com |
-| sqladmin.googleapis.com |
 | storage.googleapis.com |
 | tools.google.com |
 | www.googleapis.com |
 
+## Datawarehouses
+
+### Snowflake
+
+| URL |
+|---|
+| *.snowflakecomputing.com |
+
 ## Custom Geocoding configurations
+
+### Tomtom geocoding
+| URL |
+|---|
+| api.tomtom.com |
 
 ### Mapbox geocoding
 
@@ -28,11 +39,25 @@ domains needs to be accepted:
 |---|
 | api.mapbox.com |
 
-### Google Maps geocoding
+### Here geocoding and isolines
+
+| URL |
+|---|
+| isoline.router.hereapi.com |
+
+### Google Maps geocoding and basemaps
 
 | URL |
 |---|
 | maps.googleapis.com |
+
+## Custom external dabases
+
+### Google Cloud SQL
+
+| URL |
+|---|
+| sqladmin.googleapis.com |
 
 ## Custom Buckets
 
@@ -47,3 +72,9 @@ domains needs to be accepted:
 | URL |
 |---|
 | *.blob.core.windows.net  (or your full bucket URLs) |
+
+## BigQuery Oauth connections
+
+| URL |
+|---|
+| oauth2.googleapis.com |
