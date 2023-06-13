@@ -17,6 +17,8 @@
     - [External proxy](#external-proxy)
       - [Important notes](#important-notes)
       - [Configuration](#configuration)
+        - [Proxy HTTP](#proxy-http)
+        - [Proxy HTTPS](#proxy-https)
       - [Supported datawarehouses](#supported-datawarehouses)
     - [Custom buckets](#custom-buckets)
       - [Pre-requisites](#pre-requisites)
@@ -344,9 +346,13 @@ REDIS_TLS_ENABLED=true
 
 #### Configuration
 
-CARTO self-hosted provides support for operating behind an **HTTP** proxy. The proxy acts as an HTTP gateway, enabling CARTO self-hosted components to establish connections with essential external services like Google APIs, Mapbox, and others.
+CARTO self-hosted provides support for operating behind an HTTP or HTTPS proxy. The proxy acts as a gateway, enabling CARTO self-hosted components to establish connections with essential external services like Google APIs, Mapbox, and others.
 
-In order to enable this feature, set the following environment variables (both uppercase and lowercase variables) in your `.env` file:
+A comprehensive list of domains that must be whitelisted by the proxy for the proper functioning of CARTO self-hosted can be found [here](../customizations/proxy/config/whitelisted_domains). The list includes domains for the essential core services of CARTO self-hosted, as well as additional optional domains that should be enabled to access specific features.
+
+In order to enable this feature, set the following environment variables (both uppercase and lowercase variables) in your `.env` file, depending on the protocol your proxy uses.
+
+##### Proxy HTTP
 
 - `HTTP_PROXY` (mandatory): Proxy connection string, consisting of `http://<hostname>:<port>`.
 - `HTTPS_PROXY` (mandatory): Same as `HTTP_PROXY`.
@@ -366,7 +372,27 @@ NO_PROXY="mega.io,dropbox.com,filestack.com"
 no_proxy="mega.io,dropbox.com,filestack.com"
 ```
 
-A comprehensive list of domains that must be whitelisted by the proxy for the proper functioning of CARTO self-hosted can be found [here](../customizations/proxy/config/whitelisted_domains). The list includes domains for the essential core services of CARTO self-hosted, as well as additional optional domains that should be enabled to access specific features.
+##### Proxy HTTPS
+
+- `HTTP_PROXY` (mandatory): Proxy connection string, consisting of `https://<hostname>:<port>`.
+- `HTTPS_PROXY` (mandatory): Same as `HTTP_PROXY`.
+- `NO_PROXY` (optional): Comma-separated list of domains to exclude from proxying.
+- `NODE_EXTRA_CA_CERTS` (optional): Path to the proxy CA certificate.
+- `NODE_TLS_REJECT_UNAUTHORIZED` (optional): Specify if node should check if the proxy certificate is valid (`1`) or not (`0`).
+
+Example:
+
+```bash
+HTTP_PROXY="https://my-proxy:3129"
+http_proxy="https://my-proxy:3129"
+HTTPS_PROXY="https://my-proxy:3129"
+https_proxy="https://my-proxy:3129"
+NO_PROXY="mega.io,dropbox.com,filestack.com"
+no_proxy="mega.io,dropbox.com,filestack.com"
+NODE_EXTRA_CA_CERTS=/opt/carto/certs/proxy-ca.crt
+NODE_TLS_REJECT_UNAUTHORIZED=0
+```
+
 
 #### Supported datawarehouses
 
