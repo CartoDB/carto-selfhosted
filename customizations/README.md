@@ -417,8 +417,6 @@ You can create and use your own storage buckets in any of the following supporte
 
    > CORS is configured at bucket level in GCS and S3, and at storage account level in Azure.
 
-   > :warning: The Imports bucket do not require CORS configuration
-
    > How do I setup CORS configuration? Check the provider docs: [GCS](https://cloud.google.com/storage/docs/configuring-cors), [AWS S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/enabling-cors-examples.html), [Azure Storage](https://docs.microsoft.com/en-us/rest/api/storageservices/cross-origin-resource-sharing--cors--support-for-the-azure-storage-services#enabling-cors-for-azure-storage).
 
 3. Generate credentials with Read/Write permissions to access those buckets, our supported authentication methods are:
