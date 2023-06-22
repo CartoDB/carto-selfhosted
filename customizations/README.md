@@ -398,6 +398,7 @@ You can create and use your own storage buckets in any of the following supporte
 #### Pre-requisites
 
 1. Create 3 buckets in your preferred Cloud provider:
+
    - Import Bucket
    - Client Bucket
    - Thumbnails Bucket.
@@ -406,7 +407,7 @@ You can create and use your own storage buckets in any of the following supporte
 
    > :warning: Map thumbnails storage objects (.png files) can be configured to be `public` (default) or `private`. In order to change this, set `WORKSPACE_THUMBNAILS_PUBLIC="false"`. For the default configuration to work, the bucket must allow public objects/blobs. Some features, such as branding and custom markers, won't work unless the bucket is public. However, there's a workaround to avoid making the whole bucket public, which requires allowing public objects, allowing ACLs (or non-uniform permissions) and disabling server-side encryption.
 
-2. CORS configuration: Thumbnails and Import buckets require having the following CORS headers configured.
+2. CORS configuration: Thumbnails and Client buckets require having the following CORS headers configured.
    - Allowed origins: `*`
    - Allowed methods: `GET`, `PUT`, `POST`
    - Allowed headers (common): `Content-Type`, `Content-MD5`, `Content-Disposition`, `Cache-Control`
