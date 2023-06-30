@@ -344,6 +344,9 @@ REDIS_TLS_ENABLED=true
 
 - At the moment, password authentication is not supported for the proxy connection.
 
+- [Importing data](https://docs.carto.com/carto-user-manual/data-explorer/importing-data) using an **HTTPS Proxy configured with a certificate signed by a Custom CA** currently has some limitations. Please, contact CARTO Support for this use case.
+   - :information_source: Please check [Proxy HTTPS](customizations#proxy-https) to understand the difference between a **custom CA** and a **well known CA**.
+
 #### Configuration
 
 CARTO self-hosted provides support for operating behind an HTTP or HTTPS proxy. The proxy acts as a gateway, enabling CARTO self-hosted components to establish connections with essential external services like Google APIs, Mapbox, and others.
@@ -380,7 +383,10 @@ no_proxy="localhost,mega.io,dropbox.com,filestack.com"
 - `HTTPS_PROXY` (mandatory): Same as `HTTP_PROXY`.
 - `NO_PROXY` (optional): Comma-separated list of domains to exclude from proxying.
 - `NODE_EXTRA_CA_CERTS` (optional): Path to the proxy CA certificate.
-- `NODE_TLS_REJECT_UNAUTHORIZED` (optional): Specify if node should check if the proxy certificate is valid (`1`) or not (`0`).
+   - :information_source: If the proxy certificate is signed by a **custom CA**, such CA must be included here.
+   - :information_source: If the proxy certificate is signed by a **well known CA**, there is no need to add it here. **Well known CAs** are usually part of the [ca-certificates package](https://askubuntu.com/questions/857476/what-is-the-use-purpose-of-the-ca-certificates-package)
+- `NODE_TLS_REJECT_UNAUTHORIZED` (optional): Specify if CARTO Self-hosted should check if the proxy certificate is valid (`1`) or not (`0`).
+   - :information_source: For instance, **self signed certificates** validation must be skipped.
 
 Example:
 
