@@ -374,6 +374,8 @@ no_proxy="mega.io,dropbox.com,filestack.com"
 
 ##### Proxy HTTPS
 
+> :warning: Currently, using a Snowflake connection with a Proxy HTTPS is not supported.
+
 - `HTTP_PROXY` (mandatory): Proxy connection string, consisting of `https://<hostname>:<port>`.
 - `HTTPS_PROXY` (mandatory): Same as `HTTP_PROXY`.
 - `NO_PROXY` (optional): Comma-separated list of domains to exclude from proxying.
@@ -393,18 +395,17 @@ NODE_EXTRA_CA_CERTS=/opt/carto/certs/proxy-ca.crt
 NODE_TLS_REJECT_UNAUTHORIZED=0
 ```
 
-
 #### Supported datawarehouses
 
 Note that while certain data warehouses can be configured to work with the proxy, there are others that will inherently bypass it. Therefore, if you have a restrictive network policy in place, you will need to explicitly allow this egress non-proxied traffic.
 
- | Datawarehouse | Proxy support |
- | ------------- | ------------- |
- | BigQuery      | Yes           |
- | Snowflake     | Yes           |
- | Databricks    | No            |
- | Postgres      | No            |
- | Redshift      | No            |
+ | Datawarehouse | Proxy HTTP | Proxy HTTPS |
+ | ------------- | ---------- | ----------- |
+ | BigQuery      | Yes        | Yes         |
+ | Snowflake     | Yes        | N/A         |
+ | Databricks    | No         | No          |
+ | Postgres      | No         | No          |
+ | Redshift      | No         | No          |
 
  > :warning: There's no need to include the non supported datawarehouses in the `NO_PROXY` environment variable list. CARTO self-hosted components will automatically attempt a direct connection to those datawarehouses.
 
