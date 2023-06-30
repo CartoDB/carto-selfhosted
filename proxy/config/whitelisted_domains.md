@@ -6,6 +6,7 @@ domains needs to be accepted:
 <details>
 <summary><b>Full whitelisted domain list</b></summary>
 
+```
 ## Global
 auth.carto.com
 bigquery.googleapis.com
@@ -47,6 +48,7 @@ sqladmin.googleapis.com
 
 ## Bigquery Oauth connections
 oauth2.googleapis.com
+```
 
 </details>
 
