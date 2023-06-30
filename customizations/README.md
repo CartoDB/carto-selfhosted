@@ -345,7 +345,7 @@ REDIS_TLS_ENABLED=true
 - At the moment, password authentication is not supported for the proxy connection.
 
 - [Importing data](https://docs.carto.com/carto-user-manual/data-explorer/importing-data) using an **HTTPS Proxy configured with a certificate signed by a Custom CA** currently has some limitations. Please, contact CARTO Support for this use case.
-   - :information_source: Please check [Proxy HTTPS](customizations#proxy-https) to understand the difference between a **custom CA** and a **well known CA**.
+   - :information_source: Please check [Proxy HTTPS](#proxy-https) to understand the difference between a **custom CA** and a **well known CA**.
 
 #### Configuration
 
