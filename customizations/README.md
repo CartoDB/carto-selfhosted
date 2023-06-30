@@ -340,7 +340,7 @@ REDIS_TLS_ENABLED=true
 
 - CARTO self-hosted does not install any proxy component, instead it supports connecting to an existing proxy software deployed by the customer.
 
-- Currently, CARTO Self-hosted only supports the configuration of proxies using the **HTTP protocol**.
+- CARTO Self-hosted supports both **HTTP** and **HTTPs** proxies.
 
 - At the moment, password authentication is not supported for the proxy connection.
 
