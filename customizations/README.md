@@ -416,7 +416,7 @@ Note that while certain data warehouses can be configured to work with the proxy
 
 > :warning: ** There's no need to include the non supported datawarehouses in the `NO_PROXY` environment variable list. CARTO self-hosted components will automatically attempt a direct connection to those datawarehouses, with the exception of **HTTPS Proxy + Snowflake**.
 
-> :warning: *** If an HTTPS proxy is required in your deployment and you are a Snowflake Warehouse user, you need to explicitly exclude snowflake traffic using the configuration below:
+> :warning: \*\*\* If an HTTPS proxy is required in your deployment and you are a Snowflake Warehouse user, you need to explicitly exclude snowflake traffic using the configuration below:
 
 ```
 NO_PROXY=".snowflakecomputing.com" ## Check your Snowflake warehouse URL
