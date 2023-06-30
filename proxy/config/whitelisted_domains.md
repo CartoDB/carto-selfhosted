@@ -3,6 +3,55 @@
 In case you are setting up some firewall to control the outgoing connections from CARTO Self Hosted, the following
 domains needs to be accepted:
 
+<details>
+<summary><b>Full whitelisted domain list</b></summary>
+
+```
+## Global
+auth.carto.com
+bigquery.googleapis.com
+cloudresourcemanager.googleapis.com
+gcr.io
+iamcredentials.googleapis.com
+logging.googleapis.com
+pubsub.googleapis.com
+storage.googleapis.com
+tools.google.com
+www.googleapis.com
+clientstream.launchdarkly.com
+events.launchdarkly.com
+stream.launchdarkly.com
+
+## Datawarehouses
+.snowflakecomputing.com
+
+## Mapbox geocoding
+api.mapbox.com
+
+## Tomtom geocoding
+api.tomtom.com
+
+## Here geocoding
+isoline.router.hereapi.com
+
+## Google geocoding and basemaps
+maps.googleapis.com
+
+## Custom external dabases
+sqladmin.googleapis.com
+
+## AWS S3 buckets
+.amazonaws.com
+
+## Azure storage buckets
+.blob.core.windows.net
+
+## Bigquery Oauth connections
+oauth2.googleapis.com
+```
+
+</details>
+
 ## General setup
 
 | URL |
@@ -17,6 +66,10 @@ domains needs to be accepted:
 | storage.googleapis.com |
 | tools.google.com |
 | www.googleapis.com |
+| clientstream.launchdarkly.com |
+| events.launchdarkly.com |
+| stream.launchdarkly.com |
+
 
 ## Datawarehouses
 
