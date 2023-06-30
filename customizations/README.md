@@ -350,7 +350,7 @@ CARTO self-hosted provides support for operating behind an HTTP or HTTPS proxy. 
 
 A comprehensive list of domains that must be whitelisted by the proxy for the proper functioning of CARTO self-hosted can be found [here](../proxy/config/whitelisted_domains.md). The list includes domains for the essential core services of CARTO self-hosted, as well as additional optional domains that should be enabled to access specific features.
 
-In order to enable this feature, set the following environment variables (both uppercase and lowercase variables) in your `.env` file, depending on the protocol your proxy uses.
+In order to enable this feature, set the following environment variables (:warning: both uppercase and lowercase variables) in your `.env` file, depending on the protocol your proxy uses.
 
 ##### Proxy HTTP
 
