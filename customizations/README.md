@@ -340,7 +340,7 @@ REDIS_TLS_ENABLED=true
 
 - CARTO self-hosted does not install any proxy component, instead it supports connecting to an existing proxy software deployed by the customer.
 
-- CARTO Self-hosted supports both **HTTP** and **HTTPs** proxies.
+- CARTO Self-hosted supports both **HTTP** and **HTTPS** proxies.
 
 - At the moment, password authentication is not supported for the proxy connection.
 
@@ -368,8 +368,8 @@ HTTPS_PROXY="http://my-proxy:3128"
 https_proxy="http://my-proxy:3128"
 GRPC_PROXY="http://my-proxy:3128"
 grpc_proxy="http://my-proxy:3128"
-NO_PROXY="mega.io,dropbox.com,filestack.com"
-no_proxy="mega.io,dropbox.com,filestack.com"
+NO_PROXY="localhost,mega.io,dropbox.com,filestack.com"
+no_proxy="localhost,mega.io,dropbox.com,filestack.com"
 ```
 
 ##### Proxy HTTPS
@@ -397,17 +397,24 @@ NODE_TLS_REJECT_UNAUTHORIZED=0
 
 #### Supported datawarehouses
 
-Note that while certain data warehouses can be configured to work with the proxy, there are others that will inherently bypass it. Therefore, if you have a restrictive network policy in place, you will need to explicitly allow this egress non-proxied traffic.
+Note that while certain data warehouses can be configured to work with the proxy, **there are others that will inherently bypass it**. Therefore, if you have a restrictive network policy in place, you will need to explicitly allow this egress non-proxied traffic.
 
- | Datawarehouse | Proxy HTTP | Proxy HTTPS |
- | ------------- | ---------- | ----------- |
- | BigQuery      | Yes        | Yes         |
- | Snowflake     | Yes        | N/A         |
- | Databricks    | No         | No          |
- | Postgres      | No         | No          |
- | Redshift      | No         | No          |
+ | Datawarehouse | Proxy HTTP | Proxy HTTPS | Automatic proxy bypass ** |
+ | ------------- | ---------- | ----------- | ------------------------- |
+ | BigQuery      | Yes        | Yes         | N/A                       |
+ | Snowflake     | Yes        | No          | No ***                    |
+ | Databricks    | No         | No          | Yes                       |
+ | Postgres      | No         | No          | Yes                       |
+ | Redshift      | No         | No          | Yes                       |
 
- > :warning: There's no need to include the non supported datawarehouses in the `NO_PROXY` environment variable list. CARTO self-hosted components will automatically attempt a direct connection to those datawarehouses.
+> :warning: ** There's no need to include the non supported datawarehouses in the `NO_PROXY` environment variable list. CARTO self-hosted components will automatically attempt a direct connection to those datawarehouses, with the exception of **HTTPS Proxy + Snowflake**.
+
+> :warning: *** If an HTTPS proxy is required in your deployment and you are a Snowflake Warehouse user, you need to explicitly exclude snowflake traffic using the configuration below:
+
+```
+NO_PROXY="*.snowflakecomputing.com"
+no_proxy="*.snowflakecomputing.com"
+```
 
 
 ### Custom buckets
