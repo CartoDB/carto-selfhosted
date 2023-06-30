@@ -383,6 +383,7 @@ no_proxy="localhost,mega.io,dropbox.com,filestack.com"
 - `HTTPS_PROXY` (mandatory): Same as `HTTP_PROXY`.
 - `NO_PROXY` (optional): Comma-separated list of domains to exclude from proxying.
 - `NODE_EXTRA_CA_CERTS` (optional): Path to the proxy CA certificate.
+   - :information_source: Please read carefully the [important notes](#important-notes) to understand the current limitations with **custom CAs**.
    - :information_source: If the proxy certificate is signed by a **custom CA**, such CA must be included here.
    - :information_source: If the proxy certificate is signed by a **well known CA**, there is no need to add it here. **Well known CAs** are usually part of the [ca-certificates package](https://askubuntu.com/questions/857476/what-is-the-use-purpose-of-the-ca-certificates-package)
 - `NODE_TLS_REJECT_UNAUTHORIZED` (optional): Specify if CARTO Self-hosted should check if the proxy certificate is valid (`1`) or not (`0`).
