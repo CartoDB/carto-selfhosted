@@ -418,7 +418,7 @@ Note that while certain data warehouses can be configured to work with the proxy
 
 > :warning: \*\*\* If an HTTPS proxy is required in your deployment and you are a Snowflake Warehouse user, you need to explicitly exclude snowflake traffic using the configuration below:
 
-```
+```bash
 NO_PROXY=".snowflakecomputing.com" ## Check your Snowflake warehouse URL
 no_proxy=".snowflakecomputing.com" ## Check your Snowflake warehouse URL
 ```
