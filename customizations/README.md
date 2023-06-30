@@ -340,7 +340,7 @@ REDIS_TLS_ENABLED=true
 
 - CARTO self-hosted does not install any proxy component, instead it supports connecting to an existing proxy software deployed by the customer.
 
-- Currently, CARTO Self-hosted only supports the configuration of proxies using the **HTTP protocol**.
+- CARTO Self-hosted supports both **HTTP** and **HTTPs** proxies.
 
 - At the moment, password authentication is not supported for the proxy connection.
 
@@ -348,9 +348,9 @@ REDIS_TLS_ENABLED=true
 
 CARTO self-hosted provides support for operating behind an HTTP or HTTPS proxy. The proxy acts as a gateway, enabling CARTO self-hosted components to establish connections with essential external services like Google APIs, Mapbox, and others.
 
-A comprehensive list of domains that must be whitelisted by the proxy for the proper functioning of CARTO self-hosted can be found [here](../customizations/proxy/config/whitelisted_domains). The list includes domains for the essential core services of CARTO self-hosted, as well as additional optional domains that should be enabled to access specific features.
+A comprehensive list of domains that must be whitelisted by the proxy for the proper functioning of CARTO self-hosted can be found [here](../proxy/config/whitelisted_domains.md). The list includes domains for the essential core services of CARTO self-hosted, as well as additional optional domains that should be enabled to access specific features.
 
-In order to enable this feature, set the following environment variables (both uppercase and lowercase variables) in your `.env` file, depending on the protocol your proxy uses.
+In order to enable this feature, set the following environment variables (:warning: both uppercase and lowercase variables) in your `.env` file, depending on the protocol your proxy uses.
 
 ##### Proxy HTTP
 
