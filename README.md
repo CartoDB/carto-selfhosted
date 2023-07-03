@@ -40,7 +40,7 @@ You will need a Linux machine with at least:
 - Docker compose version 1.29 or above
 - A TLS certificate for the domain/subdomain (if not provided a self-signed one will be generated)
 - Configuration and license files received from CARTO
-- Internet HTTP/HTTPS access from the machine to the [whitelisted domains list](doc/whitelisted_domains.md)
+- Internet HTTP/HTTPS access from the machine to the [whitelisted domains list](proxy/config/whitelisted_domains.md)
 
 > Note that you should additionally allow access to any datawarehouse endpoint configured.
 
