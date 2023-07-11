@@ -16,7 +16,7 @@ function check_deps()
 {
   for DEP in ${DEPENDENCIES}; do
     # shellcheck disable=SC2261,SC2210
-    command -v "${DEP}" 2&>1 > /dev/null || \
+    command -v "${DEP}" 2>&1 > /dev/null || \
       { echo -e "\n[ERROR]: missing dependency <${DEP}>. Please, install it.\n"; exit 1;}
   done
 }
@@ -57,7 +57,7 @@ PROGNAME="$(basename "$0")"
 # use getopt and store the output into $OPTS
 # note the use of -o for the short options, --long for the long name options
 # and a : for any option that takes a parameter
-OPTS=$(getopt -o "hd:s" --long "help,dir,selfhosted-mode" -n "$PROGNAME" -- "$@")
+OPTS=$(getopt -o "hd:s:" --long "help,dir:,selfhosted-mode:" -n "$PROGNAME" -- "$@")
 
 # Check getopt errors
 # shellcheck disable=SC2166,SC2181
@@ -77,7 +77,7 @@ while true; do
   case "$1" in
     -h | --help ) usage; exit; ;;
     -d | --dir) FILE_DIR="${2%/}"; shift 2 ;;
-    -s | --selfhosted-mode) SELFHOSTED_MODE="$3"; shift 2 ;;
+    -s | --selfhosted-mode) SELFHOSTED_MODE="$2"; shift 2 ;;
     -- ) shift ;;
     * ) break ;;
   esac
