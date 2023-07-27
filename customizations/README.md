@@ -8,6 +8,7 @@
   - [Available configurations](#available-configurations)
     - [Self Hosted domain](#self-hosted-domain)
       - [Custom SSL certificate](#custom-ssl-certificate)
+    - [Parametrize Router Nginx](#parametrize-router-nginx)
     - [External database](#external-database)
       - [Configure SSL](#configure-ssl)
       - [Azure PostgreSQL](#azure-postgresql)
@@ -111,6 +112,38 @@ By default CARTO Self Hosted will generate and use a self-signed certificate if 
    ```
 
    > Remember to replace the `<cert>` value above with the correct file name.
+
+### Parametrize Router Nginx
+
+Carto Router uses Nginx to manage requests to backend services. These are the parameters you can update for your installation:
+
+  > ref: https://nginx.org/en/docs/dirindex.html
+
+  | Parameter | Description |
+  |---|---|
+  | `gzip_buffers` | Sets the number and size of buffers used to compress a response |
+  | `gzip_min_length` | Sets the minimum length of a response that will be gzipped |
+  | `proxy_buffers` | Sets the number and size of the buffers used for reading a response from the proxied server, for a single connection |
+  | `proxy_buffer_size` | Sets the size of the buffer used for reading the first part of the response received from the proxied server |
+  | `proxy_busy_buffers_size` | Limits the total size of buffers that can be busy sending a response to the client while the response is not yet fully read |
+  | `client_max_body_size` | Sets the maximum allowed size of the client request body |
+
+  Default values for these parameters are:
+
+  ```bash
+   NGINX_CLIENT_MAX_BODY_SIZE='10M'
+   NGINX_GZIP_MIN_LENGTH='1100'
+   NGINX_GZIP_BUFFERS='16 8k'
+   NGINX_PROXY_BUFFERS='16 8k'
+   NGINX_PROXY_BUFFER_SIZE='8k'
+   NGINX_PROXY_BUSY_BUFFERS_SIZE='8k'
+  ```
+
+  You can override any of them updating your `customer.env`` file, e.g:
+
+  ```diff
++ NGINX_CLIENT_MAX_BODY_SIZE='20M'
+  ```
 
 ### External database
 
@@ -438,9 +471,8 @@ You can create and use your own storage buckets in any of the following supporte
 
 #### Pre-requisites
 
-1. Create 3 buckets in your preferred Cloud provider:
+1. Create 2 buckets in your preferred Cloud provider:
 
-   - Import Bucket
    - Client Bucket
    - Thumbnails Bucket.
 
@@ -497,12 +529,6 @@ In order to use Google Cloud Storage custom buckets you need to:
    WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
    WORKSPACE_IMPORTS_KEYFILENAME=<path_to_service_account_key_file>
    WORKSPACE_IMPORTS_PROJECTID=<gcp_project_id>
-
-   # Import bucket
-   IMPORT_PROVIDER='gcp'
-   IMPORT_BUCKET=<import_bucket_name>
-   IMPORT_KEYFILENAME=<path_to_service_account_key_file>
-   IMPORT_PROJECTID=<gcp_project_id>
    ```
 
    > If `<BUCKET>_KEYFILENAME` is not defined  env `GOOGLE_APPLICATION_CREDENTIALS` is used as default value. When the selfhosted service account is setup in a Compute Engine instance as the default service account, there's no need to set any of these, as the containers will inherit the instance default credentials.
@@ -541,13 +567,6 @@ In order to use AWS S3 custom buckets you need to:
    WORKSPACE_IMPORTS_ACCESSKEYID=<aws_access_key_id>
    WORKSPACE_IMPORTS_SECRETACCESSKEY=<aws_access_key_secret>
    WORKSPACE_IMPORTS_REGION=<aws_s3_region>
-
-   # Import bucket
-   IMPORT_PROVIDER='s3'
-   IMPORT_BUCKET=<import_bucket_name>
-   IMPORT_ACCESSKEYID=<aws_access_key_id>
-   IMPORT_SECRETACCESSKEY=<aws_access_key_secret>
-   IMPORT_REGION=<aws_s3_region>
    ```
 
 #### Azure Blob Storage
@@ -580,12 +599,6 @@ In order to use Azure Storage buckets (aka containers) you need to:
    WORKSPACE_IMPORTS_BUCKET=<client_bucket_name>
    WORKSPACE_IMPORTS_STORAGE_ACCOUNT=<storage_account_name>
    WORKSPACE_IMPORTS_STORAGE_ACCESSKEY=<access_key>
-
-   # Import bucket
-   IMPORT_PROVIDER='azure-blob'
-   IMPORT_BUCKET=<import_bucket_name>
-   IMPORT_STORAGE_ACCOUNT=<storage_account_name>
-   IMPORT_STORAGE_ACCESSKEY=<access_key>
    ```
 
 ### Enable BigQuery OAuth connections
