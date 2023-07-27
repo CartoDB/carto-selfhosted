@@ -117,7 +117,7 @@ By default CARTO Self Hosted will generate and use a self-signed certificate if 
 
 Carto Router uses Nginx to manage requests to backend services. These are the parameters you can update for your installation:
 
-  > ref: https://nginx.org/en/docs/dirindex.html
+  > ref: `https://nginx.org/en/docs/dirindex.html`
 
   | Parameter | Description |
   |---|---|
@@ -378,7 +378,7 @@ REDIS_TLS_ENABLED=true
 - At the moment, password authentication is not supported for the proxy connection.
 
 - [Importing data](https://docs.carto.com/carto-user-manual/data-explorer/importing-data) using an **HTTPS Proxy configured with a certificate signed by a Custom CA** currently has some limitations. Please, contact CARTO Support for this use case.
-   - :information_source: Please check [Proxy HTTPS](#proxy-https) to understand the difference between a **custom CA** and a **well known CA**.
+  - :information_source: Please check [Proxy HTTPS](#proxy-https) to understand the difference between a **custom CA** and a **well known CA**.
 
 #### Configuration
 
@@ -416,11 +416,11 @@ no_proxy="localhost,mega.io,dropbox.com,filestack.com"
 - `HTTPS_PROXY` (mandatory): Same as `HTTP_PROXY`.
 - `NO_PROXY` (optional): Comma-separated list of domains to exclude from proxying.
 - `NODE_EXTRA_CA_CERTS` (optional): Path to the proxy CA certificate.
-   - :information_source: Please read carefully the [important notes](#important-notes) to understand the current limitations with **custom CAs**.
-   - :information_source: If the proxy certificate is signed by a **custom CA**, such CA must be included here.
-   - :information_source: If the proxy certificate is signed by a **well known CA**, there is no need to add it here. **Well known CAs** are usually part of the [ca-certificates package](https://askubuntu.com/questions/857476/what-is-the-use-purpose-of-the-ca-certificates-package)
+  - :information_source: Please read carefully the [important notes](#important-notes) to understand the current limitations with **custom CAs**.
+  - :information_source: If the proxy certificate is signed by a **custom CA**, such CA must be included here.
+  - :information_source: If the proxy certificate is signed by a **well known CA**, there is no need to add it here. **Well known CAs** are usually part of the [ca-certificates package](https://askubuntu.com/questions/857476/what-is-the-use-purpose-of-the-ca-certificates-package)
 - `NODE_TLS_REJECT_UNAUTHORIZED` (optional): Specify if CARTO Self-hosted should check if the proxy certificate is valid (`1`) or not (`0`).
-   - :information_source: For instance, **self signed certificates** validation must be skipped.
+  - :information_source: For instance, **self signed certificates** validation must be skipped.
 
 Example:
 
