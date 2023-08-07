@@ -4,7 +4,7 @@
 # Requirements: yq jq gsutil gcloud
 ##########################################
 DEPENDENCIES="yq jq gsutil gcloud"
-SELFHOSTED_MODE="k8s"
+SELFHOSTED_MODE="docker"
 FILE_DIR="."
 CARTO_SERVICE_ACCOUNT_FILE="./carto-service-account.json"
 CLIENT_STORAGE_BUCKET=""
@@ -114,20 +114,20 @@ _info "selfhosted mode: ${SELFHOSTED_MODE}"
 CUSTOMER_PACKAGE_NAME_PREFIX="carto-selfhosted-${SELFHOSTED_MODE}-customer-package"
 CARTO_ENV="${FILE_DIR}/customer.env"
 CARTO_SA="${FILE_DIR}/key.json"
-# Check that CARTO_ENV exist
-_check_input_files "${CARTO_ENV}"
-# Get information from customer.env file
-# shellcheck disable=SC1090
-source "${CARTO_ENV}"
 
 if [ "${SELFHOSTED_MODE}" == "docker" ] ; then
   ENV_SOURCE="$(basename "${CARTO_ENV}")"
   # Check that required files exist
   _check_input_files "${CARTO_SA}"
+  _check_input_files "${CARTO_ENV}"
+  # Get information from customer.env file
+  # shellcheck disable=SC1090
+  source "${CARTO_ENV}"
   cp "${CARTO_SA}" "${CARTO_SERVICE_ACCOUNT_FILE}"
   TENANT_ID="${SELFHOSTED_TENANT_ID}"
   CLIENT_ID="${TENANT_ID/#onp-}" # Remove onp- prefix
   SELFHOSTED_VERSION_CURRENT="${CARTO_SELFHOSTED_CUSTOMER_PACKAGE_VERSION}"
+  GCP_PROJECT_ID="${SELFHOSTED_GCP_PROJECT_ID}"
 elif [ "${SELFHOSTED_MODE}" == "k8s" ] ; then
   # Check that required files exist
   CARTO_VALUES="${FILE_DIR}/carto-values.yaml"
@@ -141,18 +141,18 @@ elif [ "${SELFHOSTED_MODE}" == "k8s" ] ; then
   TENANT_ID="$(yq -r ".cartoConfigValues.selfHostedTenantId" < "${CARTO_VALUES}")"
   CLIENT_ID="${TENANT_ID/#onp-}" # Remove onp- prefix
   SELFHOSTED_VERSION_CURRENT="$(yq -r ".cartoConfigValues.customerPackageVersion" < "${CARTO_VALUES}")"
+  GCP_PROJECT_ID="$(yq -r ".cartoConfigValues.selfHostedGcpProjectId" < "${CARTO_VALUES}")"
 fi
-
-# Use carto project GCP bucket for custoemr package
-CLIENT_STORAGE_BUCKET="${SELFHOSTED_GCP_PROJECT_ID}-client-storage"
 
 # Get information from JSON service account file
 CARTO_SERVICE_ACCOUNT_EMAIL="$(jq -r ".client_email" < "${CARTO_SERVICE_ACCOUNT_FILE}")"
-CARTO_GCP_PROJECT="$(jq -r ".project_id" < "${CARTO_SERVICE_ACCOUNT_FILE}")"
+
+# Use carto project GCP bucket for custoemr package
+CLIENT_STORAGE_BUCKET="${GCP_PROJECT_ID}-client-storage"
 
 # Download the latest customer package
 STEP="activating: service account credentials for: [${CARTO_SERVICE_ACCOUNT_EMAIL}]"
-if ( gcloud auth activate-service-account "${CARTO_SERVICE_ACCOUNT_EMAIL}" --key-file="${CARTO_SERVICE_ACCOUNT_FILE}" --project="${CARTO_GCP_PROJECT}" &>/dev/null ) ; then
+if ( gcloud auth activate-service-account "${CARTO_SERVICE_ACCOUNT_EMAIL}" --key-file="${CARTO_SERVICE_ACCOUNT_FILE}" --project="${GCP_PROJECT_ID}" &>/dev/null ) ; then
   _success "${STEP}" ; else _error "${STEP}" 5
 fi
 
