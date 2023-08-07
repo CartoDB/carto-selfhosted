@@ -128,6 +128,7 @@ if [ "${SELFHOSTED_MODE}" == "docker" ] ; then
   TENANT_ID="${SELFHOSTED_TENANT_ID}"
   CLIENT_ID="${TENANT_ID/#onp-}" # Remove onp- prefix
   SELFHOSTED_VERSION_CURRENT="${CARTO_SELFHOSTED_CUSTOMER_PACKAGE_VERSION}"
+  GCP_PROJECT_ID="${SELFHOSTED_GCP_PROJECT_ID}"
 elif [ "${SELFHOSTED_MODE}" == "k8s" ] ; then
   # Check that required files exist
   CARTO_VALUES="${FILE_DIR}/carto-values.yaml"
@@ -141,18 +142,18 @@ elif [ "${SELFHOSTED_MODE}" == "k8s" ] ; then
   TENANT_ID="$(yq -r ".cartoConfigValues.selfHostedTenantId" < "${CARTO_VALUES}")"
   CLIENT_ID="${TENANT_ID/#onp-}" # Remove onp- prefix
   SELFHOSTED_VERSION_CURRENT="$(yq -r ".cartoConfigValues.customerPackageVersion" < "${CARTO_VALUES}")"
+  GCP_PROJECT_ID="$(yq -r ".cartoConfigValues.selfHostedGcpProjectId" < "${CARTO_VALUES}")"
 fi
-
-# Use carto project GCP bucket for custoemr package
-CLIENT_STORAGE_BUCKET="${SELFHOSTED_GCP_PROJECT_ID}-client-storage"
 
 # Get information from JSON service account file
 CARTO_SERVICE_ACCOUNT_EMAIL="$(jq -r ".client_email" < "${CARTO_SERVICE_ACCOUNT_FILE}")"
-CARTO_GCP_PROJECT="$(jq -r ".project_id" < "${CARTO_SERVICE_ACCOUNT_FILE}")"
+
+# Use carto project GCP bucket for custoemr package
+CLIENT_STORAGE_BUCKET="${GCP_PROJECT_ID}-client-storage"
 
 # Download the latest customer package
 STEP="activating: service account credentials for: [${CARTO_SERVICE_ACCOUNT_EMAIL}]"
-if ( gcloud auth activate-service-account "${CARTO_SERVICE_ACCOUNT_EMAIL}" --key-file="${CARTO_SERVICE_ACCOUNT_FILE}" --project="${CARTO_GCP_PROJECT}" &>/dev/null ) ; then
+if ( gcloud auth activate-service-account "${CARTO_SERVICE_ACCOUNT_EMAIL}" --key-file="${CARTO_SERVICE_ACCOUNT_FILE}" --project="${GCP_PROJECT_ID}" &>/dev/null ) ; then
   _success "${STEP}" ; else _error "${STEP}" 5
 fi
 
