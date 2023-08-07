@@ -114,16 +114,15 @@ _info "selfhosted mode: ${SELFHOSTED_MODE}"
 CUSTOMER_PACKAGE_NAME_PREFIX="carto-selfhosted-${SELFHOSTED_MODE}-customer-package"
 CARTO_ENV="${FILE_DIR}/customer.env"
 CARTO_SA="${FILE_DIR}/key.json"
-# Check that CARTO_ENV exist
-_check_input_files "${CARTO_ENV}"
-# Get information from customer.env file
-# shellcheck disable=SC1090
-source "${CARTO_ENV}"
 
 if [ "${SELFHOSTED_MODE}" == "docker" ] ; then
   ENV_SOURCE="$(basename "${CARTO_ENV}")"
   # Check that required files exist
   _check_input_files "${CARTO_SA}"
+  _check_input_files "${CARTO_ENV}"
+  # Get information from customer.env file
+  # shellcheck disable=SC1090
+  source "${CARTO_ENV}"
   cp "${CARTO_SA}" "${CARTO_SERVICE_ACCOUNT_FILE}"
   TENANT_ID="${SELFHOSTED_TENANT_ID}"
   CLIENT_ID="${TENANT_ID/#onp-}" # Remove onp- prefix
