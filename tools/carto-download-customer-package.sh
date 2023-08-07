@@ -4,7 +4,7 @@
 # Requirements: yq jq gsutil gcloud
 ##########################################
 DEPENDENCIES="yq jq gsutil gcloud"
-SELFHOSTED_MODE="k8s"
+SELFHOSTED_MODE="docker"
 FILE_DIR="."
 CARTO_SERVICE_ACCOUNT_FILE="./carto-service-account.json"
 CLIENT_STORAGE_BUCKET=""
