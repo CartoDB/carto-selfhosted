@@ -1,4 +1,5 @@
 <!-- omit in toc -->
+
 # Table of Contents
 
 - [Customizations](#customizations)
@@ -69,9 +70,11 @@ If you prefer using your own GCP Service Account, please do the following prior 
 Make your changes to the `customer.env` file before starting the installation steps.
 
 > :warning: Anytime you edit the `customer.env` file to change the CARTO configuration you will need to apply it to your installation:
+>
 > 1. Run the `install.sh` script to update the `.env` file used by Docker Compose.
 >
 >    `bash install.sh`
+>
 > 2. Refresh the installation configuration.
 >
 >    `docker-compose down && docker-compose up -d`
@@ -212,6 +215,7 @@ WORKSPACE_POSTGRES_SSL_MODE=require
 >    ```
 
 To connect to your external Postgresql without SSL, you'll need to configure `WORKSPACE_POSTGRES_SSL` variables accordingly:
+
 ```diff
 - WORKSPACE_POSTGRES_SSL_ENABLED=true
 - WORKSPACE_POSTGRES_SSL_MODE=require
@@ -349,7 +353,7 @@ REDIS_TLS_ENABLED=true
 - At the moment, password authentication is not supported for the proxy connection.
 
 - [Importing data](https://docs.carto.com/carto-user-manual/data-explorer/importing-data) using an **HTTPS Proxy configured with a certificate signed by a Custom CA** currently has some limitations. Please, contact CARTO Support for this use case.
-   - :information_source: Please check [Proxy HTTPS](#proxy-https) to understand the difference between a **custom CA** and a **well known CA**.
+  - :information_source: Please check [Proxy HTTPS](#proxy-https) to understand the difference between a **custom CA** and a **well known CA**.
 
 #### Configuration
 
@@ -387,11 +391,11 @@ no_proxy="localhost,mega.io,dropbox.com,filestack.com"
 - `HTTPS_PROXY` (mandatory): Same as `HTTP_PROXY`.
 - `NO_PROXY` (optional): Comma-separated list of domains to exclude from proxying.
 - `NODE_EXTRA_CA_CERTS` (optional): Path to the proxy CA certificate.
-   - :information_source: Please read carefully the [important notes](#important-notes) to understand the current limitations with **custom CAs**.
-   - :information_source: If the proxy certificate is signed by a **custom CA**, such CA must be included here.
-   - :information_source: If the proxy certificate is signed by a **well known CA**, there is no need to add it here. **Well known CAs** are usually part of the [ca-certificates package](https://askubuntu.com/questions/857476/what-is-the-use-purpose-of-the-ca-certificates-package)
+  - :information_source: Please read carefully the [important notes](#important-notes) to understand the current limitations with **custom CAs**.
+  - :information_source: If the proxy certificate is signed by a **custom CA**, such CA must be included here.
+  - :information_source: If the proxy certificate is signed by a **well known CA**, there is no need to add it here. **Well known CAs** are usually part of the [ca-certificates package](https://askubuntu.com/questions/857476/what-is-the-use-purpose-of-the-ca-certificates-package)
 - `NODE_TLS_REJECT_UNAUTHORIZED` (optional): Specify if CARTO Self-hosted should check if the proxy certificate is valid (`1`) or not (`0`).
-   - :information_source: For instance, **self signed certificates** validation must be skipped.
+  - :information_source: For instance, **self signed certificates** validation must be skipped.
 
 Example:
 
@@ -410,13 +414,13 @@ NODE_TLS_REJECT_UNAUTHORIZED=0
 
 Note that while certain data warehouses can be configured to work with the proxy, **there are others that will inherently bypass it**. Therefore, if you have a restrictive network policy in place, you will need to explicitly allow this egress non-proxied traffic.
 
- | Datawarehouse | Proxy HTTP | Proxy HTTPS | Automatic proxy bypass ** |
- | ------------- | ---------- | ----------- | ------------------------- |
- | BigQuery      | Yes        | Yes         | N/A                       |
- | Snowflake     | Yes        | No          | No ***                    |
- | Databricks    | No         | No          | Yes                       |
- | Postgres      | No         | No          | Yes                       |
- | Redshift      | No         | No          | Yes                       |
+| Datawarehouse | Proxy HTTP | Proxy HTTPS | Automatic proxy bypass \*\* |
+| ------------- | ---------- | ----------- | --------------------------- |
+| BigQuery      | Yes        | Yes         | N/A                         |
+| Snowflake     | Yes        | No          | No \*\*\*                   |
+| Databricks    | No         | No          | Yes                         |
+| Postgres      | No         | No          | Yes                         |
+| Redshift      | No         | No          | Yes                         |
 
 > :warning: \*\* There's no need to include the non supported datawarehouses in the `NO_PROXY` environment variable list. CARTO self-hosted components will automatically attempt a direct connection to those datawarehouses, with the exception of **HTTPS Proxy + Snowflake**.
 
@@ -426,7 +430,6 @@ Note that while certain data warehouses can be configured to work with the proxy
 NO_PROXY=".snowflakecomputing.com" ## Check your Snowflake warehouse URL
 no_proxy=".snowflakecomputing.com" ## Check your Snowflake warehouse URL
 ```
-
 
 ### Custom buckets
 
@@ -453,6 +456,7 @@ You can create and use your own storage buckets in any of the following supporte
    > :warning: Map thumbnails storage objects (.png files) can be configured to be `public` (default) or `private`. In order to change this, set `WORKSPACE_THUMBNAILS_PUBLIC="false"`. For the default configuration to work, the bucket must allow public objects/blobs. Some features, such as branding and custom markers, won't work unless the bucket is public. However, there's a workaround to avoid making the whole bucket public, which requires allowing public objects, allowing ACLs (or non-uniform permissions) and disabling server-side encryption.
 
 2. CORS configuration: Thumbnails and Client buckets require having the following CORS headers configured.
+
    - Allowed origins: `*`
    - Allowed methods: `GET`, `PUT`, `POST`
    - Allowed headers (common): `Content-Type`, `Content-MD5`, `Content-Disposition`, `Cache-Control`
@@ -509,9 +513,9 @@ In order to use Google Cloud Storage custom buckets you need to:
    IMPORT_PROJECTID=<gcp_project_id>
    ```
 
-   > If `<BUCKET>_KEYFILENAME` is not defined  env `GOOGLE_APPLICATION_CREDENTIALS` is used as default value. When the selfhosted service account is setup in a Compute Engine instance as the default service account, there's no need to set any of these, as the containers will inherit the instance default credentials.
+   > If `<BUCKET>_KEYFILENAME` is not defined env `GOOGLE_APPLICATION_CREDENTIALS` is used as default value. When the selfhosted service account is setup in a Compute Engine instance as the default service account, there's no need to set any of these, as the containers will inherit the instance default credentials.
 
-   > If `<BUCKET>_PROJECTID` is not defined  env `GOOGLE_CLOUD_PROJECT` is used as default value.
+   > If `<BUCKET>_PROJECTID` is not defined env `GOOGLE_CLOUD_PROJECT` is used as default value.
 
 #### AWS S3
 
@@ -564,7 +568,7 @@ In order to use Azure Storage buckets (aka containers) you need to:
 
 3. Create the storage buckets.
 
-   > :warning:  If you set the `Public Access Mode` to `private` in the bucket properties, then set `appConfigValues.workspaceThumbnailsPublic` and `appConfigValues.workspaceImportsPublic` to `false`.
+   > :warning: If you set the `Public Access Mode` to `private` in the bucket properties, then set `appConfigValues.workspaceThumbnailsPublic` and `appConfigValues.workspaceImportsPublic` to `false`.
 
 4. Generate an Access Key, from the storage account's Security properties.
 
@@ -599,12 +603,14 @@ This feature allows users to create a BigQuery connection using `Sign in with Go
 > :warning: Connections created with OAuth cannot be shared with other organization users.
 
 1. Create an OAuth consent screen inside the desired GCP project.
+
    - Introduce an app name and a user support email.
    - Add an authorized domain (the one used in your email).
    - Add another email as dev contact info (it can be the same).
    - Add the following scopes: `./auth/userinfo.email`, `./auth/userinfo.profile` & `./auth/bigquery`.
 
 2. Create an OAuth credentials.
+
    - Type: Web application.
    - Authorized JavaScript origins: `https://<your_selfhosted_domain>`.
    - Authorized redirect URIs: `https://<your_selfhosted_domain>/connections/bigquery/oauth`.
@@ -628,7 +634,7 @@ Each node will have a connection pool controlled by the environment variables `M
 connection, each one will have its own pool. The maximum connections can be calculated with the following formula:
 
 ```javascript
-max_connections = pool_size * number_connections * number_nodes
+max_connections = pool_size * number_connections * number_nodes;
 ```
 
 ### Google Maps
@@ -646,49 +652,52 @@ CARTO selfhosted supports importing data to a Redshift cluster or serverless. Fo
 1. Create an AWS IAM user with programmatic access. Take note of the user's arn, key ID and key secret.
 
 2. Create an AWS S3 Bucket:
+
    - ACLs should be allowed.
    - If server-side encryption is enabled, the user must be granted with permissions over the KMS key used.
 
 3. Create an AWS IAM role with the following settings:
+
    1. Trusted entity type: `Custom trust policy`.
    2. Custom trust policy: Make sure to replace `<your_aws_user_arn>`.
+
    ```json
    {
      "Version": "2012-10-17",
      "Statement": [
-         {
-             "Effect": "Allow",
-             "Principal": {
-                 "AWS": "<your_aws_user_arn>"
-             },
-             "Action": [
-                 "sts:AssumeRole",
-                 "sts:TagSession"
-             ]
-         }
+       {
+         "Effect": "Allow",
+         "Principal": {
+           "AWS": "<your_aws_user_arn>"
+         },
+         "Action": ["sts:AssumeRole", "sts:TagSession"]
+       }
      ]
    }
    ```
+
    3. Add permissions: Create a new permissions policy, replacing `<your_aws_s3_bucket_name>`.
+
    ```json
    {
-      "Version": "2012-10-17",
-      "Statement": [
-          {
-              "Effect": "Allow",
-              "Action": "s3:ListBucket",
-              "Resource": "arn:aws:s3:::<your_aws_s3_bucket_name>"
-          },
-          {
-              "Effect": "Allow",
-              "Action": "s3:*Object",
-              "Resource": "arn:aws:s3:::<your_aws_s3_bucket_name>/*"
-          }
-      ]
+     "Version": "2012-10-17",
+     "Statement": [
+       {
+         "Effect": "Allow",
+         "Action": "s3:ListBucket",
+         "Resource": "arn:aws:s3:::<your_aws_s3_bucket_name>"
+       },
+       {
+         "Effect": "Allow",
+         "Action": "s3:*Object",
+         "Resource": "arn:aws:s3:::<your_aws_s3_bucket_name>/*"
+       }
+     ]
    }
    ```
 
 4. Add the following lines to your `customer.env` file:
+
 ```bash
 IMPORT_AWS_ACCESS_KEY_ID=<aws_access_key_id>
 IMPORT_AWS_SECRET_ACCESS_KEY=<aws_access_key_secret>
@@ -711,7 +720,7 @@ IMPORT_AWS_ROLE_ARN=<aws_iam_role_arn>
 
 - TrackJS is enabled by default in the www components, but you can disable it with these variables in your `customer.env` file:
 
-   ```bash
-   REACT_APP_ACCOUNTS_WWW_ENABLE_TRACKJS=false
-   REACT_APP_WORKSPACE_WWW_ENABLE_TRACKJS=false
-   ```
+  ```bash
+  REACT_APP_ACCOUNTS_WWW_ENABLE_TRACKJS=false
+  REACT_APP_WORKSPACE_WWW_ENABLE_TRACKJS=false
+  ```
