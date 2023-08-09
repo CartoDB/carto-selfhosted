@@ -154,6 +154,8 @@ Open with an editor the `customer.env` file and modify the following variables:
    + # WORKSPACE_POSTGRES_SSL_MODE=disable
    + # POSTGRES_ADMIN_USER=postgres
    + # POSTGRES_ADMIN_PASSWORD=<verySecureRandomPassword>
+   + # In case your Postgres doesn't contain the default postgres database
+   + # POSTGRES_ADMIN_DB=postgres
    ```
 
 2. Uncomment the external Postgres configuration:
@@ -182,6 +184,8 @@ Open with an editor the `customer.env` file and modify the following variables:
    + WORKSPACE_POSTGRES_DB=workspace
    + POSTGRES_ADMIN_USER=<FILL_ME>
    + POSTGRES_ADMIN_PASSWORD=<FILL_ME>
+   # In case your Postgres doesn't contain the default postgres database
+   # POSTGRES_ADMIN_DB=postgres
    ```
 
 3. Replace the `<FILL_ME>` placeholders with the right values.
