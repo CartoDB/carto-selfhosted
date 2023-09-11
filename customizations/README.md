@@ -568,7 +568,7 @@ In order to use Azure Storage buckets (aka containers) you need to:
 
 3. Create the storage buckets.
 
-   > :warning: If you set the `Public Access Mode` to `private` in the bucket properties, then set `appConfigValues.workspaceThumbnailsPublic` and `appConfigValues.workspaceImportsPublic` to `false`.
+   > :warning: If you set the `Public Access Mode` to `private` in the bucket properties, then set the `WORKSPACE_THUMBNAILS_PUBLIC` and `WORKSPACE_IMPORTS_PUBLIC` environment variables to `false`.
 
 4. Generate an Access Key, from the storage account's Security properties.
 
