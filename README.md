@@ -148,7 +148,7 @@ To update you CARTO Self Hosted to the newest version you will need run the foll
 3. Save a backup copy of your current `customer.env`:
 
    ```bash
-   mv customer.env customer.env.bak
+   cp customer.env customer.env.bak
    ```
 
 4. Download the latest customer package (containing `customer.env` and `key.json` files) using the tool described [here](tools/README.md#download-customer-package-tool). Then unzip the file.
