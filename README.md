@@ -1,5 +1,7 @@
 # CARTO Self-hosted for Docker Compose
 
+![](./img/header-docker.png)
+
 <!--
 - Add how to contact sales or request a live demo
 - Add info about the CARTO SaaS environment
