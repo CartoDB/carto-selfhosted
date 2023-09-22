@@ -135,7 +135,7 @@ services:
     volumes: *default-volumes
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
-      - NODE_OPTIONS=--max-old-space-size=1875
+      - NODE_OPTIONS=--max-old-space-size=3072
     restart: unless-stopped
     logging:
       driver: "local"
@@ -196,7 +196,7 @@ services:
     env_file:
       - .env
     environment:
-      - NODE_OPTIONS=--max-old-space-size=2048
+      - NODE_OPTIONS=--max-old-space-size=4096
     command: node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js
     restart: unless-stopped
     logging:
