@@ -6,7 +6,7 @@ This repository contains the Docker Compose configuration for CARTO self-hosted 
 
 For a Kubernetes flavor of CARTO, please refer to <https://github.com/CartoDB/carto-selfhosted-helm>
 
-Documentation and instructions can be found at <https://docs.carto.com/carto-self-hosted>
+Documentation and instructions can be found at <https://docs.carto.com/carto-self-hosted/overview>
 
 ## Release notes
 
