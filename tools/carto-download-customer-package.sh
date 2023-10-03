@@ -12,6 +12,13 @@ CUSTOMER_PACKAGE_NAME_PREFIX="carto-selfhosted-${SELFHOSTED_MODE}-customer-packa
 CUSTOMER_PACKAGE_FOLDER="customer-package"
 ##########################################
 
+function _check_deps_gsutil_file()
+{
+  file_path=${1}
+  gsutil -q stat $file_path
+  return $?
+}
+
 function _check_deps()
 {
   for DEP in ${DEPENDENCIES} ; do
@@ -161,8 +168,17 @@ CUSTOMER_PACKAGE_FILE_LATEST="$(gsutil ls "gs://${CLIENT_STORAGE_BUCKET}/${CUSTO
 SELFHOSTED_VERSION_LATEST="$(echo "${CUSTOMER_PACKAGE_FILE_LATEST}" | grep -Eo "${CLIENT_ID}-[0-9]+-[0-9]+-[0-9]+")"
 SELFHOSTED_VERSION_LATEST="${SELFHOSTED_VERSION_LATEST/#${CLIENT_ID}-}"
 
+# Check if exist the latest stable release
+STABLE_CUSTOMER_PACKAGE_DOWNLOAD_URL="gs://${CLIENT_STORAGE_BUCKET}/${CUSTOMER_PACKAGE_FOLDER}/${CUSTOMER_PACKAGE_NAME_PREFIX}-${CLIENT_ID}-${SELFHOSTED_VERSION_LATEST}.zip"
+if _check_deps_gsutil_file ${STABLE_CUSTOMER_PACKAGE_DOWNLOAD_URL}
+then
+  CUSTOMER_PACKAGE_DOWNLOAD_URL=${STABLE_CUSTOMER_PACKAGE_DOWNLOAD_URL}
+else
+  _error "stable version ${SELFHOSTED_VERSION_LATEST} not found: ${STABLE_CUSTOMER_PACKAGE_DOWNLOAD_URL}" 404
+fi
+
 # Double-check customer package download URI
-[[ "${CUSTOMER_PACKAGE_FILE_LATEST}" != "gs://${CLIENT_STORAGE_BUCKET}/${CUSTOMER_PACKAGE_FOLDER}/${CUSTOMER_PACKAGE_NAME_PREFIX}-${CLIENT_ID}-${SELFHOSTED_VERSION_LATEST}.zip" ]] && \
+[[ "${CUSTOMER_PACKAGE_FILE_LATEST}" != "${CUSTOMER_PACKAGE_DOWNLOAD_URL}" ]] && \
   _error "customer package download URI mismatch" 7
 
 # Download package
