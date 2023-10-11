@@ -155,7 +155,7 @@ fi
 CARTO_SERVICE_ACCOUNT_EMAIL="$(jq -r ".client_email" < "${CARTO_SERVICE_ACCOUNT_FILE}")"
 
 # Use carto project GCP bucket for custoemr package
-CLIENT_STORAGE_BUCKET="${GCP_PROJECT_ID}-client-storage"
+CLIENT_STORAGE_BUCKET="${GCP_PROJECT_ID}-customer-package-storage"
 
 # Download the latest customer package
 STEP="activating: service account credentials for: [${CARTO_SERVICE_ACCOUNT_EMAIL}]"
