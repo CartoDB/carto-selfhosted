@@ -134,7 +134,6 @@ services:
     command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     environment:
-      - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
       - NODE_OPTIONS=--max-old-space-size=3072
     restart: unless-stopped
     logging:
@@ -150,7 +149,6 @@ services:
     command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js"
     volumes: *default-volumes
     environment:
-      - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
       - NODE_OPTIONS=--max-old-space-size=1536
     restart: unless-stopped
     logging:
