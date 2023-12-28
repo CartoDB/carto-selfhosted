@@ -132,7 +132,8 @@ services:
     env_file:
       - .env
     command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
-    volumes: *default-volumes
+    volumes: &default-volumes
+      - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
     environment:
       - NODE_OPTIONS=--max-old-space-size=3072
     restart: unless-stopped
