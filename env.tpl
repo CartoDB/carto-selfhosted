@@ -139,6 +139,4 @@ ROUTER_METRICS_PUBSUB_TOPIC=data-updates
 ROUTER_METRICS_PUBSUB_PROJECT_ID=${SELFHOSTED_GCP_PROJECT_ID}
 ROUTER_METRICS_PUBSUB_SUBSCRIPTION_FILTER=aggregated-selfhosted-metrics
 
-REACT_APP_ASKNICELY_MIN_HOURS_ACCOUNT_OLD_ENOUGH=1920 # 80 days
-
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
