@@ -86,7 +86,7 @@ services:
     env_file:
       - .env
     environment:
-      - NODE_OPTIONS=--max-old-space-size=1024
+      - NODE_OPTIONS=--max-old-space-size=1024 --max-semi-space-size=32
     depends_on:
       - workspace-migrations
     command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
@@ -106,7 +106,7 @@ services:
     env_file:
       - .env
     environment:
-      - NODE_OPTIONS=--max-old-space-size=768
+      - NODE_OPTIONS=--max-old-space-size=768 --max-semi-space-size=32
     restart: unless-stopped
     logging:
       driver: "local"
@@ -135,7 +135,7 @@ services:
     volumes: *default-volumes
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
-      - NODE_OPTIONS=--max-old-space-size=3072
+      - NODE_OPTIONS=--max-old-space-size=3072 --max-semi-space-size=32
     restart: unless-stopped
     logging:
       driver: "local"
@@ -151,7 +151,7 @@ services:
     volumes: *default-volumes
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
-      - NODE_OPTIONS=--max-old-space-size=1536
+      - NODE_OPTIONS=--max-old-space-size=1536 --max-semi-space-size=32
     restart: unless-stopped
     logging:
       driver: "local"
@@ -167,7 +167,7 @@ services:
     env_file:
       - .env
     environment:
-      - NODE_OPTIONS=--max-old-space-size=768
+      - NODE_OPTIONS=--max-old-space-size=768 --max-semi-space-size=32
     restart: unless-stopped
     logging:
       driver: "local"
@@ -180,7 +180,7 @@ services:
     env_file:
       - .env
     environment:
-      - NODE_OPTIONS=--max-old-space-size=2048
+      - NODE_OPTIONS=--max-old-space-size=2048 --max-semi-space-size=32
     command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     restart: unless-stopped
@@ -196,7 +196,7 @@ services:
     env_file:
       - .env
     environment:
-      - NODE_OPTIONS=--max-old-space-size=4096
+      - NODE_OPTIONS=--max-old-space-size=4096 --max-semi-space-size=32
     command: node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js
     restart: unless-stopped
     logging:
@@ -210,7 +210,7 @@ services:
     env_file:
       - .env
     environment:
-      - NODE_OPTIONS=--max-old-space-size=768
+      - NODE_OPTIONS=--max-old-space-size=768 --max-semi-space-size=32
     command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     restart: unless-stopped
