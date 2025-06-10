@@ -89,7 +89,7 @@ services:
       - NODE_OPTIONS=--max-old-space-size=1024 --max-semi-space-size=32
     depends_on:
       - workspace-migrations
-    command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
+    command: bash -c "yarn ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: &default-volumes
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
     restart: unless-stopped
@@ -101,7 +101,7 @@ services:
 
   workspace-subscriber:
     image: "${WORKSPACE_API_DOCKER_IMAGE}"
-    command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js"
+    command: bash -c "yarn ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js"
     volumes: *default-volumes
     env_file:
       - .env
@@ -131,7 +131,7 @@ services:
     image: "${MAPS_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
+    command: bash -c "yarn ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
@@ -147,7 +147,7 @@ services:
     image: "${MAPS_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js"
+    command: bash -c "yarn ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js"
     volumes: *default-volumes
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
@@ -181,7 +181,7 @@ services:
       - .env
     environment:
       - NODE_OPTIONS=--max-old-space-size=2048 --max-semi-space-size=32
-    command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
+    command: bash -c "yarn ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     restart: unless-stopped
     logging:
@@ -211,7 +211,7 @@ services:
       - .env
     environment:
       - NODE_OPTIONS=--max-old-space-size=768 --max-semi-space-size=32
-    command: bash -c "npm run ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
+    command: bash -c "yarn ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     restart: unless-stopped
     logging:
@@ -239,7 +239,7 @@ services:
 
   redis:
     scale: "${LOCAL_REDIS_SCALE}"
-    image: "redis:6.0-alpine"
+    image: "${REDIS_DOCKER_IMAGE}"
     env_file:
       - .env
     restart: unless-stopped
