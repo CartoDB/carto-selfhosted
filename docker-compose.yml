@@ -89,7 +89,7 @@ services:
       - NODE_OPTIONS=--max-old-space-size=1024 --max-semi-space-size=32
     depends_on:
       - workspace-migrations
-    command: bash -c "yarn ready-to-run:built && exec node -r ./tsconfig-paths-bootstrap.js dist/workspace-api/index.js"
+    command: bash -c "yarn ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: &default-volumes
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
     restart: unless-stopped
@@ -101,7 +101,7 @@ services:
 
   workspace-subscriber:
     image: "${WORKSPACE_API_DOCKER_IMAGE}"
-    command: bash -c "yarn ready-to-run:built && exec node -r ./tsconfig-paths-bootstrap.js dist/workspace-api/subscriber/index.js"
+    command: bash -c "yarn ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js"
     volumes: *default-volumes
     env_file:
       - .env
@@ -131,7 +131,7 @@ services:
     image: "${MAPS_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    command: bash -c "yarn ready-to-run:built && exec node -r ./tsconfig-paths-bootstrap.js dist/maps-api/index.js"
+    command: bash -c "yarn ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
@@ -147,7 +147,7 @@ services:
     image: "${MAPS_API_DOCKER_IMAGE}"
     env_file:
       - .env
-    command: bash -c "yarn ready-to-run:built && exec node -r ./tsconfig-paths-bootstrap.js dist/maps-api/subscriber/index.js"
+    command: bash -c "yarn ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js"
     volumes: *default-volumes
     environment:
       - MAPS_API_V3_RESOURCE_URL_TEMPLATE_NEW=https://$${host}/api/$${path}
@@ -161,7 +161,7 @@ services:
 
   cdn-invalidator-sub:
     image: "${CDN_INVALIDATOR_SUB_DOCKER_IMAGE}"
-    command: node -r /usr/src/app/cdn-invalidator-sub/tsconfig-paths-bootstrap.js /usr/src/app/cdn-invalidator-sub/dist/app/cdn-invalidator-sub/index.js
+    command: node -r /usr/src/consumers/cdn-invalidator-sub/tsconfig-paths-bootstrap.js /usr/src/consumers/cdn-invalidator-sub/dist/consumers/cdn-invalidator-sub/index.js
     volumes: &default-volumes-double-level
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/app/certs/:ro"
     env_file:
@@ -181,7 +181,7 @@ services:
       - .env
     environment:
       - NODE_OPTIONS=--max-old-space-size=2048 --max-semi-space-size=32
-    command: bash -c "yarn ready-to-run:built && exec node -r ./tsconfig-paths-bootstrap.js dist/import-api/index.js"
+    command: bash -c "yarn ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     restart: unless-stopped
     logging:
@@ -197,7 +197,7 @@ services:
       - .env
     environment:
       - NODE_OPTIONS=--max-old-space-size=4096 --max-semi-space-size=32
-    command: node -r ./tsconfig-paths-bootstrap.js dist/import-api/subscriber/index.js
+    command: node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/subscriber/index.js
     restart: unless-stopped
     logging:
       driver: "local"
@@ -211,7 +211,7 @@ services:
       - .env
     environment:
       - NODE_OPTIONS=--max-old-space-size=768 --max-semi-space-size=32
-    command: bash -c "yarn ready-to-run:built && exec node -r ./tsconfig-paths-bootstrap.js dist/lds-api/index.js"
+    command: bash -c "yarn ready-to-run:built && exec node -r /usr/src/app/tsconfig-paths-bootstrap.js /usr/src/app/dist/app/index.js"
     volumes: *default-volumes
     restart: unless-stopped
     logging:
