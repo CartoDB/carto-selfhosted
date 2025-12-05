@@ -161,7 +161,7 @@ services:
 
   cdn-invalidator-sub:
     image: "${CDN_INVALIDATOR_SUB_DOCKER_IMAGE}"
-    command: node -r /usr/src/app/cdn-invalidator-sub/tsconfig-paths-bootstrap.js /usr/src/app/cdn-invalidator-sub/dist/app/cdn-invalidator-sub/index.js
+    command: node -r /usr/src/consumers/cdn-invalidator-sub/tsconfig-paths-bootstrap.js /usr/src/consumers/cdn-invalidator-sub/dist/consumers/cdn-invalidator-sub/index.js
     volumes: &default-volumes-double-level
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/app/certs/:ro"
     env_file:
