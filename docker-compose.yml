@@ -24,7 +24,6 @@ services:
     env_file:
       - .env
     environment:
-      - GOOGLE_APPLICATION_CREDENTIALS=/usr/src/certs/key.json
       - LS_JAVA_OPTS=-Xms512m -Xmx1024m
     volumes:
       - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
@@ -116,7 +115,7 @@ services:
 
   workspace-migrations:
     image: "${WORKSPACE_MIGRATIONS_DOCKER_IMAGE}"
-    entrypoint: ["/usr/src/app/onprem-init-db.sh"]
+    entrypoint: ["/usr/src/workspace-db/onprem-init-db.sh"]
     env_file:
       - .env
     volumes: *default-volumes
@@ -163,7 +162,7 @@ services:
     image: "${CDN_INVALIDATOR_SUB_DOCKER_IMAGE}"
     command: node -r /usr/src/consumers/cdn-invalidator-sub/tsconfig-paths-bootstrap.js /usr/src/consumers/cdn-invalidator-sub/dist/consumers/cdn-invalidator-sub/index.js
     volumes: &default-volumes-double-level
-      - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/app/certs/:ro"
+      - "${CARTO3_SELFHOSTED_VOLUMES_BASE_PATH}certs/:/usr/src/certs/:ro"
     env_file:
       - .env
     environment:
