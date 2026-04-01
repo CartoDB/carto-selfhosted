@@ -255,6 +255,10 @@ function _run_post_checks() {
 			if ! _check_min_cloud_version $MIN_VERSION $PACKAGE_VERSION; then
 				_err "Minimum cloud version version is $MIN_VERSION but your package was generated with $PACKAGE_VERSION. Please follow the instructions to download a new version of your customer package: https://github.com/CartoDB/carto-selfhosted/tree/master/tools#download-customer-package-tool."
 			fi
+			CLOUD_VERSION=$(cat VERSION)
+			if ! _check_min_cloud_version $PACKAGE_VERSION $CLOUD_VERSION; then
+				_err "Your customer package ($PACKAGE_VERSION) is newer than this CARTO Self-Hosted version ($CLOUD_VERSION). Please update your CARTO Self-Hosted installation to version $PACKAGE_VERSION or later."
+			fi
 		)
 	fi
 }
