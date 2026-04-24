@@ -236,12 +236,16 @@ services:
         max-size: "5M"
         max-file: "20"
 
-  redis:
+  valkey:
     scale: "${LOCAL_REDIS_SCALE}"
-    image: "${REDIS_DOCKER_IMAGE}"
+    image: "${VALKEY_DOCKER_IMAGE}"
     env_file:
       - .env
     restart: unless-stopped
+    networks:
+      default:
+        aliases:
+          - redis
     logging:
       driver: "local"
       options:
