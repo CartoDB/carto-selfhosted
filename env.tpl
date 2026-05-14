@@ -152,4 +152,10 @@ ROUTER_METRICS_PUBSUB_TOPIC=data-updates
 ROUTER_METRICS_PUBSUB_PROJECT_ID=${SELFHOSTED_GCP_PROJECT_ID}
 ROUTER_METRICS_PUBSUB_SUBSCRIPTION_FILTER=aggregated-selfhosted-metrics
 
+# Tokenless AT lookup endpoint. Set AT_TOKENLESS_ENABLED=true and fill in the three secrets to enable GET /v3/tokens/lookup.
+AT_TOKENLESS_ENABLED=false
+# AT_TOKENLESS_DEFAULT_TOKEN=<FILL_ME>
+# AT_TOKENLESS_RESOLVER_AUTH_USER=<FILL_ME>
+# AT_TOKENLESS_RESOLVER_AUTH_PASSWORD=<FILL_ME>
+
 # >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
