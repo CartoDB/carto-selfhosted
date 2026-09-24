@@ -1,9 +1,9 @@
 #!/bin/bash
 
 ##########################################
-# Requirements: yq jq gsutil gcloud
+# Requirements: yq jq gcloud
 ##########################################
-DEPENDENCIES="yq jq gsutil gcloud"
+DEPENDENCIES="yq jq gcloud"
 SELFHOSTED_MODE="docker"
 FILE_DIR="."
 CARTO_SERVICE_ACCOUNT_FILE="./carto-service-account.json"
@@ -12,10 +12,10 @@ CUSTOMER_PACKAGE_NAME_PREFIX="carto-selfhosted-${SELFHOSTED_MODE}-customer-packa
 CUSTOMER_PACKAGE_FOLDER="customer-package"
 ##########################################
 
-function _check_gsutil_file()
+function _check_gcs_file()
 {
   file_path=${1}
-  gsutil -q stat $file_path
+  gcloud storage objects describe "${file_path}" &>/dev/null
   return $?
 }
 
@@ -164,7 +164,7 @@ if ( gcloud auth activate-service-account "${CARTO_SERVICE_ACCOUNT_EMAIL}" --key
 fi
 
 # Get latest customer package version
-CUSTOMER_PACKAGE_FILE_LATEST="$(gsutil ls "gs://${CLIENT_STORAGE_BUCKET}/${CUSTOMER_PACKAGE_FOLDER}/${CUSTOMER_PACKAGE_NAME_PREFIX}-${CLIENT_ID}-*-*-*.zip" | grep -v '\-rc\-')"
+CUSTOMER_PACKAGE_FILE_LATEST="$(gcloud storage ls "gs://${CLIENT_STORAGE_BUCKET}/${CUSTOMER_PACKAGE_FOLDER}/${CUSTOMER_PACKAGE_NAME_PREFIX}-${CLIENT_ID}-*-*-*.zip" | grep -v '\-rc\-')"
 SELFHOSTED_VERSION_LATEST="$(echo "${CUSTOMER_PACKAGE_FILE_LATEST}" | grep -Eo "${CLIENT_ID}-[0-9]+-[0-9]+-[0-9]+")"
 SELFHOSTED_VERSION_LATEST="${SELFHOSTED_VERSION_LATEST/#${CLIENT_ID}-}"
 
@@ -172,7 +172,7 @@ _info "latest version: ${SELFHOSTED_VERSION_LATEST}"
 
 # Check if exist the latest stable release
 STABLE_CUSTOMER_PACKAGE_DOWNLOAD_URL="gs://${CLIENT_STORAGE_BUCKET}/${CUSTOMER_PACKAGE_FOLDER}/${CUSTOMER_PACKAGE_NAME_PREFIX}-${CLIENT_ID}-${SELFHOSTED_VERSION_LATEST}.zip"
-if _check_gsutil_file ${STABLE_CUSTOMER_PACKAGE_DOWNLOAD_URL}
+if _check_gcs_file ${STABLE_CUSTOMER_PACKAGE_DOWNLOAD_URL}
 then
   CUSTOMER_PACKAGE_DOWNLOAD_URL=${STABLE_CUSTOMER_PACKAGE_DOWNLOAD_URL}
   _info "download file: ${CUSTOMER_PACKAGE_DOWNLOAD_URL}"
@@ -186,7 +186,7 @@ fi
 
 # Download package
 STEP="downloading: $(basename "${CUSTOMER_PACKAGE_FILE_LATEST}")"
-if ( gsutil cp "${CUSTOMER_PACKAGE_FILE_LATEST}" ./ ) ; then
+if ( gcloud storage cp "${CUSTOMER_PACKAGE_FILE_LATEST}" ./ ) ; then
   _success "${STEP}" && RC="0" ; else _error "${STEP}" 6
 fi
 
