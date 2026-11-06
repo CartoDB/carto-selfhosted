@@ -160,6 +160,27 @@ _migrate_postgres_version_var() {
 	sed -i -e 's/^POSTGRES_PASSWORD/POSTGRES_ADMIN_PASSWORD/g' customer.env
 }
 
+_docker_registry_login() {
+	local registry_path
+	local registry_host
+	# docker-compose keeps the last assignment when a key repeats in .env
+	registry_path=$(grep '^DOCKER_REGISTRY_BASE_PATH=' .env | tail -n 1 | cut -d = -f 2-)
+	registry_host=${registry_path%%/*}
+
+	if ! [[ "${registry_path}" =~ ^(us-docker\.pkg\.dev|gcr\.io)/carto-onprem-artifacts(/|$) ]]; then
+		_info "Registry ${registry_path} is not the CARTO registry, its credentials are yours to manage"
+		return
+	fi
+
+	_info "Logging in to ${registry_host} with key.json..."
+	if ! docker login -u _json_key --password-stdin "${registry_host}" <key.json; then
+		_err "Login to ${registry_host} failed, see https://docs.carto.com/carto-self-hosted/configuration/security/authenticated-image-pulls"
+		exit 1
+	fi
+	_info "Logged in to ${registry_host}, credentials stored for user $(id -un)"
+	_info "Run docker-compose as user $(id -un) so it can use those credentials"
+}
+
 _create_env_file() {
 	_migrate_postgres_version_var
 	_info "Creating .env file..."
@@ -179,6 +200,7 @@ _create_env_file() {
 	mkdir -p certs
 	cp key.json certs/key.json
 	_info "File .env successfully created"
+	_docker_registry_login
 	_info "Script finished, run docker-compose up -d"
 }
 
