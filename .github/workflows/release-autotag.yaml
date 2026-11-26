@@ -8,6 +8,8 @@ on:
 jobs:
   create-tag:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -39,7 +41,7 @@ jobs:
 
       - uses: ncipollo/release-action@v1
         with:
-          token: ${{ secrets.X_GITHUB_CARTOFANTE }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit: ${{ github.sha }}
           name: ${{ steps.info.outputs.release-version }}
           tag: ${{ steps.info.outputs.release-version }}
